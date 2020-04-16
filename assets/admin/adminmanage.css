@@ -1,0 +1,10 @@
+.pagedivide {
+  margin: 0 auto;
+  padding: 20px 0;
+  width: 400px;
+  height: 100px;
+}
+
+.expand-row{
+  margin-bottom: 16px;
+}

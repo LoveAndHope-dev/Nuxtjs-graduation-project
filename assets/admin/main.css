@@ -1,0 +1,30 @@
+.main_title_logo {
+  font-size: 26px;
+  font-weight: bold;
+  color: white;
+  padding: 30px
+}
+
+.content_background {
+  padding: 0 16px 50px
+}
+
+.layout {
+  border: 1px solid #d7dde4;
+  background: #f5f7f9;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+page .layout-header-bar {
+  background: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.admin_sider {
+  position: fixed; 
+  height: 100vh;
+  left: 0;
+  overflow: auto;
+}

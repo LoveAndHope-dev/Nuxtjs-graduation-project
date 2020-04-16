@@ -1,0 +1,24 @@
+.demo-carousel {
+  line-height: 200px;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+}
+
+
+.index_new_card {
+  height: 440px;
+}
+
+.index_article_div {
+  padding: 10px;
+}
+
+.index_article_card {
+  height: 200px
+}
+
+p {
+  word-break: break-all;
+  word-wrap: break-word;
+}

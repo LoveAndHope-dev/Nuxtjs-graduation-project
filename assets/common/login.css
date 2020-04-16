@@ -1,0 +1,56 @@
+#main {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: #f8f8f9;
+}
+
+.login {
+  display: flex;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+  background: #f8f8f9;
+}
+
+.login-form {
+  width: 350px;
+  height: 400px;
+  padding: 35px;
+  -webkit-box-shadow: 0 0 100px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0 100px rgba(0, 0, 0, 0.08);
+  background: #fff;
+}
+
+.login-logo {
+  text-align: center;
+  height: 80px;
+  line-height: 40px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.login-logo>span {
+  vertical-align: text-bottom;
+  font-size: 16px;
+  text-transform: uppercase;
+  display: inline-block;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.form-item {
+  width: 100%;
+}
+
+.item-input>i.ivu-input-icon {
+  left: 0;
+  right: auto;
+}
+
+.loginBtn {
+  width: 100%;
+}
