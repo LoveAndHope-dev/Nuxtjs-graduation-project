@@ -5,6 +5,7 @@ import workermanage from './modules/workermanage'
 import drinkmanage from './modules/drinkmanage'
 import cakemanage from './modules/cakemanage'
 import tablemanage from './modules/tablemanage'
+import myselfinfomanage from './modules/myselfinfo'
 
 Vue.use(Vuex)
 
@@ -14,7 +15,8 @@ const store = () =>
       workermanage,
       drinkmanage,
       cakemanage,
-      tablemanage
+      tablemanage,
+      myselfinfomanage
     },
     actions: {
       async nuxtServerInit ({ commit }, { req, app }) {
@@ -78,6 +80,25 @@ const store = () =>
                     name: item.tablename,
                     condition: item.tablecondition,
                     people: item.tablepeople
+                  }
+                })
+              })
+            }
+            let { status: mistatus, data: { micode, miresult } } = await app.$axios.get('/manager/myself_infomation/getInfo')
+            if (mistatus === 200 & micode === 0) {
+              commit('myselfinfomanage/setinfo', {
+                info: miresult.filter(item => item.adminid.length).map(item => {
+                  return {
+                    id: item._id,
+                    name: item.adminname,
+                    sex: item.adminsex,
+                    email: item.adminemail,
+                    workdate: item.adminworkdate,
+                    photo: item.adminphoto,
+                    phonenumber: item.adminphonenumber,
+                    password: item.adminpassword,
+                    type: item.admintype,
+                    wages: item.adminwages
                   }
                 })
               })

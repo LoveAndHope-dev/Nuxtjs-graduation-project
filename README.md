@@ -3,22 +3,24 @@
 # 👴的毕业设计
 
 👴用nuxtjs写的毕设后端nodejs的koa框架，写的一个餐厅管理系统
+
 正常怎末操作大家知道吧
+
 下下来之后```npm install```之后```npm run dev```
+
 老子没上pm2，要不人没了
+
 真的这毕设做的我脑袋大
+
 我还是自杀算了
 
 下面我说一下这个毕设我架构的时候用的很操蛋的一个架构
+
 主要是为了追求数据的跨域以及数据的伪热更新
 
-```flow
-st=>operation: 前端页面
-op=>operation: vuex
-cond=>operation: 瞎几把post和get的后端
-e=>operation: 瞎几把搞的数据库
+```
+前端页面 <--> vuex <--> 瞎几把post和get的后端 <--> 瞎几把搞的数据库
 
-st->op->cond->e
 ```
 
 还有这几样东西
