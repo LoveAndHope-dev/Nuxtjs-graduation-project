@@ -1,6 +1,36 @@
 <template>
   <div>
     <card>
+      <Tabs>
+        <TabPane label="查询文章">
+          <Form
+            :model="searcharticleForm"
+            :label-width="80"
+          >
+            <Row>
+              <Col span="12">
+              <FormItem label="文章名称">
+                <Input
+                  v-model="searcharticleForm.name"
+                  placeholder="Enter something..."
+                ></Input>
+              </FormItem>
+              </Col>
+              <Col
+                offset="2"
+                span="10"
+              >
+              <FormItem>
+                <Button
+                  type="primary"
+                  @click="searcharticleSubmit()"
+                >查询</Button>
+              </FormItem>
+              </col>
+            </Row>
+          </Form>
+        </TabPane>
+      </Tabs>
       <Table
         border
         height="500"
@@ -35,6 +65,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
 
   data () {
@@ -42,7 +73,7 @@ export default {
       articleColumns: [
         {
           title: '文章名称',
-          slot: 'name'
+          key: 'name'
         },
         {
           title: '文章日期',
@@ -56,20 +87,32 @@ export default {
         }
       ],
       content: ' ',
-      article: [
-        
-      ]
+      searcharticleForm: {}
     }
+  },
+  computed: {
+    ...mapState({ article: state => state.articlemanage.article.article })
   },
   methods: {
     show (index) {
       this.$Modal.info({
+        width: 1200,
         title: '文章详情',
-        content: `Name：${this.persons[index].name}<br>Age：${this.persons[index].age}<br>Address：${this.persons[index].address}`
+        content: `文章名称：<br>${this.article[index].name}
+                  <br>发布日期：<br>${this.article[index].date}
+                  <br>内容：<br>${this.article[index].text}`
       })
     },
-    remove (index) {
-      this.staff.splice(index, 1);
+    async remove (index) {
+      let formData = new FormData()
+      formData.append('submitID', this.article[index].id)
+      await this.$store.dispatch('articlemanage/removearticleSubmit', formData)
+    },
+    searcharticleSubmit: async function () {
+      let self = this
+      let formData = new FormData()
+      formData.append('articlename', self.searcharticleForm.name)
+      await this.$store.dispatch('articlemanage/searcharticleSubmit', formData)
     }
   }
 }

@@ -9,6 +9,7 @@ import passport from './interfaces/utils/passport'
 import userauth from './interfaces/utils/userauth'
 import dbConfig from './dbs/config'
 import Staff from './interfaces/admin/staff'
+import Article from './interfaces/admin/article'
 import Admin from './interfaces/admin/admin'
 import Drink from './interfaces/admin/drink'
 import Cake from './interfaces/admin/cake'
@@ -67,6 +68,7 @@ async function start () {
   app.use(Info.routes()).use(Info.allowedMethods())
   app.use(Commonusers.routes()).use(Commonusers.allowedMethods())
   app.use(Uploadimg.routes()).use(Uploadimg.allowedMethods())
+  app.use(Article.routes()).use(Article.allowedMethods())
 
   app.use(ctx => {
     ctx.status = 200 // koa defaults to 404 when it sees that status is unset

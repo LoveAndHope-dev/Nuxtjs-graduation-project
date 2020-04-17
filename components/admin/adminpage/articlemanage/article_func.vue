@@ -6,27 +6,19 @@
       :label-width="100"
     >
       <FormItem label="标题">
-        <Input v-model="articleForm.title"></Input>
-      </FormItem>
-      <FormItem label="发布日期">
-        <DatePicker
-          type="date"
-          placeholder="Select date"
-          v-model="articleForm.date"
-        ></DatePicker>
+        <Input v-model="articleForm.name"></Input>
       </FormItem>
       <FormItem label="正文">
         <editor
           api-key="7mg47kzvekvgnpznozy1enojhbi3et2vijn6etwce55uakhz"
           :init="tinyconf"
-          v-model="articleForm.article"
+          v-model="articleForm.text"
         />
       </FormItem>
       <FormItem>
-        <Button type="primary">提交</Button>
+        <Button type="primary" @click="addarticle">提交</Button>
       </FormItem>
     </Form>
-    <div v-html="articleForm.article"></div>
   </Card>
 </template>
 
@@ -45,12 +37,15 @@ export default {
         height: 500,
         language: 'zh_CN',
         async images_upload_handler (blobInfo, success, failure) {
-          let formData = new FormData()
-          formData.append('file', blobInfo.blob(), blobInfo.filename())
-          let { data } = await axios.post(`/manager/uploadimg`, formData, {
-            headers: { 'content-type': 'multipart/form-data' }
-          });
-          success(`/articleimg/` + data.filename)
+          // 这波啊，这波是，肉弹冲击（把图片提交到static的那个方法）
+          // let formData = new FormData()
+          // formData.append('file', blobInfo.blob(), blobInfo.filename())
+          // let { data } = await axios.post(`/manager/uploadimg`, formData, {
+          //   headers: { 'content-type': 'multipart/form-data' }
+          // });
+          // success(`/articleimg/` + data.filename)
+          let str = 'data:image/jpg;base64,' + blobInfo.base64()
+          success(str)
         },
         menubar: true,
         plugins: [
@@ -65,6 +60,17 @@ export default {
 
       }
     }
+  },
+  methods: {
+    async addarticle () {
+      let formData = new FormData()
+      let date = new Date()
+      formData.append('articlename', this.articleForm.name)
+      formData.append('articledate', date.toLocaleDateString())
+      formData.append('articletext', this.articleForm.text)
+      await this.$store.dispatch('articlemanage/addarticleSubmit', formData)
+    }
+
   }
 }
 </script>
