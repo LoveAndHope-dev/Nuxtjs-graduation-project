@@ -35,6 +35,12 @@
             placeholder="Enter something..."
           ></Input>
         </FormItem>
+        <FormItem label="工资">
+          <Input
+            v-model="changeWorkerForm.wages"
+            placeholder="Enter something..."
+          ></Input>
+        </FormItem>
         <FormItem label="密码">
           <Input
             v-model="changeWorkerForm.password"
@@ -165,6 +171,10 @@ export default {
           }
         },
         {
+          title: 'id',
+          slot: 'id'
+        },
+        {
           title: '姓名',
           key: 'name'
         },
@@ -175,6 +185,10 @@ export default {
         {
           title: '工作日期',
           key: 'workdate'
+        },
+        {
+          title: '薪资',
+          key: 'wages'
         },
         {
           title: 'Action',
@@ -211,6 +225,7 @@ export default {
       this.changeWorkerForm.name = this.persons[index].name
       this.changeWorkerForm.phonenumber = this.persons[index].phonenumber
       this.changeWorkerForm.email = this.persons[index].email
+      this.changeWorkerForm.wages = this.persons[index].wages
       this.fileSrc = this.persons[index].photo
     },
     before (file) {
@@ -251,6 +266,7 @@ export default {
       formData.append('staffemail', this.changeWorkerForm.email)
       formData.append('staffphonenumber', this.changeWorkerForm.phonenumber)
       formData.append('staffpassword', CryptoJS.MD5(changePassword).toString())
+      formData.append('staffwages', parseInt(this.changeWorkerForm.wages))
       formData.append('staffphoto', this.fileSrc)
       await this.$store.dispatch('workermanage/changeWorkerSubmit', formData)
     }

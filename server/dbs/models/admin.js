@@ -1,10 +1,6 @@
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 const adminSchema = new Schema({
-  adminid: {
-    type: String,
-    unique: true
-  },
   adminname: {
     type: String,
     unique: false

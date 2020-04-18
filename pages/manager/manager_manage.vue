@@ -25,9 +25,9 @@ export default {
     let { status, data: { code, result } } = await ctx.$axios.get('/manager/manager_manage/getManager')
     if (status === 200 && code === 0) {
       return {
-        persons: result.filter(item => item.adminid.length).map(item => {
+        persons: result.filter(item => item._id.length).map(item => {
           return {
-            id: item.adminid,
+            id: item._id,
             name: item.adminname,
             sex: item.adminsex,
             email: item.adminemail,

@@ -20,7 +20,7 @@
               icon="person"
               v-model="loginData.id"
               @on-enter="loginSubmit"
-              placeholder="登录账号"
+              placeholder="登录账号（手机号）"
             ></Input>
           </FormItem>
           <FormItem

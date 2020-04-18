@@ -26,6 +26,7 @@
     "limit": "0.0.1",
     "memory": "0.0.3",
     "moment": "^2.24.0",
+    "mongoose-fuzzy-searching": "^1.1.9",
     "multiparty": "^4.2.1",
     "net": "^1.0.2",
     "nuxt": "^2.12.2",

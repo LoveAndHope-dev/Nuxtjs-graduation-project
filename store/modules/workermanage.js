@@ -43,7 +43,8 @@ const actions = {
             photo: item.staffphoto,
             email: item.staffemail,
             phonenumber: item.staffphonenumber,
-            password: item.staffpassword
+            password: item.staffpassword,
+            wages: item.staffwages
           }
         })
       })
@@ -71,9 +72,9 @@ const actions = {
     })
     if (status === 200 & code === 0) {
       commit('setStaff', {
-        staff: result.filter(item => item.staffid.length).map(item => {
+        staff: result.filter(item => item._id.length).map(item => {
           return {
-            id: item.staffid,
+            id: item._id,
             name: item.staffname,
             sex: item.staffsex,
             workdate: item.staffworkdate,

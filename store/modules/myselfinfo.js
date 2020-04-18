@@ -18,7 +18,7 @@ const actions = {
     })
     if (status === 200 & code === 0) {
       commit('setinfo', {
-        info: info.filter(item => item.adminid.length).map(item => {
+        info: info.filter(item => item._id.length).map(item => {
           return {
             id: item._id,
             name: item.adminname,

@@ -86,18 +86,19 @@ router.post('/changeCake', async ctx => {
 })
 
 router.post('/searchCake', async ctx => {
-  let result = await Cake.findOne({ 'cakename': ctx.request.body.cakename })
+  var reg = new RegExp(ctx.request.body.cakename, 'i');
+  let result = await Cake.find({ $or: [{ cakename: { $regex: reg } }] })
   if (result) {
     ctx.body = {
       code: 0,
       msg: 'success',
-      result: [result]
+      result: result
     }
   } else {
     ctx.body = {
       code: -1,
       msg: 'fail',
-      result: []
+      result: ' '
     }
   }
 })

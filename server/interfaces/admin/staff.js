@@ -20,14 +20,14 @@ router.get('/getStaff', async ctx => {
 
 router.post('/addStaff', async ctx => {
   let addnew = new Staff({
-    staffid: 'TC' + ctx.request.body.staffphonenumber,
     staffworkdate: ctx.request.body.staffworkdate,
     staffname: ctx.request.body.staffname,
     staffemail: ctx.request.body.staffemail,
     staffphonenumber: ctx.request.body.staffphonenumber,
     staffsex: ctx.request.body.staffsex,
     staffphoto: ctx.request.body.staffphoto,
-    staffpassword: ctx.request.body.staffpassword
+    staffpassword: ctx.request.body.staffpassword,
+    staffwages: ctx.request.body.staffwages
   })
   let result = await addnew.save()
   if (result) {
@@ -36,14 +36,15 @@ router.post('/addStaff', async ctx => {
       msg: '',
       result: [
         {
-          staffid: result.staffid,
+          staffid: result._id,
           staffname: result.staffname,
           staffsex: result.staffsex,
           staffworkdate: result.staffworkdate,
           staffphoto: result.staffphoto,
           staffemail: result.staffemail,
           staffphonenumber: result.staffphonenumber,
-          staffpassword: result.staffpassword
+          staffpassword: result.staffpassword,
+          staffwages: result.staffwages
         }
       ]
     }
@@ -58,7 +59,7 @@ router.post('/addStaff', async ctx => {
 
 router.post('/removeStaff', async ctx => {
   let removeID = ctx.request.body.submitID
-  let result = await Staff.deleteOne({ 'staffid': removeID })
+  let result = await Staff.deleteOne({ '_id': removeID })
   if (result) {
     ctx.body = {
       code: 0,
@@ -76,26 +77,28 @@ router.post('/removeStaff', async ctx => {
 
 router.post('/changeStaff', async ctx => {
   let changeID = ctx.request.body.staffid
-  let result = await Staff.findOneAndUpdate({ 'staffid': changeID }, {
+  let result = await Staff.findOneAndUpdate({ '_id': changeID }, {
     staffname: ctx.request.body.staffname,
     staffemail: ctx.request.body.staffemail,
     staffphonenumber: ctx.request.body.staffphonenumber,
     staffphoto: ctx.request.body.staffphoto,
-    staffpassword: ctx.request.body.staffpassword
+    staffpassword: ctx.request.body.staffpassword,
+    staffwages: ctx.request.body.staffwages
   }, { 'new': true })
   if (result) {
     ctx.body = {
       code: 0,
       msg: 'success',
       staff: {
-        id: result.staffid,
+        id: result._id,
         name: result.staffname,
         sex: result.staffsex,
         workdate: result.staffworkdate,
         photo: result.staffphoto,
         email: result.staffemail,
         phonenumber: result.staffphonenumber,
-        password: result.staffpassword
+        password: result.staffpassword,
+        wages: result.staffwages
       }
     }
   } else {
@@ -108,29 +111,20 @@ router.post('/changeStaff', async ctx => {
 })
 
 router.post('/searchStaff', async ctx => {
-  let result = await Staff.findOne({ 'staffphonenumber': ctx.request.body.staffphonenumber })
+  console.log(ctx.request.body.staffphonenumber)
+  var reg = new RegExp(ctx.request.body.staffphonenumber, 'i');
+  let result = await Staff.find({ $or: [{ staffphonenumber: { $regex: reg } }] })
   if (result) {
     ctx.body = {
       code: 0,
       msg: 'success',
-      result: [
-        {
-          staffid: result.staffid,
-          staffname: result.staffname,
-          staffsex: result.staffsex,
-          staffworkdate: result.staffworkdate,
-          staffphoto: result.staffphoto,
-          staffemail: result.staffemail,
-          staffphonenumber: result.staffphonenumber,
-          staffpassword: result.staffpassword
-        }
-      ]
+      result: result
     }
   } else {
     ctx.body = {
       code: -1,
       msg: 'fail',
-      result: [{}]
+      result: ' '
     }
   }
 })

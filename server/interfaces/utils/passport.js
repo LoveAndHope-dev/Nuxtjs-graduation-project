@@ -3,9 +3,9 @@ import LocalStrategy from 'passport-local'
 import StaffModel from '../../dbs/models/staff'
 import AdminModel from '../../dbs/models/admin'
 
-passport.use('staff', new LocalStrategy(async function (staffid, password, done) {
+passport.use('staff', new LocalStrategy(async function (staffphonenumber, password, done) {
   let where = {
-    staffid
+    staffphonenumber
   };
   console.log('passport1')
   let result = await StaffModel.findOne(where)
@@ -21,9 +21,9 @@ passport.use('staff', new LocalStrategy(async function (staffid, password, done)
   }
 }))
 
-passport.use('admin', new LocalStrategy(async function (adminid, password, done) {
+passport.use('admin', new LocalStrategy(async function (adminphonenumber, password, done) {
   let where = {
-    adminid
+    adminphonenumber
   };
   console.log('passport2')
   let result = await AdminModel.findOne(where)

@@ -52,6 +52,15 @@
                   ></Input>
                 </FormItem>
                 </Col>
+                 <Col span="12">
+                <FormItem label="工资">
+                  <Input
+                    v-model="addWorkerForm.inputwages"
+                    placeholder="Enter something..."
+                    type="password"
+                  ></Input>
+                </FormItem>
+                </Col>
                 <Col span="24">
                 <FormItem label="性别">
                   <RadioGroup v-model="addWorkerForm.radio">
@@ -130,6 +139,7 @@ export default {
       formData.append('staffsex', self.addWorkerForm.radio)
       formData.append('staffphoto', self.addWorkerForm.photo)
       formData.append('staffpassword', CryptoJS.MD5(self.addWorkerForm.inputpassword).toString())
+      formData.append('staffwages', parseInt(self.addWorkerForm.inputwages))
       await this.$store.dispatch('workermanage/addWorkerSubmit', formData)
     },
     before (file) {

@@ -86,12 +86,13 @@ router.post('/changeDrink', async ctx => {
 })
 
 router.post('/searchDrink', async ctx => {
-  let result = await Drink.findOne({ 'drinkname': ctx.request.body.drinkname })
+  var reg = new RegExp(ctx.request.body.drinkname, 'i');
+  let result = await Drink.find({ $or: [{ drinkname: { $regex: reg } }] })
   if (result) {
     ctx.body = {
       code: 0,
       msg: 'success',
-      result: [result]
+      result: result
     }
   } else {
     ctx.body = {

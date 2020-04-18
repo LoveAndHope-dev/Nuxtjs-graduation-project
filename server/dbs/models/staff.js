@@ -1,10 +1,6 @@
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 const StaffSchema = new Schema({
-  staffid: {
-    type: String,
-    unique: true
-  },
   staffname: {
     type: String,
     unique: false
@@ -28,9 +24,13 @@ const StaffSchema = new Schema({
   staffphonenumber: {
     type: String,
     unique: true
-  }, 
+  },
   staffpassword: {
     type: String,
+    unique: false
+  },
+  staffwages: {
+    type: Number,
     unique: false
   }
 })

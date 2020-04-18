@@ -80,18 +80,19 @@ router.post('/changeTable', async ctx => {
 })
 
 router.post('/searchTable', async ctx => {
-  let result = await Table.findOne({ 'tablename': ctx.request.body.tablename })
+  var reg = new RegExp(ctx.request.body.tablename, 'i');
+  let result = await Table.find({ $or: [{ tablename: { $regex: reg } }] })
   if (result) {
     ctx.body = {
       code: 0,
       msg: 'success',
-      result: [result]
+      result: result
     }
   } else {
     ctx.body = {
       code: -1,
       msg: 'fail',
-      result: []
+      result: ''
     }
   }
 })
