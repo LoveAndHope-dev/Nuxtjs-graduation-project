@@ -5,7 +5,14 @@
     <Row class="expand-row">
       <Col span="8">
       <span class="expand-key">照骗: </span>
-      <span class="expand-value">{{ row.photo }}</span>
+      <Avatar
+        class="expand-value"
+        shape="square"
+        icon="ios-person"
+        size="large"
+        :src="picture"
+        style="width: 50px; height: 70px"
+      />
       </Col>
       <Col span="8">
       <span class="expand-key">邮箱: </span>
@@ -22,6 +29,11 @@
 export default {
   props: {
     row: Object
+  },
+  data () {
+    return {
+      picture: this.row.photo
+    }
   }
 };
 </script>

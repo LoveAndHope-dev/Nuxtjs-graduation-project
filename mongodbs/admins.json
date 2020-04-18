@@ -1,0 +1,68 @@
+[
+	{
+		"adminname": "John T. Greene",
+		"adminsex": "female",
+		"adminworkdate": "2019/09/08",
+		"adminphoto": "RBB95IZY9BE",
+		"adminemail": "lorem@ametmetusAliquam.com",
+		"adminphonenumber": "18837510668",
+		"adminpassword": "KVI98OQO5XL",
+		"admintype": 1,
+		"adminwages": 17000
+	},
+	{
+		"adminname": "Laurel H. Marquez",
+		"adminsex": "female",
+		"adminworkdate": "2019/07/11",
+		"adminphoto": "KMM95XWQ6QN",
+		"adminemail": "pede.blandit@duiFuscealiquam.com",
+		"adminphonenumber": "18678148899",
+		"adminpassword": "SOY14NJQ7JO",
+		"admintype": 0,
+		"adminwages": 14000
+	},
+	{
+		"adminname": "Chaim A. Stokes",
+		"adminsex": "male",
+		"adminworkdate": "2020/03/26",
+		"adminphoto": "AAJ17OOH8DL",
+		"adminemail": "accumsan@CurabiturmassaVestibulum.ca",
+		"adminphonenumber": "18816808555",
+		"adminpassword": "SYI47LTN0VA",
+		"admintype": 0,
+		"adminwages": 13000
+	},
+	{
+		"adminname": "Keiko G. Reilly",
+		"adminsex": "female",
+		"adminworkdate": "2020/02/29",
+		"adminphoto": "NWT02LHG5PW",
+		"adminemail": "interdum@fringilla.ca",
+		"adminphonenumber": "18048573248",
+		"adminpassword": "ZOL94GOL7XJ",
+		"admintype": 0,
+		"adminwages": 11000
+	},
+	{
+		"adminname": "Blaze S. Johns",
+		"adminsex": "male",
+		"adminworkdate": "2020/11/04",
+		"adminphoto": "PYB52QHM1IS",
+		"adminemail": "augue.porttitor.interdum@nec.co.uk",
+		"adminphonenumber": "18887793208",
+		"adminpassword": "EDA42QAC8SU",
+		"admintype": 0,
+		"adminwages": 12000
+	},
+	{
+		"adminname": "Sawyer U. Mathews",
+		"adminsex": "female",
+		"adminworkdate": "2020/10/31",
+		"adminphoto": "GKD50HZU3TW",
+		"adminemail": "rhoncus.Nullam@purusactellus.edu",
+		"adminphonenumber": "18668685706",
+		"adminpassword": "GLK74FYT7HH",
+		"admintype": 0,
+		"adminwages": 14000
+	}
+]

@@ -7,6 +7,7 @@ import cakemanage from './modules/cakemanage'
 import tablemanage from './modules/tablemanage'
 import myselfinfomanage from './modules/myselfinfo'
 import articlemanage from './modules/articlemanage'
+import adminmanage from './modules/adminmanage'
 
 Vue.use(Vuex)
 
@@ -18,7 +19,8 @@ const store = () =>
       cakemanage,
       tablemanage,
       myselfinfomanage,
-      articlemanage
+      articlemanage,
+      adminmanage
     },
     actions: {
       async nuxtServerInit ({ commit }, { req, app }) {
@@ -115,6 +117,25 @@ const store = () =>
                     name: item.articlename,
                     date: item.articledate,
                     text: item.articletext
+                  }
+                })
+              })
+            }
+            let { status: mmstatus, data: { mmcode, mmresult } } = await app.$axios.get('/manager/manager_manage/getAdmin')
+            if (mmstatus === 200 && mmcode === 0) {
+              commit('adminmanage/setadmin', {
+                admin: mmresult.filter(item => item._id.length).map(item => {
+                  return {
+                    id: item._id,
+                    name: item.adminname,
+                    sex: item.adminsex,
+                    email: item.adminemail,
+                    workdate: item.adminworkdate,
+                    photo: item.adminphoto,
+                    phonenumber: item.adminphonenumber,
+                    password: item.adminpassword,
+                    type: item.admintype,
+                    wages: item.adminwages
                   }
                 })
               })

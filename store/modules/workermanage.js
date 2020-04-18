@@ -81,6 +81,7 @@ const actions = {
             photo: item.staffphoto,
             email: item.staffemail,
             phonenumber: item.staffphonenumber,
+            wages: item.staffwages,
             password: item.staffpassword
           }
         })

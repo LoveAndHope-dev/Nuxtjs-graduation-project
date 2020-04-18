@@ -14,11 +14,6 @@ export default {
   components: {
     workercontent,
     workerfunc
-  },
-  data () {
-    return {
-      persons: Array
-    }
   }
 }
 </script>
