@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import workermanage from './modules/workermanage'
-import drinkmanage from './modules/drinkmanage'
-import cakemanage from './modules/cakemanage'
-import tablemanage from './modules/tablemanage'
-import myselfinfomanage from './modules/myselfinfo'
-import articlemanage from './modules/articlemanage'
-import adminmanage from './modules/adminmanage'
+import workermanage from './adminmodules/workermanage'
+import drinkmanage from './adminmodules/drinkmanage'
+import cakemanage from './adminmodules/cakemanage'
+import tablemanage from './adminmodules/tablemanage'
+import myselfinfomanage from './adminmodules/myselfinfo'
+import articlemanage from './adminmodules/articlemanage'
+import adminmanage from './adminmodules/adminmanage'
 
 Vue.use(Vuex)
 

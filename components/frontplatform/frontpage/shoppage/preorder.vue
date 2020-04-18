@@ -51,6 +51,7 @@ export default {
   data () {
     return {
       selectData: [],
+      totalcost: Number,
       tablenumber: Number,
       preorder: [
         {
