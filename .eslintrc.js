@@ -51,6 +51,7 @@ module.exports = {
     "vue/require-default-prop": 'off',
     "vue/mustache-interpolation-spacing": 'off',
     "vue/valid-v-model": 'off',
-    "no-console": 'off'
+    "no-console": 'off',
+    "vue/no-unused-vars": 'off'
   }
 }

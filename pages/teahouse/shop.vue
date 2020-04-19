@@ -3,7 +3,7 @@
     <Divider>老哥你要吃点啥，来点老八秘制小憨包？</Divider>
     <Drawer
       v-model="value1"
-      width="30"
+      width="500"
     >
       <div slot="header">
         <h2>您的预订单</h2>
@@ -12,6 +12,7 @@
           <Button
             type="success"
             class="drawer-header-button"
+            @click="goCount"
             long
           >下单</Button>
           </Col>
@@ -19,6 +20,7 @@
           <Button
             type="error"
             class="drawer-header-button"
+            @click="clean"
             long
           >清空</Button>
           </Col>
@@ -27,7 +29,7 @@
       <cartlist :cartitem="cartitem" />
     </Drawer>
     <Button
-      type="success"
+      type="primary"
       long
       @click="openCart()"
     >打开你的预订单</Button>
@@ -124,6 +126,15 @@ export default {
       cartitem: {}
     }
   },
+  computed: {
+    totalPrice () {
+      let total = 0;
+      this.cartitem.forEach(item => {
+        total += item.price * item.num;
+      });
+      return total;
+    }
+  },
   methods: {
     async openCart () {
       this.value1 = true
@@ -139,6 +150,34 @@ export default {
             num: item.goodsNum
           }
         })
+      }
+    },
+    async goCount () {
+      let products = [];
+      this.cartitem.forEach(item => {
+        products.push(item)
+      })
+      let params = {
+        totalPrice: this.totalPrice,
+        products: products
+      }
+      console.log(this.totalPrice, 'ok', products)
+
+      // let res = await this.$axios.post('/users/addOrder', {
+      //   params
+      // })
+      // if (res.status == 200) {
+      //   this.$message.success('下单成功，但是你收不到东西哈！别等了。');
+      //   this.getCartLists();
+      // } else {
+      //   this.$message.error(res.msg);
+      // }
+    },
+    async clean () {
+      let { data: { code, msg } } = await axios.delete('/teahouse/shop/cleanCart')
+      if (code === 0) {
+        this.$Message.success('删除成功!');
+        this.cartitem = []
       }
     }
   }

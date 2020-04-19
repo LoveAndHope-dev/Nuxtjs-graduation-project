@@ -3,42 +3,38 @@
     <Row>
       <Col
         span="24"
-        v-for="item in cartitem"
+        v-for="(item, index) in cartitem"
         :key="item.name"
       >
       <Card style="margin:20px 0">
         <Row>
-          <Col span="7">
-          <Avatar
-            shape="square"
-            size="100"
+          <Col span="9">
+          <img
+            style="width:100px"
             :src="item.photo"
           >
-          </Avatar>
+          </img>
           </Col>
           <Col
-            span="16"
+            span="14"
             offset="1"
           >
-          <Row>
-            <Col span="12">
-            <h2>{{item.name}}</h2>
-            </Col>
-            <Col span="12">
-            <h1>￥{{item.price}}</h1>
-            </Col>
-            <Col span="12">
-            <InputNumber
-              v-model="itemvalue"
-              size="large"
-              :min="1"
-              :editable="true"
-              style="margin:20px 0; width: 100px"
-            ></InputNumber>
-            </Col>
-            <Col>
-            </Col>
-          </Row>
+          <h2>商品名称：{{item.name}}</h2>
+          <h2>价格：￥{{item.price}}</h2>
+          <InputNumber
+            v-model="item.num"
+            size="large"
+            :min="1"
+            :editable="true"
+            @on-change="changeNum($event, item.id)"
+          ></InputNumber>
+          <Icon
+            type="ios-trash-outline"
+            size="50"
+            color="#ed4014"
+            style="margin:0 50px;cursor:pointer"
+            @click.stop="deleteProduct(item.id, index)"
+          />
           </Col>
         </Row>
       </Card>
@@ -48,9 +44,35 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   props: {
     cartitem: Object
+  },
+  methods: {
+    async deleteProduct (id, index) {
+      let res = await axios.delete('/teahouse/shop/deletePro', {
+        params: {
+          id: id
+        }
+      })
+      if (res.status == 200) {
+        this.$Message.success('删除成功!');
+        this.cartitem.splice(index, 1);
+      }
+    },
+    async changeNum (val, id) {
+      // console.log(val, id)
+      let formData = new FormData()
+      formData.append('id', id)
+      formData.append('num', val)
+      let data = await axios.post('/teahouse/shop/updatePro', formData, {
+        headers: { 'content-type': 'multipart/form-data' }
+      });
+      if (!data.code == 200) {
+        this.$Message.error(res.msg);
+      }
+    }
   }
 }
 </script>
