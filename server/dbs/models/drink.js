@@ -23,7 +23,7 @@ const drinkSchema = new Schema({
   },
   drinkphoto: {
     type: String,
-    unique: true
+    unique: false
   }
 })
 export default mongoose.model('drink', drinkSchema)

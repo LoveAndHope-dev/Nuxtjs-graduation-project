@@ -14,6 +14,7 @@
 .shop_item_button {
   font-size: 14px;
 }
+
 .shop_item_card {
   max-height: 300px;
 }
@@ -24,4 +25,16 @@
 
 .preorder_button_group {
   padding: 10px 50px;
+}
+
+.load-more {
+  margin: 20px auto;
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  width: 600px;
+  background: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #2d8cf0
 }

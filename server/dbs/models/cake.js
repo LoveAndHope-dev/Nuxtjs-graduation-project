@@ -23,7 +23,7 @@ const cakeSchema = new Schema({
   },
   cakephoto: {
     type: String,
-    unique: true
+    unique: false
   }
 })
 export default mongoose.model('cake', cakeSchema)

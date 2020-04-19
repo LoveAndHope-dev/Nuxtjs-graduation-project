@@ -2,15 +2,18 @@
   <div @click="modal1 = true">
     <Card class="shop_item_card">
       <Row>
-        <Col span="12">
+        <Col span="7">
         <Avatar
           shape="square"
-          style="width: 150px; height: 150px"
+          style="width: 100px; height: 150px"
           :src="item.photo"
         >
         </Avatar>
         </Col>
-        <Col span="12">
+        <Col
+          span="16"
+          offset="1"
+        >
         <Row>
           <Col span="12">
           <h2>{{item.name}}</h2>
@@ -20,7 +23,7 @@
           </Col>
         </Row>
         <h4>类型：{{item.type}}</h4>
-        <h4>口味：{{item.taste}}</h4>
+        <h4>产地：{{item.position}}</h4>
         <h4>描述：{{item.description | ellipsis}}</h4>
         </Col>
       </Row>
@@ -35,7 +38,7 @@
         <Col span="8">
         <Avatar
           shape="square"
-          style="width: 150px; height: 150px"
+          style="width: 100px; height: 150px"
           :src="item.photo"
         >
         </Avatar>
@@ -49,14 +52,12 @@
           min="1"
           style="margin:20px 0; width: 100px"
         ></InputNumber>
-        <Button
-          type="primary"
-        >加入购物车</Button>
+        <Button type="primary">加入购物车</Button>
         </Col>
       </Row>
       <Divider dashed />
       <h2>类型：{{item.type}}</h2>
-      <h2>口味：{{item.taste}}</h2>
+      <h2>产地：{{item.position}}</h2>
       <h2>描述：{{item.description}}</h2>
       <div slot="footer"></div>
     </Modal>
@@ -69,7 +70,7 @@ export default {
     ellipsis (value) {
       if (!value) { return '' }
       if (value.length > 8) {
-        return value.slice(0, 100) + '...'
+        return value.slice(0, 60) + '...'
       }
       return value
     }

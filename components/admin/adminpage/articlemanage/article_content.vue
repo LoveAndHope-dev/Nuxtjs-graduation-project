@@ -1,5 +1,15 @@
 <template>
   <div>
+    <Modal
+      v-model="modal1"
+      title="文章详情"
+      width="800px"
+    >
+      <h1>{{title}}</h1>
+      <h2>{{time}}</h2>
+      <h3>{{text}}</h3>
+      <div slot="footer"></div>
+    </Modal>
     <card>
       <Tabs>
         <TabPane label="查询文章">
@@ -86,8 +96,11 @@ export default {
           align: 'center'
         }
       ],
-      content: ' ',
-      searcharticleForm: {}
+      searcharticleForm: {},
+      modal1: false,
+      text: '',
+      title: '',
+      time: ''
     }
   },
   computed: {
@@ -95,13 +108,10 @@ export default {
   },
   methods: {
     show (index) {
-      this.$Modal.info({
-        width: 1200,
-        title: '文章详情',
-        content: `文章名称：<br>${this.article[index].name}
-                  <br>发布日期：<br>${this.article[index].date}
-                  <br>内容：<br>${this.article[index].text}`
-      })
+      this.modal1 = true
+      this.text = this.article[index].text
+      this.title = this.article[index].name
+      this.time = this.article[index].date
     },
     async remove (index) {
       let formData = new FormData()

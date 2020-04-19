@@ -16,12 +16,6 @@ const mutations = {
       state.article.article.splice(i, 1)
     }
   }
-  // changearticle (state, article) {
-  //   const i = state.article.article.findIndex(x => x.id === article.id)
-  //   if (i !== -1) {
-  //     state.article.article.splice(i, 1, article)
-  //   }
-  // }
 }
 
 const actions = {
@@ -54,14 +48,6 @@ const actions = {
       commit('removearticle', removeID)
     }
   },
-  // async changearticleSubmit ({ commit }, formData) {
-  //   let { status, data: { code, msg, article } } = await axios.post(`/manager/article_manage/changearticle`, formData, {
-  //     headers: { 'content-type': 'multipart/form-data' }
-  //   })
-  //   if (status === 200 & code === 0) {
-  //     commit('changearticle', article)
-  //   }
-  // },
   async searcharticleSubmit ({ commit }, formData) {
     let { status, data: { code, msg, result } } = await axios.post(`/manager/article_manage/searcharticle`, formData, {
       headers: { 'content-type': 'multipart/form-data' }
