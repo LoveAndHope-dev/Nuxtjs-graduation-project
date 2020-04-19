@@ -48,6 +48,7 @@
 
 <script>
 export default {
+  //此组件已经废弃，有人想看的话可以看看，里面有表格的变种
   data () {
     return {
       selectData: [],

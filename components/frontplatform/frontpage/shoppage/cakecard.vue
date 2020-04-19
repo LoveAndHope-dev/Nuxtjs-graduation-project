@@ -42,15 +42,19 @@
         </Col>
         <Col span="16">
         <h1>茶品名称：{{item.name}}</h1>
-        <h1>茶品价格：￥{{item.price}}</h1>
+        <h1>价格：￥{{item.price*itemvalue}}</h1>
         <InputNumber
           v-model="itemvalue"
           size="large"
-          min="1"
+          :min="1"
+          :editable="true"
           style="margin:20px 0; width: 100px"
         ></InputNumber>
         <Button
           type="primary"
+          style="margin:20px"
+          size="large"
+          @click="onSubmit"
         >加入购物车</Button>
         </Col>
       </Row>
@@ -64,6 +68,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   filters: {
     ellipsis (value) {
@@ -81,6 +86,19 @@ export default {
     return {
       modal1: false,
       itemvalue: 1
+    }
+  },
+  methods: {
+    async onSubmit () {
+      let formData = new FormData()
+      formData.append('cakeId', this.item.id)
+      formData.append('cakenum', this.itemvalue)
+      let { status, data: { code, msg } } = await axios.post('/teahouse/shop/addCake', formData, {
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (status === 200 & code === 0) {
+        this.$Message.success(msg)
+      }
     }
   }
 }
