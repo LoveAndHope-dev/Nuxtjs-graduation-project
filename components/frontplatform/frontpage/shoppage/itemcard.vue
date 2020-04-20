@@ -19,7 +19,7 @@
           <h2>{{item.name}}</h2>
           </Col>
           <Col span="12">
-          <h1>￥{{item.price}}</h1>
+          <h2>￥{{item.price}}</h2>
           </Col>
         </Row>
         <h4>类型：{{item.type}}</h4>

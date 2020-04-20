@@ -6,20 +6,33 @@
       width="500"
     >
       <div slot="header">
-        <h2>您的预订单</h2>
-        <Row :gutter="16">
-          <Col :span="12">
+        <h2>您的预订单，总价为{{totalPrice}}人民币</h2>
+        <Row
+          :gutter="16"
+          class="drawer-header-button"
+        >
+          <Col :span="8">
+          <Select
+            v-model="tableselect"
+            placeholder="您的桌位请选择"
+          >
+            <Option
+              v-for="item in table"
+              :value="item.name"
+              :key="item.id"
+            >{{item.name}}</Option>
+          </Select>
+          </Col>
+          <Col :span="8">
           <Button
             type="success"
-            class="drawer-header-button"
             @click="goCount"
             long
           >下单</Button>
           </Col>
-          <Col :span="12">
+          <Col :span="8">
           <Button
             type="error"
-            class="drawer-header-button"
             @click="clean"
             long
           >清空</Button>
@@ -76,6 +89,7 @@
 <script>
 import axios from 'axios'
 import { mapState } from 'vuex'
+import moment from 'moment'
 import itemcard from '@/components/frontplatform/frontpage/shoppage/itemcard'
 import cakecard from '@/components/frontplatform/frontpage/shoppage/cakecard'
 import cartlist from '@/components/frontplatform/frontpage/shoppage/cartlist'
@@ -123,13 +137,16 @@ export default {
   data () {
     return {
       value1: false,
-      cartitem: {}
+      cartitem: {},
+      table: '',
+      tableselect: ''
     }
   },
   computed: {
     totalPrice () {
       let total = 0;
-      this.cartitem.forEach(item => {
+      let list = Array.from(this.cartitem)
+      list.forEach(item => {
         total += item.price * item.num;
       });
       return total;
@@ -138,7 +155,7 @@ export default {
   methods: {
     async openCart () {
       this.value1 = true
-      let { status, data: { code, result } } = await axios.get('/teahouse/shop/getCart')
+      let { status, data: { code, result, tableresult } } = await axios.get('/teahouse/shop/getCart')
       if (status === 200 & code === 0) {
         this.cartitem = result.filter(item => item.goodsId.length).map(item => {
           return {
@@ -150,28 +167,28 @@ export default {
             num: item.goodsNum
           }
         })
+        this.table = tableresult.filter(item => item._id.length).map(item => {
+          return {
+            id: item._id,
+            name: item.tablename
+          }
+        })
       }
     },
     async goCount () {
-      let products = [];
-      this.cartitem.forEach(item => {
-        products.push(item)
-      })
-      let params = {
-        totalPrice: this.totalPrice,
-        products: products
-      }
-      console.log(this.totalPrice, 'ok', products)
+      let formData = new FormData()
+      formData.append('orderlist', JSON.stringify(this.cartitem))
+      formData.append('ordertable', this.tableselect)
+      formData.append('ordertime', moment().format('MMMM Do YYYY, h:mm:ss'))
 
-      // let res = await this.$axios.post('/users/addOrder', {
-      //   params
-      // })
-      // if (res.status == 200) {
-      //   this.$message.success('下单成功，但是你收不到东西哈！别等了。');
-      //   this.getCartLists();
-      // } else {
-      //   this.$message.error(res.msg);
-      // }
+      let {data: {code, msg}} = await axios.post('/teahouse/shop/addOrder', formData, {
+         headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (code == 0) {
+        this.$Message.success('下单成功。')
+      } else {
+        this.$Message.error(res.msg);
+      }
     },
     async clean () {
       let { data: { code, msg } } = await axios.delete('/teahouse/shop/cleanCart')

@@ -2,6 +2,8 @@ import Router from 'koa-router'
 import Drink from '../../dbs/models/drink'
 import Cake from '../../dbs/models/cake'
 import Staff from '../../dbs/models/staff'
+import Table from '../../dbs/models/table'
+import Order from '../../dbs/models/order'
 
 let router = new Router({ prefix: '/teahouse/shop' })
 
@@ -132,15 +134,18 @@ router.post('/addCake', async (ctx) => {
 router.get('/getCart', async (ctx) => {
   let staffid = ctx.req.user.result._id
   let userDoc = await Staff.findOne({ '_id': staffid })
+  let tableDoc = await Table.find({ 'tablecondition': '可用' })
   if (userDoc) {
     ctx.body = {
       code: 0,
-      result: userDoc.cartList
+      result: userDoc.cartList,
+      tableresult: tableDoc
     }
   } else {
     ctx.body = {
       code: -1,
-      result: ''
+      result: '',
+      tableresult: ' '
     }
   }
 })
@@ -221,6 +226,28 @@ router.delete('/cleanCart', async (ctx) => {
     ctx.body = {
       code: -1,
       msg: '删除失败'
+    }
+  }
+})
+
+router.post('/addOrder', async (ctx) => {
+  let addnew = new Order({
+    ordertime: ctx.request.body.ordertime,
+    staffid: ctx.req.user.result._id,
+    ordertable: ctx.request.body.ordertable,
+    orderstatus: true,
+    orderlist: JSON.parse(ctx.request.body.orderlist)
+  })
+  let result = await addnew.save()
+  if (result) {
+    ctx.body = {
+      code: 0,
+      msg: ''
+    }
+  } else {
+    ctx.body = {
+      code: -1,
+      msg: 'fail'
     }
   }
 })

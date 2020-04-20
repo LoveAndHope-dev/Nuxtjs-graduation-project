@@ -19,8 +19,9 @@
             span="14"
             offset="1"
           >
-          <h2>商品名称：{{item.name}}</h2>
-          <h2>价格：￥{{item.price}}</h2>
+          <h3>商品名称：{{item.name}}</h3>
+          <h3>价格：￥{{item.price * item.num}}</h3>
+          <h3>单价：￥{{item.price}}</h3>
           <InputNumber
             v-model="item.num"
             size="large"
