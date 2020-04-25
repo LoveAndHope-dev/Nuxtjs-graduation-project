@@ -154,13 +154,13 @@
 </template>
 
 <script>
+import axios from 'axios'
 import expandRow from './cakeexpand'
-import { mapState } from 'vuex'
 export default {
   components: {
   },
   props: {
-    cakedata: Array
+    cakes: Array
   },
   data () {
     return {
@@ -208,14 +208,20 @@ export default {
       fileSrc: null
     }
   },
-  computed: {
-    ...mapState({ cakes: state => state.cakemanage.cake.cake })
-  },
+  // computed: {
+  //   ...mapState({ cakes: state => state.cakemanage.cake.cake })
+  // },
   methods: {
     async remove (index) {
       let formData = new FormData()
       formData.append('submitID', this.cakes[index].id)
-      await this.$store.dispatch('cakemanage/removecakeSubmit', formData)
+      let { status, data: { code, msg, removeID } } = await axios.post(`/manager/cake_manage/removeCake`, formData, {
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (status === 200 & code === 0) {
+        this.cakes.splice(index, 1);
+        this.$Message.success('删除成功')
+      }
     },
     changeForm (index) {
       this.value2 = true
@@ -261,13 +267,38 @@ export default {
       formData.append('caketaste', this.changecakeForm.taste)
       formData.append('cakedescription', this.changecakeForm.description)
       formData.append('cakephoto', this.fileSrc)
-      await this.$store.dispatch('cakemanage/changecakeSubmit', formData)
+      let { status, data: { code, msg, cake } } = await axios.post(`/manager/cake_manage/changeCake`, formData, {
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (status === 200 & code === 0) {
+        const i = this.cakes.findIndex(x => x.id === cake.id)
+        if (i !== -1) {
+          this.cakes.splice(i, 1, cake)
+        }
+        this.$Message.success('修改成功')
+      }
     },
     searchcakeSubmit: async function () {
       let self = this
       let formData = new FormData()
       formData.append('cakename', self.searchcakeForm.name)
-      await this.$store.dispatch('cakemanage/searchcakeSubmit', formData)
+      let { status, data: { code, msg, result } } = await axios.post(`/manager/cake_manage/searchCake`, formData, {
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (status === 200 & code === 0) {
+        this.cakes = result.filter(item => item._id.length).map(item => {
+          return {
+            id: item._id,
+            name: item.cakename,
+            price: item.cakeprice,
+            description: item.cakedescription,
+            type: item.caketype,
+            taste: item.caketaste,
+            photo: item.cakephoto
+          }
+        })
+        this.$Message.success('查询成功')
+      }
     }
   }
 }

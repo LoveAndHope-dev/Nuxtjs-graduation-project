@@ -116,7 +116,6 @@
             </FormItem>
           </Form>
         </TabPane>
-        
       </Tabs>
     </Card>
   </div>
@@ -149,7 +148,7 @@ export default {
       formData.append('adminphoto', self.addadminForm.photo)
       formData.append('adminpassword', CryptoJS.MD5(self.addadminForm.inputpassword).toString())
       formData.append('adminwages', parseInt(self.addadminForm.inputwages))
-      await this.$store.dispatch('adminmanage/addadminSubmit', formData)
+      this.$emit('addAdminSubmit', formData)
     },
     before (file) {
       this.file = file

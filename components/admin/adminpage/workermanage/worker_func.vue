@@ -140,7 +140,7 @@ export default {
       formData.append('staffphoto', self.addWorkerForm.photo)
       formData.append('staffpassword', CryptoJS.MD5(self.addWorkerForm.inputpassword).toString())
       formData.append('staffwages', parseInt(self.addWorkerForm.inputwages))
-      await this.$store.dispatch('workermanage/addWorkerSubmit', formData)
+      this.$emit('addWorkerSubmit', formData)
     },
     before (file) {
       this.file = file

@@ -41,7 +41,7 @@
         <FormItem>
           <Button
             type="primary"
-            @click="searchtableSubmit()"
+            @click="searchTableSubmit()"
           >查询</Button>
         </FormItem>
       </Form>
@@ -66,13 +66,13 @@ export default {
       formData.append('tablename', this.tableForm.name)
       formData.append('tablepeople', this.tableForm.people)
       formData.append('tablecondition', '可用')
-      await this.$store.dispatch('tablemanage/addtableSubmit', formData)
+      this.$emit('addTableSubmit', formData)
     },
-    searchtableSubmit: async function () {
+    searchTableSubmit: async function () {
       let self = this
       let formData = new FormData()
       formData.append('tablename', self.searchtableForm.name)
-      await this.$store.dispatch('tablemanage/searchtableSubmit', formData)
+      this.$emit('searchTableSubmit', formData)
     }
   }
 }

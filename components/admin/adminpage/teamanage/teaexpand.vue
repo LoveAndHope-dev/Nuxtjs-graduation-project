@@ -11,7 +11,7 @@
         icon="ios-person"
         size="large"
         :src="picture"
-        style="width: 70px; height: 70px"
+        style="width: 70px; height: 98px"
       />
       </Col>
       <Col span="20">

@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import xss from 'xss'
 import Editor from '@tinymce/tinymce-vue'
 import axios from 'axios'
 export default {
@@ -67,8 +68,8 @@ export default {
       let date = new Date()
       formData.append('articlename', this.articleForm.name)
       formData.append('articledate', date.toLocaleDateString())
-      formData.append('articletext', this.articleForm.text)
-      await this.$store.dispatch('articlemanage/addarticleSubmit', formData)
+      formData.append('articletext', filterXSS(this.articleForm.text))
+      this.$emit('addArticleSubmit', formData)
     }
 
   }

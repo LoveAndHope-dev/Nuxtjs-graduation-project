@@ -61,7 +61,7 @@
           >
             <Avatar
               shape="square"
-              style="width: 180px; height: 180px"
+              style="width: 180px; height: 252px"
               :src="fileSrc"
             >
               <Icon
@@ -107,7 +107,10 @@
                 span="10"
               >
               <FormItem>
-                <Button type="primary" @click="searchDrinkSubmit()">查询</Button>
+                <Button
+                  type="primary"
+                  @click="searchDrinkSubmit()"
+                >查询</Button>
               </FormItem>
               </col>
             </Row>
@@ -148,13 +151,13 @@
 </template>
 
 <script>
+import axios from 'axios'
 import expandRow from './teaexpand'
-import { mapState } from 'vuex'
 export default {
   components: {
   },
   props: {
-    teadata: Array
+    drinks: Array
   },
   data () {
     return {
@@ -202,14 +205,17 @@ export default {
       fileSrc: null
     }
   },
-  computed: {
-    ...mapState({ drinks: state => state.drinkmanage.drink.drink })
-  },
   methods: {
     async remove (index) {
       let formData = new FormData()
       formData.append('submitID', this.drinks[index].id)
-      await this.$store.dispatch('drinkmanage/removeDrinkSubmit', formData)
+      let { status, data: { code, msg, removeID } } = await axios.post(`/manager/tea_manage/removeDrink`, formData, {
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (status === 200 & code === 0) {
+        this.drinks.splice(index, 1);
+        this.$Message.success('删除成功')
+      }
     },
     changeForm (index) {
       this.value2 = true
@@ -255,13 +261,38 @@ export default {
       formData.append('drinkposition', this.changeDrinkForm.position)
       formData.append('drinkdescription', this.changeDrinkForm.description)
       formData.append('drinkphoto', this.fileSrc)
-      await this.$store.dispatch('drinkmanage/changeDrinkSubmit', formData)
+      let { status, data: { code, msg, drink } } = await axios.post(`/manager/tea_manage/changeDrink`, formData, {
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (status === 200 & code === 0) {
+        const i = this.drinks.findIndex(x => x.id === drink.id)
+        if (i !== -1) {
+          this.drinks.splice(i, 1, drink)
+        }
+        this.$Message.success('修改成功')
+      }
     },
     searchDrinkSubmit: async function () {
       let self = this
       let formData = new FormData()
       formData.append('drinkname', self.searchTeaForm.name)
-      await this.$store.dispatch('drinkmanage/searchDrinkSubmit', formData)
+      let { status, data: { code, msg, result } } = await axios.post(`/manager/tea_manage/searchDrink`, formData, {
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (status === 200 & code === 0) {
+        this.drinks = result.filter(item => item._id.length).map(item => {
+          return {
+            id: item._id,
+            name: item.drinkname,
+            price: item.drinkprice,
+            description: item.drinkdescription,
+            type: item.drinktype,
+            position: item.drinkposition,
+            photo: item.drinkphoto
+          }
+        })
+        this.$Message.success('查询成功')
+      }
     }
   }
 }

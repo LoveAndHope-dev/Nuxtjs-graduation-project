@@ -111,7 +111,6 @@ router.post('/changeStaff', async ctx => {
 })
 
 router.post('/searchStaff', async ctx => {
-  console.log(ctx.request.body.staffphonenumber)
   var reg = new RegExp(ctx.request.body.staffphonenumber, 'i');
   let result = await Staff.find({ $or: [{ staffphonenumber: { $regex: reg } }] })
   if (result) {

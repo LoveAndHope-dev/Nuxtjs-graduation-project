@@ -147,7 +147,7 @@ export default {
       formData.append('caketaste', this.cakeForm.taste)
       formData.append('cakedescription', this.cakeForm.description)
       formData.append('cakephoto', this.cakeForm.photo)
-      await this.$store.dispatch('cakemanage/addcakeSubmit', formData)
+      this.$emit('addCakeSubmit', formData)
     }
   }
 }

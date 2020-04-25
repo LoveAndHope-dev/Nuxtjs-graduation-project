@@ -115,7 +115,7 @@
         border
         height="700"
         :columns="peopleColumns"
-        :data="persons"
+        :data="admins"
       >
         <template
           slot-scope="{ row }"
@@ -147,11 +147,13 @@
 <script>
 import CryptoJS from 'crypto-js'
 import axios from 'axios'
-import { mapState } from 'vuex'
 import expandRow from './managerexpand';
 export default {
   components: {
     expandRow
+  },
+  props: {
+    admins: Array
   },
   data () {
     return {
@@ -210,30 +212,33 @@ export default {
       fileSrc: null
     }
   },
-  computed: {
-    ...mapState({ persons: state => state.adminmanage.admin.admin })
-  },
   methods: {
     async remove (index) {
       let formData = new FormData()
-      formData.append('submitID', this.persons[index].id)
-      await this.$store.dispatch('adminmanage/removeadminSubmit', formData)
+      formData.append('submitID', this.admins[index].id)
+      let { status, data: { code, msg, removeID } } = await axios.post(`/manager/manager_manage/removeadmin`, formData, {
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (status === 200 & code === 0) {
+        this.admins.splice(index, 1)
+        this.$Message.success('删除成功')
+      }
     },
     searchadminSubmit: async function () {
       let self = this
       let formData = new FormData()
       formData.append('adminphonenumber', self.searchadminForm.inputphonenumber)
-      await this.$store.dispatch('adminmanage/searchadminSubmit', formData)
+      this.$emit('searchAdminSubmit', formData)
     },
     changeForm (index) {
       this.value2 = true
-      this.changeadminFormTitle = `${this.persons[index].name}` + '的信息修改'
-      this.changeadminForm.id = this.persons[index].id
-      this.changeadminForm.name = this.persons[index].name
-      this.changeadminForm.phonenumber = this.persons[index].phonenumber
-      this.changeadminForm.email = this.persons[index].email
-      this.changeadminForm.wages = this.persons[index].wages
-      this.fileSrc = this.persons[index].photo
+      this.changeadminFormTitle = `${this.admins[index].name}` + '的信息修改'
+      this.changeadminForm.id = this.admins[index].id
+      this.changeadminForm.name = this.admins[index].name
+      this.changeadminForm.phonenumber = this.admins[index].phonenumber
+      this.changeadminForm.email = this.admins[index].email
+      this.changeadminForm.wages = this.admins[index].wages
+      this.fileSrc = this.admins[index].photo
     },
     before (file) {
       this.file = file
@@ -276,7 +281,16 @@ export default {
       formData.append('adminpassword', CryptoJS.MD5(changePassword).toString())
       formData.append('adminwages', parseInt(this.changeadminForm.wages))
       formData.append('adminphoto', this.fileSrc)
-      await this.$store.dispatch('adminmanage/changeadminSubmit', formData)
+      let { status, data: { code, msg, admin } } = await axios.post(`/manager/manager_manage/changeadmin`, formData, {
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (status === 200 & code === 0) {
+        const i = this.admins.findIndex(x => x.id === admin.id)
+        if (i !== -1) {
+          this.admins.splice(i, 1, admin)
+        }
+        this.$Message.success('修改成功')
+      }
     }
   }
 }

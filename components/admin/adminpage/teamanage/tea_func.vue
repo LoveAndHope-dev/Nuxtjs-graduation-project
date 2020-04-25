@@ -52,7 +52,7 @@
                 <Input
                   v-model="TeaForm.description"
                   type="textarea"
-                  :autosize="{minRows: 2,maxRows: 4}"
+                  :autosize="{minRows: 4,maxRows: 4}"
                   placeholder="Enter something..."
                 ></Input>
               </FormItem>
@@ -70,7 +70,7 @@
             >
               <Avatar
                 shape="square"
-                style="width: 200px; height: 200px"
+                style="width: 180px; height: 252px"
                 :src="fileSrc"
               >
                 <Icon
@@ -136,7 +136,7 @@ export default {
     deletepic () {
       this.fileSrc = null
     },
-    async addDrink () {
+    addDrink () {
       let formData = new FormData()
       formData.append('drinkname', this.TeaForm.name)
       formData.append('drinkprice', this.TeaForm.price)
@@ -144,7 +144,7 @@ export default {
       formData.append('drinkposition', this.TeaForm.position)
       formData.append('drinkdescription', this.TeaForm.description)
       formData.append('drinkphoto', this.TeaForm.photo)
-      await this.$store.dispatch('drinkmanage/addDrinkSubmit', formData)
+      this.$emit('addDrinkSubmit', formData)
     }
   }
 }

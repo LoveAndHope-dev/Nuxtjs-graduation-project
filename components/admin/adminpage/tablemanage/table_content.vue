@@ -77,12 +77,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import axios from 'axios'
 export default {
   components: {
   },
   props: {
-    tabledata: Array
+    tables: Array
   },
   data () {
     return {
@@ -111,14 +111,17 @@ export default {
       changetableForm: {}
     }
   },
-  computed: {
-    ...mapState({ tables: state => state.tablemanage.table.table })
-  },
   methods: {
     async remove (index) {
       let formData = new FormData()
       formData.append('submitID', this.tables[index].id)
-      await this.$store.dispatch('tablemanage/removetableSubmit', formData)
+      let { status, data: { code, msg, removeID } } = await axios.post(`/manager/table_manage/removeTable`, formData, {
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (status === 200 & code === 0) {
+        this.tables.splice(index, 1);
+        this.$Message.success('删除成功')
+      }
     },
     changeForm (index) {
       this.value2 = true
@@ -134,7 +137,16 @@ export default {
       formData.append('tablename', this.changetableForm.name)
       formData.append('tablecondition', this.changetableForm.condition)
       formData.append('tablepeople', this.changetableForm.people)
-      await this.$store.dispatch('tablemanage/changetableSubmit', formData)
+      let { status, data: { code, msg, table } } = await axios.post(`/manager/table_manage/changeTable`, formData, {
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (status === 200 & code === 0) {
+        const i = this.tables.findIndex(x => x.id === table.id)
+        if (i !== -1) {
+          this.tables.splice(i, 1, table)
+        }
+        this.$Message.success('修改成功')
+      }
     }
   }
 }

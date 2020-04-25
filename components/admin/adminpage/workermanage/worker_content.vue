@@ -96,7 +96,10 @@
                 ></Input>
               </FormItem>
               </Col>
-              <Col offset="2" span="10">
+              <Col
+                offset="2"
+                span="10"
+              >
               <FormItem>
                 <Button
                   type="primary"
@@ -112,7 +115,7 @@
         border
         height="700"
         :columns="peopleColumns"
-        :data="persons"
+        :data="staffs"
       >
         <template
           slot-scope="{ row }"
@@ -144,9 +147,11 @@
 <script>
 import CryptoJS from 'crypto-js'
 import axios from 'axios'
-import { mapState } from 'vuex'
 import expandRow from './workerexpand';
 export default {
+  props: {
+    staffs: Array
+  },
   components: {
     expandRow
   },
@@ -203,30 +208,51 @@ export default {
       fileSrc: null
     }
   },
-  computed: {
-    ...mapState({ persons: state => state.workermanage.staff.staff })
-  },
   methods: {
     async remove (index) {
       let formData = new FormData()
-      formData.append('submitID', this.persons[index].id)
-      await this.$store.dispatch('workermanage/removeWorkerSubmit', formData)
+      formData.append('submitID', this.staffs[index].id)
+      let { status, data: { code, msg, removeID } } = await axios.post(`/manager/worker_manage/removeStaff`, formData, {
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (status === 200 & code === 0) {
+        this.staffs.splice(index, 1)
+        this.$Message.success('删除成功')
+      }
     },
     searchWorkerSubmit: async function () {
       let self = this
       let formData = new FormData()
       formData.append('staffphonenumber', self.searchWorkerForm.inputphonenumber)
-      await this.$store.dispatch('workermanage/searchWorkerSubmit', formData)
+      let { status, data: { code, msg, result } } = await axios.post(`/manager/worker_manage/searchStaff`, formData, {
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (status === 200 & code === 0) {
+        this.staffs = result.filter(item => item._id.length).map(item => {
+          return {
+            id: item._id,
+            name: item.staffname,
+            sex: item.staffsex,
+            workdate: item.staffworkdate,
+            photo: item.staffphoto,
+            email: item.staffemail,
+            phonenumber: item.staffphonenumber,
+            wages: item.staffwages,
+            password: item.staffpassword
+          }
+        })
+        this.$Message.success('查询成功')
+      }
     },
     changeForm (index) {
       this.value2 = true
-      this.changeWorkerFormTitle = `${this.persons[index].name}` + '的信息修改'
-      this.changeWorkerForm.id = this.persons[index].id
-      this.changeWorkerForm.name = this.persons[index].name
-      this.changeWorkerForm.phonenumber = this.persons[index].phonenumber
-      this.changeWorkerForm.email = this.persons[index].email
-      this.changeWorkerForm.wages = this.persons[index].wages
-      this.fileSrc = this.persons[index].photo
+      this.changeWorkerFormTitle = `${this.staffs[index].name}` + '的信息修改'
+      this.changeWorkerForm.id = this.staffs[index].id
+      this.changeWorkerForm.name = this.staffs[index].name
+      this.changeWorkerForm.phonenumber = this.staffs[index].phonenumber
+      this.changeWorkerForm.email = this.staffs[index].email
+      this.changeWorkerForm.wages = this.staffs[index].wages
+      this.fileSrc = this.staffs[index].photo
     },
     before (file) {
       this.file = file
@@ -268,7 +294,16 @@ export default {
       formData.append('staffpassword', CryptoJS.MD5(changePassword).toString())
       formData.append('staffwages', parseInt(this.changeWorkerForm.wages))
       formData.append('staffphoto', this.fileSrc)
-      await this.$store.dispatch('workermanage/changeWorkerSubmit', formData)
+      let { status, data: { code, msg, staff } } = await axios.post(`/manager/worker_manage/changeStaff`, formData, {
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (status === 200 & code === 0) {
+        const i = this.staffs.findIndex(x => x.id === staff.id)
+        if (i !== -1) {
+          this.staffs.splice(i, 1, staff)
+        }
+        this.$Message.success('修改成功')
+      }
     }
   }
 }

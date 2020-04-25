@@ -6,8 +6,10 @@
       width="800px"
     >
       <h1>{{title}}</h1>
+      <Divider dashed />
       <h2>{{time}}</h2>
-      <h3>{{text}}</h3>
+      <Divider dashed />
+      <div v-html="text"></div>
       <div slot="footer"></div>
     </Modal>
     <card>
@@ -33,7 +35,7 @@
               <FormItem>
                 <Button
                   type="primary"
-                  @click="searcharticleSubmit()"
+                  @click="searchArticleSubmit()"
                 >查询</Button>
               </FormItem>
               </col>
@@ -45,7 +47,7 @@
         border
         height="500"
         :columns="articleColumns"
-        :data="article"
+        :data="articles"
       >
         <template
           slot-scope="{ row }"
@@ -75,9 +77,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import axios from 'axios'
+import xss from 'xss'
 export default {
-
+  props: {
+    articles: Array
+  },
   data () {
     return {
       articleColumns: [
@@ -103,26 +108,29 @@ export default {
       time: ''
     }
   },
-  computed: {
-    ...mapState({ article: state => state.articlemanage.article.article })
-  },
   methods: {
     show (index) {
       this.modal1 = true
-      this.text = this.article[index].text
-      this.title = this.article[index].name
-      this.time = this.article[index].date
+      this.text = filterXSS(this.articles[index].text)
+      this.title = this.articles[index].name
+      this.time = this.articles[index].date
     },
     async remove (index) {
       let formData = new FormData()
-      formData.append('submitID', this.article[index].id)
-      await this.$store.dispatch('articlemanage/removearticleSubmit', formData)
+      formData.append('submitID', this.articles[index].id)
+      let { status, data: { code, msg, removeID } } = await axios.post(`/manager/article_manage/removearticle`, formData, {
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (status === 200 & code === 0) {
+        this.articles.splice(index, 1);
+        this.$Message.success('删除成功')
+      }
     },
-    searcharticleSubmit: async function () {
+    searchArticleSubmit: async function () {
       let self = this
       let formData = new FormData()
       formData.append('articlename', self.searcharticleForm.name)
-      await this.$store.dispatch('articlemanage/searcharticleSubmit', formData)
+      this.$emit('searchArticleSubmit', formData)
     }
   }
 }

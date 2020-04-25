@@ -62,7 +62,7 @@
         <FormItem>
           <Button
             type="primary"
-            @click="changeinfoSubmit()"
+            @click="changeInfoSubmit()"
           >题交</Button>
         </FormItem>
       </Form>
@@ -149,8 +149,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 export default {
+  props: {
+    infos: Array
+  },
   data () {
     return {
       changeinfoForm: {
@@ -161,9 +163,6 @@ export default {
       fileSrc: null
     }
   },
-  computed: {
-    ...mapState({ infos: state => state.myselfinfomanage.info.info })
-  },
   methods: {
     changeForm (index) {
       this.value2 = true
@@ -173,7 +172,7 @@ export default {
       this.changeinfoForm.radio = this.infos[0].sex
       this.fileSrc = this.infos[0].photo
     },
-    changeinfoSubmit: async function () {
+    changeInfoSubmit: async function () {
       let formData = new FormData()
       formData.append('adminid', this.infos[0].id)
       formData.append('adminname', this.changeinfoForm.name)
@@ -181,7 +180,7 @@ export default {
       formData.append('adminphonenumber', this.changeinfoForm.phonenumber)
       formData.append('adminsex', this.changeinfoForm.radio)
       formData.append('adminphoto', this.fileSrc)
-      await this.$store.dispatch('myselfinfomanage/changeinfoSubmit', formData)
+      this.$emit('changeInfoSubmit', formData)
     },
     before (file) {
       this.file = file
