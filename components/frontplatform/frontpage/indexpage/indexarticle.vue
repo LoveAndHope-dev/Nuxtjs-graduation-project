@@ -2,14 +2,13 @@
   <div>
     <Row>
       <Col
-        span="12"
+        span="6"
         v-for="item in articleitem"
         :key="item.name"
       >
       <div class="index_article_div">
         <Card
           class="index_article_card"
-          shadow
         >
           <h2 slot="title">{{item.name}}</h2>
           <p>{{item.content | ellipsis}}</p>

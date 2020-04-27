@@ -4,7 +4,7 @@
       <Card>
         <div style="text-align:center">
           <img
-            src="/teapot.jpg"
+            src="/three-cups-of-teas-on-serving-tray-755044.jpg"
             style="width:100%"
           >
           <h1>🍰🍪🍩🍨🍧🍦🥧</h1>
