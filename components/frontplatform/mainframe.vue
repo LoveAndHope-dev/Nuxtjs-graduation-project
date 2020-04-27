@@ -41,12 +41,16 @@
       </Header>
       <Content class="index_content">
         <nuxt-child></nuxt-child>
+        {{users}}
       </Content>
     </Layout>
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
-
+  computed: {
+    ...mapState({ users: state => state.usermodal.user.user })
+  }
 }
 </script>

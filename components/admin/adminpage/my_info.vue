@@ -90,10 +90,20 @@
         <ListItem>开始工作日期：{{infos[0].workdate}}</ListItem>
         <ListItem>手机号码：{{infos[0].phonenumber}}</ListItem>
         <ListItem>现薪资：{{infos[0].wages}}</ListItem>
-        <ListItem><Button
+        <ListItem>
+          <Button
             type="primary"
+            style="margin:0 20px"
             @click="changeForm()"
-          >修改个人信息</Button></ListItem>
+          >修改个人信息
+          </Button>
+          <Button
+            style="margin:0 20px"
+            type="error"
+            @click="exit()"
+          >退出登录
+          </Button>
+        </ListItem>
       </List>
       </Col>
       <Col
@@ -149,6 +159,7 @@
 </template>
 
 <script>
+import vuex from 'vuex'
 export default {
   props: {
     infos: Array
@@ -181,6 +192,10 @@ export default {
       formData.append('adminsex', this.changeinfoForm.radio)
       formData.append('adminphoto', this.fileSrc)
       this.$emit('changeInfoSubmit', formData)
+    },
+    async exit () {
+      this.$Message.success('你已经退出，请重新登录')
+      this.$router.push('/exit')
     },
     before (file) {
       this.file = file

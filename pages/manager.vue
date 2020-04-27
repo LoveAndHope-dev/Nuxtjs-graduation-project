@@ -1,8 +1,11 @@
 <template>
-  <adminframe />
+  <div>
+    <adminframe />
+  </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import adminframe from '@/components/admin/adminframe'
 export default {
   components: {
@@ -12,5 +15,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

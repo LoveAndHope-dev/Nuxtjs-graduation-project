@@ -65,6 +65,7 @@
 <script>
 import axios from 'axios'
 import CryptoJS from 'crypto-js'
+import vuex from 'vuex'
 export default {
   layout: 'full',
   asyncData ({ query }) {
@@ -121,27 +122,27 @@ export default {
           formData.append('username', window.encodeURIComponent(self.loginData.id))
           formData.append('password', CryptoJS.MD5(self.loginData.password).toString())
           if (self.loginData.radio === 'staff') {
-            let { status, data } = await axios.post(`/login/staffsignin`, formData, {
+            let { status, data: { code, msg, user } } = await axios.post(`/login/staffsignin`, formData, {
               headers: { 'content-type': 'multipart/form-data' }
             })
             if (status === 200) {
-              if (data && data.code === 0) {
+              if (code === 0) {
                 location.href = '/teahouse'
               } else {
-                self.error = data.msg
+                self.error = msg
               }
             } else {
               self.error = `服务器出错`
             }
           } else {
-            let { status, data } = await axios.post(`/login/adminsignin`, formData, {
+            let { status, data: { code, msg, user } } = await axios.post(`/login/adminsignin`, formData, {
               headers: { 'content-type': 'multipart/form-data' }
             })
             if (status === 200) {
-              if (data && data.code === 0) {
+              if (code === 0) {
                 location.href = '/manager'
               } else {
-                self.error = data.msg
+                self.error = msg
               }
             } else {
               self.error = `服务器出错`

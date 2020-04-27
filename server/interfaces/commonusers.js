@@ -8,7 +8,7 @@ let Store = new Redis().client
 
 router.post('/staffsignin', async (ctx, next) => {
   console.log('staffsignin')
-  return passport.authenticate('staff', function(err, user, info, status) {
+  return passport.authenticate('staff', function (err, user, info, status) {
     if (err) {
       ctx.body = {
         code: -1,
@@ -35,7 +35,7 @@ router.post('/staffsignin', async (ctx, next) => {
 
 router.post('/adminsignin', async (ctx, next) => {
   console.log('adminsignin')
-  return passport.authenticate('admin', function(err, user, info, status) {
+  return passport.authenticate('admin', function (err, user, info, status) {
     if (err) {
       ctx.body = {
         code: -1,
@@ -53,7 +53,7 @@ router.post('/adminsignin', async (ctx, next) => {
         ctx.body = {
           code: 1,
           msg: info,
-          user: user
+          user
         }
       }
     }

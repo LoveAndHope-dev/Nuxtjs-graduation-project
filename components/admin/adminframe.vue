@@ -34,12 +34,16 @@
             工作人员管理
             </MenuItem>
           </nuxt-link>
-          <nuxt-link to="/manager/manager_manage">
+          <nuxt-link
+            to="/manager/manager_manage"
+            v-if="users[0].type === true"
+          >
             <MenuItem name="4">
             <Icon type="md-contact" />
             管理员管理
             </MenuItem>
           </nuxt-link>
+          <div v-else></div>
         </MenuGroup>
         <MenuGroup title="杂项">
           <nuxt-link to="/manager/table_manage">
@@ -70,7 +74,10 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
- 
+  computed: {
+    ...mapState({ users: state => state.usermodal.user.user })
+  }
 }
 </script>

@@ -11,30 +11,13 @@
 <script>
 import axios from 'axios'
 import myinfo from '@/components/admin/adminpage/my_info'
+import { mapState } from 'vuex'
 export default {
   components: {
     myinfo
   },
-  async asyncData (ctx) {
-    let { status: mistatus, data: { micode, miresult } } = await ctx.$axios.get('/manager/myself_infomation/getInfo')
-    if (mistatus === 200 & micode === 0) {
-      return {
-        infos: miresult.filter(item => item._id.length).map(item => {
-          return {
-            id: item._id,
-            name: item.adminname,
-            sex: item.adminsex,
-            email: item.adminemail,
-            workdate: item.adminworkdate,
-            photo: item.adminphoto,
-            phonenumber: item.adminphonenumber,
-            password: item.adminpassword,
-            type: item.admintype,
-            wages: item.adminwages
-          }
-        })
-      }
-    }
+  computed: {
+    ...mapState({ infos: state => state.usermodal.user.user })
   },
   methods: {
     async changeInfoSubmit (formData) {
@@ -42,20 +25,8 @@ export default {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
-        this.infos = info.filter(item => item._id.length).map(item => {
-          return {
-            id: item._id,
-            name: item.adminname,
-            sex: item.adminsex,
-            email: item.adminemail,
-            workdate: item.adminworkdate,
-            photo: item.adminphoto,
-            phonenumber: item.adminphonenumber,
-            password: item.adminpassword,
-            type: item.admintype,
-            wages: item.adminwages
-          }
-        })
+        this.$Message.success('修改成功,三秒后刷新页面')
+        setTimeout(function () { location.reload() }, 3000);
       }
     }
   }
