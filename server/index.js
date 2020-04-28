@@ -16,6 +16,7 @@ import Drink from './interfaces/admin/drink'
 import Cake from './interfaces/admin/cake'
 import Table from './interfaces/admin/table'
 import Info from './interfaces/admin/info'
+import Staffinfo from './interfaces/teahouse/info'
 import Commonusers from './interfaces/commonusers'
 import Exit from './interfaces/exit'
 import teahouseshop from './interfaces/teahouse/shop'
@@ -70,6 +71,7 @@ async function start () {
   app.use(Cake.routes()).use(Cake.allowedMethods())
   app.use(Table.routes()).use(Table.allowedMethods())
   app.use(Info.routes()).use(Info.allowedMethods())
+  app.use(Staffinfo.routes()).use(Staffinfo.allowedMethods())
   app.use(Mainpage.routes()).use(Mainpage.allowedMethods())
   app.use(Commonusers.routes()).use(Commonusers.allowedMethods())
   app.use(Exit.routes()).use(Exit.allowedMethods())

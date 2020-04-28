@@ -26,6 +26,25 @@ export const actions = {
           })
         })
       }
+    } else if (req.user && req.user.auth === 'staff') {
+      let { status: smistatus, data: { smicode, smiresult } } = await app.$axios.get('/teahouse/info/getInfo')
+      if (smistatus === 200 & smicode === 0) {
+        commit('usermodal/setUser', {
+          user: smiresult.filter(item => item._id.length).map(item => {
+            return {
+              id: item._id,
+              name: item.staffname,
+              sex: item.staffsex,
+              email: item.staffemail,
+              workdate: item.staffworkdate,
+              photo: item.staffphoto,
+              phonenumber: item.staffphonenumber,
+              password: item.staffpassword,
+              wages: item.staffwages
+            }
+          })
+        })
+      }
     }
   }
 }

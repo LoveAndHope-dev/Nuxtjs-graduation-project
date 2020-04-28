@@ -57,6 +57,7 @@
               登 录
             </Button>
           </FormItem>
+          <nuxt-link to="/">回到主页</nuxt-link>
         </Form>
       </div>
     </div>
@@ -127,7 +128,7 @@ export default {
             })
             if (status === 200) {
               if (code === 0) {
-                location.href = '/teahouse'
+                location.href = '/'
               } else {
                 self.error = msg
               }
@@ -140,7 +141,7 @@ export default {
             })
             if (status === 200) {
               if (code === 0) {
-                location.href = '/manager'
+                location.href = '/'
               } else {
                 self.error = msg
               }

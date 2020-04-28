@@ -10,7 +10,9 @@
           theme="dark"
           active-name="1"
         >
-          <div class="layout-logo main_title_logo">🍵Teahub Chakela🍮</div>
+          <nuxt-link to="/">
+            <div class="layout-logo main_title_logo">🍵Teahub Chakela🍮</div>
+          </nuxt-link>
           <div class="layout-nav">
             <router-link to="/teahouse">
               <MenuItem name="1">
@@ -41,7 +43,6 @@
       </Header>
       <Content class="index_content">
         <nuxt-child></nuxt-child>
-        {{users}}
       </Content>
     </Layout>
   </div>
