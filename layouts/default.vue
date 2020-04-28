@@ -1,6 +1,7 @@
 <template>
   <div>
     <nuxt />
+    <BackTop></BackTop>
     <Footer class="layout-footer-center">2020 &copy; AIstupidbigtail<br>
       👴的毕业设计，谁想用谁就用，已经开源
     </Footer>

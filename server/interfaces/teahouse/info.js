@@ -4,7 +4,6 @@ import Staff from '../../dbs/models/staff'
 let router = new Router({ prefix: '/teahouse/info' })
 
 router.get('/getInfo', async ctx => {
-  console.log('ok')
   try {
     ctx.body = {
       smicode: 0,

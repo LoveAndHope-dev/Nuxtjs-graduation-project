@@ -4,44 +4,58 @@
 <template>
   <div class="layout">
     <Layout>
-      <Header>
+      <Header class="frontpage-header">
         <Menu
           mode="horizontal"
-          theme="dark"
-          active-name="1"
+          theme="light"
         >
           <nuxt-link to="/">
             <div class="layout-logo main_title_logo">🍵Teahub Chakela🍮</div>
           </nuxt-link>
           <div class="layout-nav">
-            <router-link to="/teahouse">
-              <MenuItem name="1">
-              <Icon type="ios-navigate"></Icon>
-              首页
-              </MenuItem>
-            </router-link>
-            <router-link to="/teahouse/shop">
-              <MenuItem name="2">
-              <Icon type="ios-keypad"></Icon>
-              点餐台
-              </MenuItem>
-            </router-link>
-            <router-link to="/teahouse/order">
-              <MenuItem name="3">
-              <Icon type="ios-analytics"></Icon>
-              订单区
-              </MenuItem>
-            </router-link>
-            <router-link to="/teahouse/info">
-              <MenuItem name="4">
-              <Icon type="ios-paper"></Icon>
-              个人中心
-              </MenuItem>
-            </router-link>
+            <MenuItem
+              name="1"
+              to="/teahouse"
+            >
+            <Icon type="ios-navigate"></Icon>
+            首页
+            </MenuItem>
+            <MenuItem
+              name="2"
+              to="/teahouse/shop"
+            >
+            <Icon type="ios-cart-outline" />
+            点餐台
+            </MenuItem>
+            <MenuItem
+              name="3"
+              to="/teahouse/order"
+            >
+            <Icon type="ios-paper-outline" />
+            订单区
+            </MenuItem>
+            <MenuItem
+              name="4"
+              to="/teahouse/info"
+            >
+            <Icon type="ios-contact-outline" />
+            个人中心
+            </MenuItem>
           </div>
         </Menu>
       </Header>
       <Content class="index_content">
+        <div
+          id="coloregg"
+          @click="change"
+          class="banner"
+          style="background: transparent url('/agriculture-1846649_1920.jpg') 0 0 no-repeat fixed;height:700px;cursor: pointer"
+        >
+        </div>
+        <div
+          id="container"
+          tabindex="0"
+        ></div>
         <nuxt-child></nuxt-child>
       </Content>
     </Layout>
@@ -50,8 +64,60 @@
 <script>
 import { mapState } from 'vuex'
 export default {
+  data () {
+    return {
+      m14_appear: 0
+    }
+  },
   computed: {
     ...mapState({ users: state => state.usermodal.user.user })
+  },
+  mounted () {
+    var mapObj = new AMap.Map('container');
+    mapObj.plugin('AMap.Geolocation', function () {
+      var geolocation = new AMap.Geolocation({
+        buttonPosition: 'RB',
+        showMarker: true
+      });
+      mapObj.addControl(geolocation);
+      geolocation.getCurrentPosition();
+      AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
+      AMap.event.addListener(geolocation, 'error', onError);
+      console.log(geolocation)
+    });
+    function onComplete (success) {
+      console.log(success)
+    }
+    function onError (error) {
+      console.log(error)
+    }
+  },
+  methods: {
+    async change () {
+      this.m14_appear = this.m14_appear + 1
+      if (this.m14_appear == 5) {
+        this.$Message.warning('啊啦，你要干嘛')
+      }
+      if (this.m14_appear == 10) {
+        this.$Message.warning('不要扒我裙子啦，我会不好意思的（＞人＜；）')
+      }
+      if (this.m14_appear == 15) {
+        this.$Message.warning('不要，啊❤❤❤~~~~~~')
+      }
+      if (this.m14_appear == 17) {
+        var coloregg = document.getElementById('coloregg');//查找元素
+        coloregg.style = "background: transparent url('/illust_61283291_20190910_163354.jpg') 0 0 no-repeat fixed;height:460px";//改变样式
+        this.$Message.success('这是一个小彩蛋，m14出现啦')
+      }
+    }
   }
 }
 </script>
+
+<style>
+#container {
+  width: 100%;
+  height: 200px;
+  margin: 0px;
+}
+</style>

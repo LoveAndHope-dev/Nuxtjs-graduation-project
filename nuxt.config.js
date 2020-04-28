@@ -11,7 +11,12 @@ module.exports = {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://unpkg.com/purecss@1.0.1/build/grids-responsive-min.css' },
+      { rel: 'stylesheet', href: 'https://unpkg.com/purecss@1.0.1/build/pure-min.css' }
+    ],
+    script: [
+      { src: 'https://webapi.amap.com/maps?v=1.4.15&key=8d3bcf0bbcafd02bcd12506fdb566ac0' }
     ]
   },
   // router: {
@@ -20,12 +25,13 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#fff' },
+  loading: { color: '#00FFCC', height: '3px' },
   /*
   ** Global CSS
   */
   css: [
-    'iview/dist/styles/iview.css'
+    'iview/dist/styles/iview.css',
+    '@/assets/common/pricing.css'
   ],
   /*
   ** Plugins to load before mounting the App

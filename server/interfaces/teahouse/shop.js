@@ -8,11 +8,18 @@ import Order from '../../dbs/models/order'
 let router = new Router({ prefix: '/teahouse/shop' })
 
 router.get('/getTea', async (ctx) => {
+  let pageSize = ctx.request.query.pageSize ? parseInt(ctx.request.query.pageSize) : 12
+  let page = ctx.request.query.page ? parseInt(ctx.request.query.page) : 1
+  // 跳多少条数据
+  let skip = (page - 1) * pageSize
   try {
-    let result = await Drink.find()
+    const total = await Drink.find().count()
+    let result = await Drink.find().skip(skip).limit(pageSize)
+    let isMore = total - (((page - 1) * pageSize) + result.length) > 0 ? true : false
     ctx.body = {
       thtcode: 0,
-      thtresult: result
+      thtresult: result,
+      isMoreTea: isMore
     }
   } catch (e) {
     ctx.body = {
@@ -23,11 +30,18 @@ router.get('/getTea', async (ctx) => {
 })
 
 router.get('/getCake', async (ctx) => {
+  let pageSize = ctx.request.query.pageSize ? parseInt(ctx.request.query.pageSize) : 12
+  let page = ctx.request.query.page ? parseInt(ctx.request.query.page) : 1
+  // 跳多少条数据
+  let skip = (page - 1) * pageSize
   try {
-    let result = await Cake.find()
+    const total = await Cake.find().count()
+    let result = await Cake.find().skip(skip).limit(pageSize)
+    let isMore = total - (((page - 1) * pageSize) + result.length) > 0 ? true : false
     ctx.body = {
       thccode: 0,
-      thcresult: result
+      thcresult: result,
+      isMoreCake: isMore
     }
   } catch (e) {
     ctx.body = {

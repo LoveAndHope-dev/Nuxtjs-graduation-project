@@ -1,32 +1,40 @@
-.layout{
+.frontpage-header {
+  background: #f5f7f9;
+  padding: 0;
+}
+
+.layout {
   border: 1px solid #d7dde4;
   background: #f5f7f9;
   position: relative;
   border-radius: 4px;
   overflow: hidden;
 }
-.layout-logo{
+
+.layout-logo {
   float: left;
   position: relative;
   top: 2px;
   left: 10px;
 }
-.layout-nav{
+
+.layout-nav {
   width: 500px;
   margin: 0 auto;
   margin-right: 20px;
 }
-.layout-footer-center{
+
+.layout-footer-center {
   text-align: center;
 }
 
 .main_title_logo {
   font-size: 26px;
   font-weight: bold;
-  color: white;
+  color: #001a00;
   padding: 0 40px
 }
 
 .index_content {
-  padding: 20px 50px
+  padding: 20px 50px;
 }

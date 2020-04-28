@@ -31,7 +31,10 @@
         </ul>
       </div>
     </div>
-    <div class="banner">
+    <div
+      class="banner"
+      style="background: transparent url('./agriculture-1846649_1920.jpg') 0 0 no-repeat fixed;"
+    >
       <h1 class="banner-head">
         欢迎来到Teahub-Chakela
       </h1>
@@ -95,19 +98,17 @@
           </div>
         </div>
       </div>
-    </div> <!-- end information -->
+    </div>
   </div>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
 import indexarticle from '@/components/indexpage/indexarticle'
-import indexintroduce from '@/components/indexpage/indexintroduce'
 import indexnew from '@/components/indexpage/indexnew'
 export default {
   components: {
     indexarticle,
-    indexintroduce,
     indexnew
   },
   computed: {
@@ -123,7 +124,5 @@ export default {
 </script>
 
 <style>
-@import "@/assets/common/pricing.css";
-@import "https://unpkg.com/purecss@1.0.1/build/grids-responsive-min.css";
-@import "https://unpkg.com/purecss@1.0.1/build/pure-min.css";
+
 </style>

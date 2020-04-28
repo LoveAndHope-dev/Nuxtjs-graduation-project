@@ -63,6 +63,11 @@
           <itemcard :item="item" />
           </Col>
         </Row>
+        <Button
+          v-if="isMoreTea"
+          long
+          @click="loadMoreTea"
+        >———— 加载更多 ————</Button>
       </TabPane>
       <TabPane
         label="茶点"
@@ -80,6 +85,11 @@
           <cakecard :item="item" />
           </Col>
         </Row>
+        <Button
+          v-if="isMoreCake"
+          long
+          @click="loadMoreCake"
+        >———— 加载更多 ————</Button>
       </TabPane>
     </Tabs>
   </div>
@@ -101,8 +111,8 @@ export default {
   },
   async asyncData (ctx) {
     let [
-      { status: thtstatus, data: { thtcode, thtresult } },
-      { status: thcstatus, data: { thccode, thcresult } }
+      { status: thtstatus, data: { thtcode, thtresult, isMoreTea } },
+      { status: thcstatus, data: { thccode, thcresult, isMoreCake } }
     ] = await Promise.all([
       ctx.$axios.get('/teahouse/shop/getTea'),
       ctx.$axios.get('/teahouse/shop/getCake')
@@ -120,6 +130,7 @@ export default {
             photo: item.drinkphoto
           }
         }),
+        isMoreTea,
         cake: thcresult.filter(item => item._id.length).map(item => {
           return {
             id: item._id,
@@ -130,16 +141,23 @@ export default {
             taste: item.caketaste,
             photo: item.cakephoto
           }
-        })
+        }),
+        isMoreCake
       }
     }
   },
   data () {
     return {
+      drink: [],
+      cake: [],
       value1: false,
       cartitem: {},
       table: '',
-      tableselect: ''
+      tableselect: '',
+      isMoreTea: true,
+      isMoreCake: true,
+      pageSize: 12,
+      page: 1
     }
   },
   computed: {
@@ -153,6 +171,72 @@ export default {
     }
   },
   methods: {
+    loadMoreTea () {
+      this.getTeaLists({ page: ++this.page, loadMore: true });
+    },
+    loadMoreCake () {
+      this.getCakeLists({ page: ++this.page, loadMore: true });
+    },
+    async getTeaLists ({
+      pageSize = 12,
+      page = 1,
+      loadMore = false
+    }) {
+      let { data: { thtcode, thtresult, isMoreTea } } = await axios.get('/teahouse/shop/getTea', {
+        params: {
+          pageSize: pageSize,
+          page: page
+        }
+      });
+      if (thtcode == 0) {
+        let more = thtresult.filter(item => item._id.length).map(item => {
+          return {
+            id: item._id,
+            name: item.drinkname,
+            price: item.drinkprice,
+            description: item.drinkdescription,
+            type: item.drinktype,
+            position: item.drinkposition,
+            photo: item.drinkphoto
+          }
+        })
+        this.drink = loadMore
+          ? [...this.drink, ...more]
+          : more;
+        console.log(isMoreTea)
+        this.isMoreTea = isMoreTea
+      }
+    },
+    async getCakeLists ({
+      pageSize = 12,
+      page = 1,
+      loadMore = false
+    }) {
+      let { data: { thccode, thcresult, isMoreCake } } = await axios.get('/teahouse/shop/getCake', {
+        params: {
+          pageSize: pageSize,
+          page: page
+        }
+      });
+      if (thccode == 0) {
+        let more = thcresult.filter(item => item._id.length).map(item => {
+          return {
+            id: item._id,
+            name: item.cakename,
+            price: item.cakeprice,
+            description: item.cakedescription,
+            type: item.caketype,
+            taste: item.caketaste,
+            photo: item.cakephoto
+          }
+        })
+        this.cake = loadMore
+          ? [...this.cake, ...more]
+          : more;
+        console.log(isMoreCake)
+        this.isMoreCake = isMoreCake
+      }
+    },
     async openCart () {
       this.value1 = true
       let { status, data: { code, result, tableresult } } = await axios.get('/teahouse/shop/getCart')
@@ -181,8 +265,8 @@ export default {
       formData.append('ordertable', this.tableselect)
       formData.append('ordertime', moment().format('MMMM Do YYYY, h:mm:ss'))
 
-      let {data: {code, msg}} = await axios.post('/teahouse/shop/addOrder', formData, {
-         headers: { 'content-type': 'multipart/form-data' }
+      let { data: { code, msg } } = await axios.post('/teahouse/shop/addOrder', formData, {
+        headers: { 'content-type': 'multipart/form-data' }
       })
       if (code == 0) {
         this.$Message.success('下单成功。')

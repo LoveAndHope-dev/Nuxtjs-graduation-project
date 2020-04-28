@@ -57,7 +57,7 @@
               登 录
             </Button>
           </FormItem>
-          <nuxt-link to="/">回到主页</nuxt-link>
+          <a href="/">回到主页</a>
         </Form>
       </div>
     </div>
@@ -128,12 +128,15 @@ export default {
             })
             if (status === 200) {
               if (code === 0) {
-                location.href = '/'
+                this.$Message.success(msg + '，两秒后跳转主页，那么欢迎您')
+                setTimeout(function () { location.href = '/' }, 2000);
               } else {
-                self.error = msg
+                this.$Message.error(msg)
+                this.loading = false
               }
             } else {
-              self.error = `服务器出错`
+              this.$Message.error(`服务器出错`)
+              this.loading = false
             }
           } else {
             let { status, data: { code, msg, user } } = await axios.post(`/login/adminsignin`, formData, {
@@ -141,12 +144,15 @@ export default {
             })
             if (status === 200) {
               if (code === 0) {
-                location.href = '/'
+                this.$Message.success(msg + '，两秒后跳转主页，那么欢迎您')
+                setTimeout(function () { location.href = '/' }, 2000);
               } else {
-                self.error = msg
+                this.$Message.error(msg)
+                this.loading = false
               }
             } else {
-              self.error = `服务器出错`
+              this.$Message.error(`服务器出错`)
+              this.loading = false
             }
           }
         }

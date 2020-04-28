@@ -7,7 +7,6 @@ passport.use('staff', new LocalStrategy(async function (staffphonenumber, passwo
   let where = {
     staffphonenumber
   };
-  console.log('passport1')
   let result = await StaffModel.findOne(where)
   if (result != null) {
     if (result.staffpassword === password) {
@@ -25,7 +24,6 @@ passport.use('admin', new LocalStrategy(async function (adminphonenumber, passwo
   let where = {
     adminphonenumber
   };
-  console.log('passport2')
   let result = await AdminModel.findOne(where)
   if (result != null) {
     if (result.adminpassword === password) {
