@@ -22,6 +22,7 @@ import Exit from './interfaces/exit'
 import teahouseshop from './interfaces/teahouse/shop'
 import teahouseorder from './interfaces/teahouse/order'
 import Uploadimg from './interfaces/admin/tools/uploadimg'
+import Homepage from './interfaces/teahouse/homepage'
 
 import Koa from 'koa'
 const consola = require('consola')
@@ -79,6 +80,7 @@ async function start () {
   app.use(Article.routes()).use(Article.allowedMethods())
   app.use(teahouseshop.routes()).use(teahouseshop.allowedMethods())
   app.use(teahouseorder.routes()).use(teahouseorder.allowedMethods())
+  app.use(Homepage.routes()).use(Homepage.allowedMethods())
 
   app.use(ctx => {
     ctx.status = 200 // koa defaults to 404 when it sees that status is unset

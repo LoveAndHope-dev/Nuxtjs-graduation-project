@@ -52,9 +52,9 @@
           </div>
           <Divider>最新文章</Divider>
           <div class="l-box">
-            <indexarticle />
+            <indexarticle :articles="articles" />
             <Button
-              to="/teahouse/article"
+              to="/article"
               style="margin:20px 0 50px"
               long
             >>>>>>查看更多文章>>>>></Button>
@@ -119,9 +119,24 @@ export default {
     indexarticle,
     indexnew
   },
+  async asyncData (ctx) {
+    let { status, data: { code, result } } = await ctx.$axios.get('/index/gethomepageArticle')
+    if (status === 200 && code === 0) {
+      return {
+        articles: result.filter(item => item._id.length).map(item => {
+          return {
+            id: item._id,
+            name: item.articlename,
+            date: item.articledate,
+            text: item.articletext
+          }
+        })
+      }
+    }
+  },
   computed: {
     ...mapState({ infos: state => state.usermodal.user.user }),
-    ...mapState({ posi: state => state.positionmodal.position.formattedAddress })
+    ...mapState({ posi: state => state.positionmodal.position })
   },
   mounted () {
     let self = this
@@ -139,7 +154,7 @@ export default {
       console.log(geolocation)
     });
     function onComplete (success) {
-      self.$store.dispatch('positionmodal/setposition', success)
+      self.$store.dispatch('positionmodal/setposition', success.formattedAddress)
     }
     function onError (error) {
       self.$store.dispatch('positionmodal/setposition', error)

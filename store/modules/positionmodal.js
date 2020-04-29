@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-const state = {
-  position: {}
-}
+const state = () => ({
+  position: null
+})
 
 const mutations = {
   setposition (state, val) {
