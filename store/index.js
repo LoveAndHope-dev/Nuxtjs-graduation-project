@@ -1,7 +1,9 @@
 import usermodal from './modules/usermodal'
+import positionmodal from './modules/positionmodal'
 
 export const modules = {
-  usermodal
+  usermodal,
+  positionmodal
 }
 
 export const actions = {

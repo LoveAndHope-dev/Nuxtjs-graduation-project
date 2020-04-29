@@ -28,6 +28,7 @@
               @click="exit()"
               class="pure-menu-link"
             >登出</a></li>
+          <li class="pure-menu-item"><a class="pure-menu-link">本店地址：{{posi}}</a></li>
         </ul>
       </div>
     </div>
@@ -97,6 +98,13 @@
             </p>
           </div>
         </div>
+        <div class="pure-u-1 pure-u-md-1-2">
+          <Divider>本店方位</Divider>
+          <div
+            id="container"
+            tabindex="0"
+          ></div>
+        </div>
       </div>
     </div>
   </div>
@@ -112,7 +120,30 @@ export default {
     indexnew
   },
   computed: {
-    ...mapState({ infos: state => state.usermodal.user.user })
+    ...mapState({ infos: state => state.usermodal.user.user }),
+    ...mapState({ posi: state => state.positionmodal.position.formattedAddress })
+  },
+  mounted () {
+    let self = this
+    var mapObj = new AMap.Map('container', {
+      zoom: 15
+    });
+    mapObj.plugin('AMap.Geolocation', function () {
+      var geolocation = new AMap.Geolocation({
+        showMarker: true
+      });
+      mapObj.addControl(geolocation);
+      geolocation.getCurrentPosition();
+      AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
+      AMap.event.addListener(geolocation, 'error', onError);
+      console.log(geolocation)
+    });
+    function onComplete (success) {
+      self.$store.dispatch('positionmodal/setposition', success)
+    }
+    function onError (error) {
+      self.$store.dispatch('positionmodal/setposition', error)
+    }
   },
   methods: {
     async exit () {
@@ -124,5 +155,9 @@ export default {
 </script>
 
 <style>
-
+#container {
+  width: 100%;
+  height: 200px;
+  margin: 0px;
+}
 </style>

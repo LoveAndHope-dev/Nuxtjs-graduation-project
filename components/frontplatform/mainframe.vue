@@ -52,10 +52,6 @@
           style="background: transparent url('/agriculture-1846649_1920.jpg') 0 0 no-repeat fixed;height:700px;cursor: pointer"
         >
         </div>
-        <div
-          id="container"
-          tabindex="0"
-        ></div>
         <nuxt-child></nuxt-child>
       </Content>
     </Layout>
@@ -71,26 +67,6 @@ export default {
   },
   computed: {
     ...mapState({ users: state => state.usermodal.user.user })
-  },
-  mounted () {
-    var mapObj = new AMap.Map('container');
-    mapObj.plugin('AMap.Geolocation', function () {
-      var geolocation = new AMap.Geolocation({
-        buttonPosition: 'RB',
-        showMarker: true
-      });
-      mapObj.addControl(geolocation);
-      geolocation.getCurrentPosition();
-      AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
-      AMap.event.addListener(geolocation, 'error', onError);
-      console.log(geolocation)
-    });
-    function onComplete (success) {
-      console.log(success)
-    }
-    function onError (error) {
-      console.log(error)
-    }
   },
   methods: {
     async change () {
@@ -115,9 +91,5 @@ export default {
 </script>
 
 <style>
-#container {
-  width: 100%;
-  height: 200px;
-  margin: 0px;
-}
+
 </style>

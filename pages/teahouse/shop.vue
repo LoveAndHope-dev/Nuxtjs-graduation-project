@@ -46,7 +46,7 @@
       long
       @click="openCart()"
     >打开你的预订单</Button>
-    <Tabs>
+    <Tabs style="margin:20px 0">
       <TabPane
         label="茶品"
         name="tea"
