@@ -33,7 +33,7 @@
 .banner {
   text-align: center;
   background-size: cover;
-  height: 200px;
+  height: 300px;
   width: 100%;
   margin-bottom: 3em;
   display: table;
@@ -85,7 +85,7 @@
  * -- PHONE MEDIA QUERIES --
  * On phones, we want to reduce the height and font-size of the banner further
  */
-@media (min-width: 480px) {
+@media (min-width: 700px) {
   .banner {
     height: 900px;
   }

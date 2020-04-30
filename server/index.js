@@ -22,7 +22,8 @@ import Exit from './interfaces/exit'
 import teahouseshop from './interfaces/teahouse/shop'
 import teahouseorder from './interfaces/teahouse/order'
 import Uploadimg from './interfaces/admin/tools/uploadimg'
-import Homepage from './interfaces/teahouse/homepage'
+import ArticlePage from './interfaces/articlepage'
+import Homepage from './interfaces/homepage'
 
 import Koa from 'koa'
 const consola = require('consola')
@@ -78,6 +79,7 @@ async function start () {
   app.use(Exit.routes()).use(Exit.allowedMethods())
   app.use(Uploadimg.routes()).use(Uploadimg.allowedMethods())
   app.use(Article.routes()).use(Article.allowedMethods())
+  app.use(ArticlePage.routes()).use(ArticlePage.allowedMethods())
   app.use(teahouseshop.routes()).use(teahouseshop.allowedMethods())
   app.use(teahouseorder.routes()).use(teahouseorder.allowedMethods())
   app.use(Homepage.routes()).use(Homepage.allowedMethods())

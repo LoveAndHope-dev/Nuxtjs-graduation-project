@@ -15,7 +15,6 @@
       </div>
       </Col>
     </Row>
-
   </div>
 </template>
 

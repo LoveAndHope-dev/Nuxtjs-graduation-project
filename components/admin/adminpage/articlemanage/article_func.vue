@@ -68,7 +68,7 @@ export default {
       let date = new Date()
       formData.append('articlename', this.articleForm.name)
       formData.append('articledate', date.toLocaleDateString())
-      formData.append('articletext', filterXSS(this.articleForm.text))
+      formData.append('articletext', this.articleForm.text)
       this.$emit('addArticleSubmit', formData)
     }
 

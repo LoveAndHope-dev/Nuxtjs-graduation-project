@@ -78,7 +78,6 @@
 
 <script>
 import axios from 'axios'
-import xss from 'xss'
 export default {
   props: {
     articles: Array
@@ -111,7 +110,7 @@ export default {
   methods: {
     show (index) {
       this.modal1 = true
-      this.text = filterXSS(this.articles[index].text)
+      this.text = this.articles[index].text
       this.title = this.articles[index].name
       this.time = this.articles[index].date
     },

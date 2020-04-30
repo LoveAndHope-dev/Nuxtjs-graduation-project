@@ -108,7 +108,6 @@
       </div>
     </div>
   </div>
-  </div>
 </template>
 <script>
 import { mapState } from 'vuex'
@@ -151,7 +150,6 @@ export default {
       geolocation.getCurrentPosition();
       AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
       AMap.event.addListener(geolocation, 'error', onError);
-      console.log(geolocation)
     });
     function onComplete (success) {
       self.$store.dispatch('positionmodal/setposition', success.formattedAddress)
