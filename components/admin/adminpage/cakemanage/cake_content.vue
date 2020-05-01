@@ -91,33 +91,14 @@
     </Drawer>
     <Card class="manage_card">
       <Tabs>
-        <TabPane label="查询茶点">
-          <Form
-            :model="searchcakeForm"
-            :label-width="80"
-          >
-            <Row>
-              <Col span="12">
-              <FormItem label="茶点名">
-                <Input
-                  v-model="searchcakeForm.name"
-                  placeholder="Enter something..."
-                ></Input>
-              </FormItem>
-              </Col>
-              <Col
-                offset="2"
-                span="10"
-              >
-              <FormItem>
-                <Button
-                  type="primary"
-                  @click="searchcakeSubmit()"
-                >查询</Button>
-              </FormItem>
-              </col>
-            </Row>
-          </Form>
+        <Input
+          v-model="searchcakeForm.name"
+          search
+          enter-button
+          @on-search="searchcakeSubmit()"
+          placeholder="你要查询什么茶品"
+          style="margin:20px 0"
+        />
         </TabPane>
       </Tabs>
       <Table
@@ -199,7 +180,7 @@ export default {
       }
       ],
       searchcakeForm: {
-
+        name: ''
       },
       value2: false,
       changecakeFormTitle: '',

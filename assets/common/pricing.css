@@ -65,29 +65,12 @@
 }
 
 /*
- * -- TABLET MEDIA QUERIES --
- * On tablets, we want to slightly adjust the size of the banner
- * text and add some vertical space between the various pricing tables
- */
-@media(min-width: 767px) {
-
-  .banner-head {
-    font-size: 4em;
-  }
-
-  .pricing-table {
-    margin-bottom: 0;
-  }
-
-}
-
-/*
  * -- PHONE MEDIA QUERIES --
  * On phones, we want to reduce the height and font-size of the banner further
  */
-@media (min-width: 700px) {
+@media (min-width: 900px) {
   .banner {
-    height: 900px;
+    height: 800px;
   }
 
   .banner-head {

@@ -11,7 +11,7 @@
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-         <FormItem label="桌位人数">
+        <FormItem label="桌位人数">
           <Input
             v-model="tableForm.people"
             placeholder="Enter something..."
@@ -27,24 +27,14 @@
       </Form>
     </TabPane>
     <TabPane label="查询桌位">
-      <Form
-        :model="searchtableForm"
-        :label-width="80"
-      >
-        <FormItem label="桌位名">
-          <Input
-            v-model="searchtableForm.name"
-            placeholder="Enter something..."
-          ></Input>
-        </FormItem>
-        <Divider></Divider>
-        <FormItem>
-          <Button
-            type="primary"
-            @click="searchTableSubmit()"
-          >查询</Button>
-        </FormItem>
-      </Form>
+      <Input
+        v-model="searchtableForm.name"
+        search
+        enter-button
+        @on-search="searchTableSubmit"
+        placeholder="输入您的查询桌位"
+        style="margin:20px 0"
+      />
     </TabPane>
   </Tabs>
 </template>
@@ -53,7 +43,7 @@ export default {
   data () {
     return {
       searchtableForm: {
-
+        name: ''
       },
       tableForm: {
         id: ''

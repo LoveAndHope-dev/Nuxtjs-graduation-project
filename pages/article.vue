@@ -3,21 +3,31 @@
     <div class="pure-menu pure-menu-horizontal">
       <a class="pure-menu-heading">TeaHub-Chakela的文章页 </a>
       <ul class="pure-menu-list">
-        <li class="pure-menu-item">
-          <a
-            href="/"
-            class="pure-menu-link"
-          >返回主页</a>
-        </li>
+        <nuxt-link to="/">
+          <li class="pure-menu-item">
+            <a
+              href="/"
+              class="pure-menu-link"
+            >返回主页</a>
+          </li>
+        </nuxt-link>
       </ul>
     </div>
     <div
       class="banner"
       style="background: transparent url('./alberta-2297204_1920.jpg') 0 0 no-repeat fixed;"
     >
-      <h1 class="banner-head">
-        欢迎来到Teahub-Chakela
-      </h1>
+      <div class="banner-head">
+        欢迎来到Teahub-Chakela<br>
+        <Input
+          v-model="value"
+          search
+          enter-button
+          @on-search="searchArticle"
+          placeholder="你要查询什么文章"
+          style="margin:0 auto;;width: 40%; opacity:0.75"
+        />
+      </div>
     </div>
     <div
       class="l-content"
@@ -32,7 +42,7 @@
                 v-for="item in articles"
                 :key="item.name"
               >
-               <articlemain :item="item" />
+              <articlemain :item="item" />
               </Col>
             </Row>
             <Button
@@ -73,20 +83,27 @@ export default {
     return {
       isMore: true,
       pageSize: 4,
-      page: 1
+      page: 1,
+      value: ''
     }
   },
   methods: {
+    searchArticle () {
+      this.page = 1
+      this.getArticleLists({ word: this.value })
+    },
     loadMoreArticle () {
-      this.getArticleLists({ page: ++this.page, loadMore: true });
+      this.getArticleLists({ page: ++this.page, loadMore: true, word: this.value });
     },
     async getArticleLists ({
+      word = '',
       pageSize = 4,
       page = 1,
       loadMore = false
     }) {
       let { data: { code, result, isMore } } = await axios.get('/article/getArticle', {
         params: {
+          word: word,
           pageSize: pageSize,
           page: page
         }

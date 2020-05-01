@@ -1,8 +1,8 @@
 export default {
-  dbs: 'mongodb://127.0.0.1:27017/chakela',
+  dbs: `mongodb://${process.env.HOST || 'localhost'}:27017/chakela`,
   redis: {
     get host () {
-      return '127.0.0.1'
+      return `${process.env.HOST || 'localhost'}`
     },
     get port () {
       return 6379

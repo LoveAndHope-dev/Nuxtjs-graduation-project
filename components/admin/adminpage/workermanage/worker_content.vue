@@ -83,32 +83,14 @@
     <Card class="manage_card">
       <Tabs>
         <TabPane label="查询工作人员">
-          <Form
-            :model="searchWorkerForm"
-            :label-width="80"
-          >
-            <Row>
-              <Col span="12">
-              <FormItem label="手机号">
-                <Input
-                  v-model="searchWorkerForm.inputphonenumber"
-                  placeholder="Enter something..."
-                ></Input>
-              </FormItem>
-              </Col>
-              <Col
-                offset="2"
-                span="10"
-              >
-              <FormItem>
-                <Button
-                  type="primary"
-                  @click="searchWorkerSubmit()"
-                >查询</Button>
-              </FormItem>
-              </Col>
-            </Row>
-          </Form>
+          <Input
+            v-model="searchWorkerForm.inputphonenumber"
+            search
+            enter-button
+            @on-search="searchWorkerSubmit"
+            placeholder="基于手机号查询哦"
+            style="margin:20px 0"
+          />
         </TabPane>
       </tabs>
       <Table
@@ -149,11 +131,11 @@ import CryptoJS from 'crypto-js'
 import axios from 'axios'
 import expandRow from './workerexpand';
 export default {
-  props: {
-    staffs: Array
-  },
   components: {
     expandRow
+  },
+  props: {
+    staffs: Array
   },
   data () {
     return {
@@ -161,7 +143,7 @@ export default {
 
       },
       searchWorkerForm: {
-
+        inputphonenumber: ''
       },
       peopleColumns: [
         {

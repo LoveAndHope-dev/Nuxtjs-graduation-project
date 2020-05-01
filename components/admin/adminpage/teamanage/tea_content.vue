@@ -89,32 +89,14 @@
     <Card class="manage_card">
       <Tabs>
         <TabPane label="查询茶品">
-          <Form
-            :model="searchTeaForm"
-            :label-width="80"
-          >
-            <Row>
-              <Col span="12">
-              <FormItem label="茶品名">
-                <Input
-                  v-model="searchTeaForm.name"
-                  placeholder="Enter something..."
-                ></Input>
-              </FormItem>
-              </Col>
-              <Col
-                offset="2"
-                span="10"
-              >
-              <FormItem>
-                <Button
-                  type="primary"
-                  @click="searchDrinkSubmit()"
-                >查询</Button>
-              </FormItem>
-              </col>
-            </Row>
-          </Form>
+          <Input
+            v-model="searchTeaForm.name"
+            search
+            enter-button
+            @on-search="searchDrinkSubmit()"
+            placeholder="你要查询什么茶品"
+            style="margin:20px 0"
+          />
         </TabPane>
       </Tabs>
       <Table
@@ -196,7 +178,7 @@ export default {
       }
       ],
       searchTeaForm: {
-
+         name: ''
       },
       value2: false,
       changeDrinkFormTitle: '',

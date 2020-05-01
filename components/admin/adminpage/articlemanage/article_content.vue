@@ -15,32 +15,14 @@
     <card>
       <Tabs>
         <TabPane label="查询文章">
-          <Form
-            :model="searcharticleForm"
-            :label-width="80"
-          >
-            <Row>
-              <Col span="12">
-              <FormItem label="文章名称">
-                <Input
-                  v-model="searcharticleForm.name"
-                  placeholder="Enter something..."
-                ></Input>
-              </FormItem>
-              </Col>
-              <Col
-                offset="2"
-                span="10"
-              >
-              <FormItem>
-                <Button
-                  type="primary"
-                  @click="searchArticleSubmit()"
-                >查询</Button>
-              </FormItem>
-              </col>
-            </Row>
-          </Form>
+          <Input
+            v-model="searcharticleForm.name"
+            search
+            enter-button
+            @on-search="searchArticleSubmit"
+            placeholder="文章名字"
+            style="margin:20px 0"
+          />
         </TabPane>
       </Tabs>
       <Table
@@ -100,7 +82,9 @@ export default {
           align: 'center'
         }
       ],
-      searcharticleForm: {},
+      searcharticleForm: {
+        name: ''
+      },
       modal1: false,
       text: '',
       title: '',

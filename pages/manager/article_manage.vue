@@ -67,6 +67,7 @@ export default {
             text: item.articletext
           }
         })
+        this.$Message.success('查询成功')
       }
     }
   }
