@@ -101,7 +101,7 @@
       </Tabs>
       <Table
         border
-        height="500"
+        height="700"
         :columns="teaColumns"
         :data="drinks"
       >
@@ -120,14 +120,20 @@
             size="small"
             style="margin-right: 5px"
             @click="changeForm(index)"
-          >View</Button>
+          >修改</Button>
           <Button
             type="error"
             size="small"
             @click="remove(index)"
-          >Delete</Button>
+          >删除</Button>
         </template>
       </Table>
+      <Button
+        :disabled="!ismore"
+        long
+        @click="loadMore"
+      >———— 加载更多 ————
+      </Button>
     </Card>
   </div>
 </template>
@@ -139,7 +145,8 @@ export default {
   components: {
   },
   props: {
-    drinks: Array
+    drinks: Array,
+    ismore: Boolean
   },
   data () {
     return {
@@ -178,16 +185,25 @@ export default {
       }
       ],
       searchTeaForm: {
-         name: ''
+        name: ''
       },
       value2: false,
       changeDrinkFormTitle: '',
       changeDrinkForm: {},
       file: null,
-      fileSrc: null
+      fileSrc: null,
+      pageSize: 10,
+      page: 1
     }
   },
   methods: {
+    loadMore () {
+      this.$emit('getTeaLists', { page: ++this.page, loadMore: true, word: this.searchTeaForm.name });
+    },
+    searchDrinkSubmit () {
+      this.page = 1
+      this.$emit('getTeaLists', { word: this.searchTeaForm.name })
+    },
     async remove (index) {
       let formData = new FormData()
       formData.append('submitID', this.drinks[index].id)
@@ -195,7 +211,8 @@ export default {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
-        this.drinks.splice(index, 1);
+        this.page = 1
+        this.$emit('getTeaLists', { word: this.searchTeaForm.name })
         this.$Message.success('删除成功')
       }
     },
@@ -252,28 +269,6 @@ export default {
           this.drinks.splice(i, 1, drink)
         }
         this.$Message.success('修改成功')
-      }
-    },
-    searchDrinkSubmit: async function () {
-      let self = this
-      let formData = new FormData()
-      formData.append('drinkname', self.searchTeaForm.name)
-      let { status, data: { code, msg, result } } = await axios.post(`/manager/tea_manage/searchDrink`, formData, {
-        headers: { 'content-type': 'multipart/form-data' }
-      })
-      if (status === 200 & code === 0) {
-        this.drinks = result.filter(item => item._id.length).map(item => {
-          return {
-            id: item._id,
-            name: item.drinkname,
-            price: item.drinkprice,
-            description: item.drinkdescription,
-            type: item.drinktype,
-            position: item.drinkposition,
-            photo: item.drinkphoto
-          }
-        })
-        this.$Message.success('查询成功')
       }
     }
   }

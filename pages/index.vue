@@ -140,16 +140,23 @@ export default {
   mounted () {
     let self = this
     var mapObj = new AMap.Map('container', {
-      zoom: 15
+      zoom: 17
     });
     mapObj.plugin('AMap.Geolocation', function () {
       var geolocation = new AMap.Geolocation({
-        showMarker: true
-      });
+        showMarker: true,
+        showCircle: true,
+        panToLocation: true
+      })
       mapObj.addControl(geolocation);
-      geolocation.getCurrentPosition();
-      AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
-      AMap.event.addListener(geolocation, 'error', onError);
+      geolocation.getCurrentPosition(function (status, result) {
+        console.log(result, status)
+        if (status == 'complete') {
+          onComplete(result)
+        } else {
+          onError(result)
+        }
+      });
     });
     function onComplete (success) {
       self.$store.dispatch('positionmodal/setposition', success.formattedAddress)

@@ -129,7 +129,7 @@ export default {
             if (status === 200) {
               if (code === 0) {
                 this.$Message.success(msg + '，两秒后跳转主页，那么欢迎您')
-                setTimeout(function () { location.href = '/' }, 2000);
+                setTimeout(function () { location.href = '/' }, 1500);
               } else {
                 this.$Message.error(msg)
                 this.loading = false
@@ -145,7 +145,7 @@ export default {
             if (status === 200) {
               if (code === 0) {
                 this.$Message.success(msg + '，两秒后跳转主页，那么欢迎您')
-                setTimeout(function () { location.href = '/' }, 2000);
+                setTimeout(function () { location.href = '/' }, 1500);
               } else {
                 this.$Message.error(msg)
                 this.loading = false
