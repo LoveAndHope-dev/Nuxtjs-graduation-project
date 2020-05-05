@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import xss from 'xss'
 import Editor from '@tinymce/tinymce-vue'
 import axios from 'axios'
 export default {

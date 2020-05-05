@@ -91,37 +91,43 @@
             placeholder="基于手机号查询哦"
             style="margin:20px 0"
           />
+          <Table
+            border
+            height="700"
+            :columns="peopleColumns"
+            :data="staffs"
+          >
+            <template
+              slot-scope="{ row }"
+              slot="id"
+            >
+              <strong>{{ row.id }}</strong>
+            </template>
+            <template
+              slot-scope="{ row, index }"
+              slot="action"
+            >
+              <Button
+                type="primary"
+                size="small"
+                style="margin-right: 5px"
+                @click="changeForm(index)"
+              >修改信息</Button>
+              <Button
+                type="error"
+                size="small"
+                @click="remove(index)"
+              >删除</Button>
+            </template>
+          </Table>
+           <Button
+            :disabled="!ismore"
+            long
+            @click="loadMore"
+          >———— 加载更多 ————
+          </Button>
         </TabPane>
       </tabs>
-      <Table
-        border
-        height="700"
-        :columns="peopleColumns"
-        :data="staffs"
-      >
-        <template
-          slot-scope="{ row }"
-          slot="id"
-        >
-          <strong>{{ row.id }}</strong>
-        </template>
-        <template
-          slot-scope="{ row, index }"
-          slot="action"
-        >
-          <Button
-            type="primary"
-            size="small"
-            style="margin-right: 5px"
-            @click="changeForm(index)"
-          >修改信息</Button>
-          <Button
-            type="error"
-            size="small"
-            @click="remove(index)"
-          >删除</Button>
-        </template>
-      </Table>
     </Card>
   </div>
 </template>
@@ -135,7 +141,8 @@ export default {
     expandRow
   },
   props: {
-    staffs: Array
+    staffs: Array,
+    ismore: Boolean
   },
   data () {
     return {
@@ -156,10 +163,6 @@ export default {
               }
             })
           }
-        },
-        {
-          title: 'id',
-          slot: 'id'
         },
         {
           title: '姓名',
@@ -187,10 +190,19 @@ export default {
       value2: false,
       changeWorkerFormTitle: '',
       file: null,
-      fileSrc: null
+      fileSrc: null,
+      pageSize: 15,
+      page: 1
     }
   },
   methods: {
+    loadMore () {
+      this.$emit('getWorkerLists', { page: ++this.page, loadMore: true, word: this.searchWorkerForm.name });
+    },
+    searchWorkerSubmit () {
+      this.page = 1
+      this.$emit('getWorkerLists', { word: this.searchWorkerForm.inputphonenumber })
+    },
     async remove (index) {
       let formData = new FormData()
       formData.append('submitID', this.staffs[index].id)
@@ -198,32 +210,9 @@ export default {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
-        this.staffs.splice(index, 1)
+        this.page = 1
+        this.$emit('getWorkerLists', { word: this.searchWorkerForm.name })
         this.$Message.success('删除成功')
-      }
-    },
-    searchWorkerSubmit: async function () {
-      let self = this
-      let formData = new FormData()
-      formData.append('staffphonenumber', self.searchWorkerForm.inputphonenumber)
-      let { status, data: { code, msg, result } } = await axios.post(`/manager/worker_manage/searchStaff`, formData, {
-        headers: { 'content-type': 'multipart/form-data' }
-      })
-      if (status === 200 & code === 0) {
-        this.staffs = result.filter(item => item._id.length).map(item => {
-          return {
-            id: item._id,
-            name: item.staffname,
-            sex: item.staffsex,
-            workdate: item.staffworkdate,
-            photo: item.staffphoto,
-            email: item.staffemail,
-            phonenumber: item.staffphonenumber,
-            wages: item.staffwages,
-            password: item.staffpassword
-          }
-        })
-        this.$Message.success('查询成功')
       }
     },
     changeForm (index) {

@@ -3,7 +3,11 @@
     <Divider orientation="left">工作人员管理</Divider>
     <workerfunc @addWorkerSubmit="addWorkerSubmit" />
     <Divider orientation="left">人员列表</Divider>
-    <workercontent :staffs="staffs" />
+    <workercontent
+      :staffs="staffs"
+      :ismore="isMore"
+      @getWorkerLists="getWorkerLists"
+    />
   </div>
 </template>
 
@@ -17,7 +21,7 @@ export default {
     workerfunc
   },
   async asyncData (ctx) {
-    let { status, data: { code, result } } = await ctx.$axios.get('/manager/worker_manage/getStaff')
+    let { status, data: { code, result, isMore } } = await ctx.$axios.get('/manager/worker_manage/getStaff')
     if (status === 200 & code === 0) {
       return {
         staffs: result.filter(item => item._id.length).map(item => {
@@ -32,13 +36,15 @@ export default {
             password: item.staffpassword,
             wages: item.staffwages
           }
-        })
+        }),
+        isMore
       }
     }
   },
   data () {
     return {
-      staff: Array
+      staff: Array,
+      isMore: true
     }
   },
   methods: {
@@ -47,9 +53,27 @@ export default {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
-        this.staff = result.filter(item => item.staffid.length).map(item => {
+        this.getWorkerLists({page: 1})
+        this.$Message.success('添加成功')
+      }
+    },
+    async getWorkerLists ({
+      word = '',
+      pageSize = 15,
+      page = 1,
+      loadMore = false
+    }) {
+      let { data: { code, result, isMore } } = await axios.get('/manager/worker_manage/getStaff', {
+        params: {
+          word: word,
+          pageSize: pageSize,
+          page: page
+        }
+      });
+      if (code == 0) {
+        let more = result.filter(item => item._id.length).map(item => {
           return {
-            id: item.staffid,
+            id: item._id,
             name: item.staffname,
             sex: item.staffsex,
             workdate: item.staffworkdate,
@@ -60,8 +84,10 @@ export default {
             wages: item.staffwages
           }
         })
-        this.staffs.push(this.staff[0])
-        this.$Message.success('添加成功')
+        this.staffs = loadMore
+          ? [...this.staffs, ...more]
+          : more;
+        this.isMore = isMore
       }
     }
   }
