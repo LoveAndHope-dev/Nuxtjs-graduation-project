@@ -91,45 +91,52 @@
     </Drawer>
     <Card class="manage_card">
       <Tabs>
-        <Input
-          v-model="searchcakeForm.name"
-          search
-          enter-button
-          @on-search="searchcakeSubmit()"
-          placeholder="你要查询什么茶品"
-          style="margin:20px 0"
-        />
+        <TabPane label="查询茶点">
+          <Input
+            v-model="searchcakeForm.name"
+            search
+            enter-button
+            @on-search="searchcakeSubmit()"
+            placeholder="你要查询什么茶品"
+            style="margin:20px 0"
+          />
+          <Table
+            border
+            height="700"
+            :columns="cakeColumns"
+            :data="cakes"
+          >
+            <template
+              slot-scope="{ row }"
+              slot="id"
+            >
+              <strong>{{ row.id }}</strong>
+            </template>
+            <template
+              slot-scope="{ row, index }"
+              slot="action"
+            >
+              <Button
+                type="primary"
+                size="small"
+                style="margin-right: 5px"
+                @click="changeForm(index)"
+              >修改</Button>
+              <Button
+                type="error"
+                size="small"
+                @click="remove(index)"
+              >删除</Button>
+            </template>
+          </Table>
+          <Button
+            :disabled="!ismore"
+            long
+            @click="loadMore"
+          >———— 加载更多 ————
+          </Button>
         </TabPane>
       </Tabs>
-      <Table
-        border
-        height="500"
-        :columns="cakeColumns"
-        :data="cakes"
-      >
-        <template
-          slot-scope="{ row }"
-          slot="id"
-        >
-          <strong>{{ row.id }}</strong>
-        </template>
-        <template
-          slot-scope="{ row, index }"
-          slot="action"
-        >
-          <Button
-            type="primary"
-            size="small"
-            style="margin-right: 5px"
-            @click="changeForm(index)"
-          >View</Button>
-          <Button
-            type="error"
-            size="small"
-            @click="remove(index)"
-          >Delete</Button>
-        </template>
-      </Table>
     </Card>
   </div>
 </template>
@@ -141,7 +148,8 @@ export default {
   components: {
   },
   props: {
-    cakes: Array
+    cakes: Array,
+    ismore: Boolean
   },
   data () {
     return {
@@ -186,13 +194,19 @@ export default {
       changecakeFormTitle: '',
       changecakeForm: {},
       file: null,
-      fileSrc: null
+      fileSrc: null,
+      pageSize: 15,
+      page: 1
     }
   },
-  // computed: {
-  //   ...mapState({ cakes: state => state.cakemanage.cake.cake })
-  // },
   methods: {
+    loadMore () {
+      this.$emit('getCakeLists', { page: ++this.page, loadMore: true, word: this.searchcakeForm.name });
+    },
+    searchcakeSubmit () {
+      this.page = 1
+      this.$emit('getCakeLists', { word: this.searchcakeForm.name })
+    },
     async remove (index) {
       let formData = new FormData()
       formData.append('submitID', this.cakes[index].id)
@@ -200,7 +214,8 @@ export default {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
-        this.cakes.splice(index, 1);
+        this.page = 1
+        this.$emit('getCakeLists', { word: this.searchcakeForm.name })
         this.$Message.success('删除成功')
       }
     },
@@ -257,28 +272,6 @@ export default {
           this.cakes.splice(i, 1, cake)
         }
         this.$Message.success('修改成功')
-      }
-    },
-    searchcakeSubmit: async function () {
-      let self = this
-      let formData = new FormData()
-      formData.append('cakename', self.searchcakeForm.name)
-      let { status, data: { code, msg, result } } = await axios.post(`/manager/cake_manage/searchCake`, formData, {
-        headers: { 'content-type': 'multipart/form-data' }
-      })
-      if (status === 200 & code === 0) {
-        this.cakes = result.filter(item => item._id.length).map(item => {
-          return {
-            id: item._id,
-            name: item.cakename,
-            price: item.cakeprice,
-            description: item.cakedescription,
-            type: item.caketype,
-            taste: item.caketaste,
-            photo: item.cakephoto
-          }
-        })
-        this.$Message.success('查询成功')
       }
     }
   }

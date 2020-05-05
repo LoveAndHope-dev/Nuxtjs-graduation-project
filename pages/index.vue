@@ -6,6 +6,9 @@
           href="/login"
           class="pure-menu-heading"
         >Login</a>
+        <ul class="pure-menu-list">
+          <li class="pure-menu-item"><a class="pure-menu-link">本店地址：{{posi}}</a></li>
+        </ul>
       </div>
       <div v-else>
         <a class="pure-menu-heading">您已登录 欢迎您 {{infos[0].name}}</a>
@@ -140,7 +143,7 @@ export default {
   mounted () {
     let self = this
     var mapObj = new AMap.Map('container', {
-      zoom: 17
+      zoom: 15
     });
     mapObj.plugin('AMap.Geolocation', function () {
       var geolocation = new AMap.Geolocation({

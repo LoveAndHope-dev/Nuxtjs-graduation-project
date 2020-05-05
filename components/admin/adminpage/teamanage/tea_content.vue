@@ -97,43 +97,43 @@
             placeholder="你要查询什么茶品"
             style="margin:20px 0"
           />
+          <Table
+            border
+            height="700"
+            :columns="teaColumns"
+            :data="drinks"
+          >
+            <template
+              slot-scope="{ row }"
+              slot="id"
+            >
+              <strong>{{ row.id }}</strong>
+            </template>
+            <template
+              slot-scope="{ row, index }"
+              slot="action"
+            >
+              <Button
+                type="primary"
+                size="small"
+                style="margin-right: 5px"
+                @click="changeForm(index)"
+              >修改</Button>
+              <Button
+                type="error"
+                size="small"
+                @click="remove(index)"
+              >删除</Button>
+            </template>
+          </Table>
+          <Button
+            :disabled="!ismore"
+            long
+            @click="loadMore"
+          >———— 加载更多 ————
+          </Button>
         </TabPane>
       </Tabs>
-      <Table
-        border
-        height="700"
-        :columns="teaColumns"
-        :data="drinks"
-      >
-        <template
-          slot-scope="{ row }"
-          slot="id"
-        >
-          <strong>{{ row.id }}</strong>
-        </template>
-        <template
-          slot-scope="{ row, index }"
-          slot="action"
-        >
-          <Button
-            type="primary"
-            size="small"
-            style="margin-right: 5px"
-            @click="changeForm(index)"
-          >修改</Button>
-          <Button
-            type="error"
-            size="small"
-            @click="remove(index)"
-          >删除</Button>
-        </template>
-      </Table>
-      <Button
-        :disabled="!ismore"
-        long
-        @click="loadMore"
-      >———— 加载更多 ————
-      </Button>
     </Card>
   </div>
 </template>
@@ -192,7 +192,7 @@ export default {
       changeDrinkForm: {},
       file: null,
       fileSrc: null,
-      pageSize: 10,
+      pageSize: 15,
       page: 1
     }
   },

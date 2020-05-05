@@ -55,7 +55,7 @@
                 <Input
                   v-model="cakeForm.description"
                   type="textarea"
-                  :autosize="{minRows: 2,maxRows: 4}"
+                  :autosize="{minRows: 4,maxRows: 4}"
                   placeholder="Enter something..."
                 ></Input>
               </FormItem>

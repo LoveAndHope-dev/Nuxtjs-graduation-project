@@ -4,11 +4,19 @@ import Cake from '../../dbs/models/cake'
 let router = new Router({ prefix: '/manager/cake_manage' })
 
 router.get('/getCake', async ctx => {
+  let pageSize = ctx.request.query.pageSize ? parseInt(ctx.request.query.pageSize) : 15
+  let page = ctx.request.query.page ? parseInt(ctx.request.query.page) : 1
+  let keyword = ctx.request.query.word || ''
+  var reg = new RegExp(keyword, 'i');
+  let skip = (page - 1) * pageSize
   try {
-    let result = await Cake.find()
+    const total = await Cake.find({ $or: [{ cakename: { $regex: reg } }] }).sort({_id: -1}).count()
+    let result = await Cake.find({ $or: [{ cakename: { $regex: reg } }] }).sort({_id: -1}).skip(skip).limit(pageSize)
+    let isMore = total - (((page - 1) * pageSize) + result.length) > 0 ? true : false
     ctx.body = {
       cmcode: 0,
-      cmresult: result
+      cmresult: result,
+      isMore: isMore
     }
   } catch (e) {
     ctx.body = {

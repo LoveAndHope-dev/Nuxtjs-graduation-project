@@ -3,7 +3,11 @@
     <Divider orientation="left">茶点管理</Divider>
     <cakefunc @addCakeSubmit="addCakeSubmit" />
     <Divider orientation="left">茶点列表</Divider>
-    <cakecontent :cakes="cakes" />
+    <cakecontent
+      :cakes="cakes"
+      :ismore="isMore"
+      @getCakeLists="getCakeLists"
+    />
   </div>
 
 </template>
@@ -18,7 +22,7 @@ export default {
     cakefunc
   },
   async asyncData (ctx) {
-    let { status: cmstatus, data: { cmcode, cmresult } } = await ctx.$axios.get('/manager/cake_manage/getCake')
+    let { status: cmstatus, data: { cmcode, cmresult, isMore } } = await ctx.$axios.get('/manager/cake_manage/getCake')
     if (cmstatus === 200 & cmcode === 0) {
       return {
         cakes: cmresult.filter(item => item._id.length).map(item => {
@@ -31,13 +35,15 @@ export default {
             taste: item.caketaste,
             photo: item.cakephoto
           }
-        })
+        }),
+        isMore
       }
     }
   },
   data () {
     return {
-      cake: Array
+      cake: Array,
+      isMore: true
     }
   },
   methods: {
@@ -57,8 +63,39 @@ export default {
             photo: item.cakephoto
           }
         })
-        this.cakes.push(this.cake[0])
+        this.getCakeLists({ page: 1 })
         this.$Message.success('添加成功')
+      }
+    },
+    async getCakeLists ({
+      word = '',
+      pageSize = 15,
+      page = 1,
+      loadMore = false
+    }) {
+      let { data: { cmcode, cmresult, isMore } } = await axios.get('/manager/cake_manage/getCake', {
+        params: {
+          word: word,
+          pageSize: pageSize,
+          page: page
+        }
+      });
+      if (cmcode == 0) {
+        let more = cmresult.filter(item => item._id.length).map(item => {
+          return {
+            id: item._id,
+            name: item.cakename,
+            price: item.cakeprice,
+            description: item.cakedescription,
+            type: item.caketype,
+            taste: item.caketaste,
+            photo: item.cakephoto
+          }
+        })
+        this.cakes = loadMore
+          ? [...this.cakes, ...more]
+          : more;
+        this.isMore = isMore
       }
     }
   }

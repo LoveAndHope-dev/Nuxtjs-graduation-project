@@ -4,7 +4,7 @@ import Drink from '../../dbs/models/drink'
 let router = new Router({ prefix: '/manager/tea_manage' })
 
 router.get('/getDrink', async ctx => {
-  let pageSize = ctx.request.query.pageSize ? parseInt(ctx.request.query.pageSize) : 10
+  let pageSize = ctx.request.query.pageSize ? parseInt(ctx.request.query.pageSize) : 15
   let page = ctx.request.query.page ? parseInt(ctx.request.query.page) : 1
   let keyword = ctx.request.query.word || ''
   var reg = new RegExp(keyword, 'i');

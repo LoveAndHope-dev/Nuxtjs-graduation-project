@@ -16,14 +16,16 @@
         />
       </FormItem>
       <FormItem>
-        <Button type="primary" @click="addarticle">提交</Button>
+        <Button
+          type="primary"
+          @click="addarticle"
+        >提交</Button>
       </FormItem>
     </Form>
   </Card>
 </template>
 
 <script>
-import xss from 'xss'
 import Editor from '@tinymce/tinymce-vue'
 import axios from 'axios'
 export default {
