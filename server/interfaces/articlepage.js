@@ -11,8 +11,8 @@ router.get('/getArticle', async (ctx) => {
   // 跳多少条数据
   let skip = (page - 1) * pageSize
   try {
-    const total = await Article.find({ $or: [{ articlename: { $regex: reg } }] }).sort({_id: -1}).count()
-    let result = await Article.find({ $or: [{ articlename: { $regex: reg } }] }).sort({_id: -1}).skip(skip).limit(pageSize)
+    const total = await Article.find({ $or: [{ articlename: { $regex: reg } }] }).sort({ _id: -1 }).count()
+    let result = await Article.find({ $or: [{ articlename: { $regex: reg } }] }).sort({ _id: -1 }).skip(skip).limit(pageSize)
     let isMore = total - (((page - 1) * pageSize) + result.length) > 0 ? true : false
     ctx.body = {
       code: 0,
@@ -23,6 +23,22 @@ router.get('/getArticle', async (ctx) => {
     ctx.body = {
       code: -1,
       result: {}
+    }
+  }
+})
+
+router.get('/getArticleDetails', async ctx => {
+  const id = ctx.request.query.id
+  try {
+    const result = await Article.findOne({ _id: id })
+    ctx.body = {
+      code: 0,
+      result: result
+    }
+  } catch (e) {
+    ctx.body = {
+      code: -1, 
+      result: ''
     }
   }
 })

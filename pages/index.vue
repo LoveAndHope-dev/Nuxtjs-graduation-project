@@ -178,9 +178,24 @@ export default {
 </script>
 
 <style>
+@import '@/assets/common/pricing.css';
 #container {
   width: 100%;
   height: 200px;
   margin: 0px;
 }
+/*
+ * -- PHONE MEDIA QUERIES --
+ * On phones, we want to reduce the height and font-size of the banner further
+ */
+@media (min-width: 900px) {
+  .banner {
+    height: 800px;
+  }
+
+  .banner-head {
+    font-size: 3em;
+  }
+}
+
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div @click="modal1 = true">
+  <div>
     <Card style="margin:15px 0">
       <div slot="title">
         <h1>{{item.name}}</h1>

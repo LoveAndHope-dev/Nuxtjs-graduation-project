@@ -37,14 +37,13 @@
         <div class="pure-u-1 pure-u-md-1-2">
           <Divider>所有文章</Divider>
           <div class="l-box">
-            <Row>
-              <Col
-                v-for="item in articles"
-                :key="item.name"
-              >
+            <div
+              v-for="(item, index) in articles"
+              :key="index"
+              @click="goDetail(item.id)"
+            >
               <articlemain :item="item" />
-              </Col>
-            </Row>
+            </div>
             <Button
               v-if="isMore"
               long
@@ -88,6 +87,13 @@ export default {
     }
   },
   methods: {
+    goDetail (id) {
+      let routeUrl = this.$router.resolve({
+        name: 'article-id',
+        params: { id: id }
+      });
+      this.$router.push(routeUrl.href, '_blank');
+    },
     searchArticle () {
       this.page = 1
       this.getArticleLists({ word: this.value })
@@ -127,3 +133,20 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+@import '@/assets/common/pricing.css';
+/*
+ * -- PHONE MEDIA QUERIES --
+ * On phones, we want to reduce the height and font-size of the banner further
+ */
+@media (min-width: 900px) {
+  .banner {
+    height: 800px;
+  }
+
+  .banner-head {
+    font-size: 3em;
+  }
+}
+</style>
