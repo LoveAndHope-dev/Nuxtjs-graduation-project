@@ -7,18 +7,6 @@
       </div>
       <div v-html="ellipsis(item.text)"></div>
     </Card>
-    <Modal
-      v-model="modal1"
-      title="文章详情"
-      width="1000px"
-    >
-      <h2>{{item.name}}</h2>
-      <Divider dashed />
-      <h3>{{item.date}}</h3>
-      <Divider dashed />
-      <div v-html="item.text"></div>
-      <div slot="footer"></div>
-    </Modal>
   </div>
 </template>
 
@@ -36,11 +24,6 @@ export default {
   },
   props: {
     item: null
-  },
-  data () {
-    return {
-      modal1: false
-    }
   }
 }
 Vue.prototype.ellipsis = function (value) {

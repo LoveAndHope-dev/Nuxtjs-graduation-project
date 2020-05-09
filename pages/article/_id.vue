@@ -1,5 +1,19 @@
 <template>
   <div>
+    <div class="pure-menu pure-menu-horizontal">
+      <ul class="pure-menu-list">
+        <nuxt-link to="/article">
+          <li class="pure-menu-item">
+            <a class="pure-menu-link">返回文章页</a>
+          </li>
+        </nuxt-link>
+        <nuxt-link to="/">
+          <li class="pure-menu-item">
+            <a class="pure-menu-link">返回主页</a>
+          </li>
+        </nuxt-link>
+      </ul>
+    </div>
     <div
       class="banner"
       style="background: transparent url('../landscape-1622739_1920.jpg') 0 0 no-repeat fixed;"

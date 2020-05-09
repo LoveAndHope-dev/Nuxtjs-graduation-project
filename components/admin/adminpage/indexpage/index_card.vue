@@ -9,7 +9,10 @@
 
 <script>
 export default {
-  props: ['title', 'count'],
+  props: {
+    title: String,
+    count: String
+  },
   data () {
     return {
       mycount: 0
@@ -18,9 +21,9 @@ export default {
   mounted () {
     var timer = setInterval(() => {
       if (this.mycount < this.count) {
-        this.mycount++ 
-      } else { 
-        clearInterval(timer) 
+        this.mycount++
+      } else {
+        clearInterval(timer)
       }
     }, 0);
   }

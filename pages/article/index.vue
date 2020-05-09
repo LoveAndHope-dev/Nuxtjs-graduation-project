@@ -5,10 +5,7 @@
       <ul class="pure-menu-list">
         <nuxt-link to="/">
           <li class="pure-menu-item">
-            <a
-              href="/"
-              class="pure-menu-link"
-            >返回主页</a>
+            <a class="pure-menu-link">返回主页</a>
           </li>
         </nuxt-link>
       </ul>
@@ -135,7 +132,7 @@ export default {
 </script>
 
 <style scoped>
-@import '@/assets/common/pricing.css';
+@import "@/assets/common/pricing.css";
 /*
  * -- PHONE MEDIA QUERIES --
  * On phones, we want to reduce the height and font-size of the banner further

@@ -5,13 +5,10 @@
         <a
           href="/login"
           class="pure-menu-heading"
-        >Login</a>
-        <ul class="pure-menu-list">
-          <li class="pure-menu-item"><a class="pure-menu-link">本店地址：{{posi}}</a></li>
-        </ul>
+        >点击此处登录，本店地址：{{posi}}</a>
       </div>
       <div v-else>
-        <a class="pure-menu-heading">您已登录 欢迎您 {{infos[0].name}}</a>
+        <a class="pure-menu-heading">您已登录 欢迎您 {{infos[0].name}}，本店地址：{{posi}}</a>
         <ul class="pure-menu-list">
           <li
             v-if="!infos[0].type"
@@ -31,7 +28,6 @@
               @click="exit()"
               class="pure-menu-link"
             >登出</a></li>
-          <li class="pure-menu-item"><a class="pure-menu-link">本店地址：{{posi}}</a></li>
         </ul>
       </div>
     </div>
@@ -178,7 +174,7 @@ export default {
 </script>
 
 <style>
-@import '@/assets/common/pricing.css';
+@import "@/assets/common/pricing.css";
 #container {
   width: 100%;
   height: 200px;
@@ -197,5 +193,4 @@ export default {
     font-size: 3em;
   }
 }
-
 </style>

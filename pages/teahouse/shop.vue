@@ -6,12 +6,11 @@
       width="500"
     >
       <div slot="header">
-        <h2>您的预订单，总价为{{totalPrice}}人民币</h2>
         <Row
           :gutter="16"
           class="drawer-header-button"
         >
-          <Col :span="8">
+          <Col :span="6">
           <Select
             v-model="tableselect"
             placeholder="您的桌位请选择"
@@ -23,19 +22,22 @@
             >{{item.name}}</Option>
           </Select>
           </Col>
-          <Col :span="8">
+          <Col :span="6">
           <Button
             type="success"
             @click="goCount"
             long
           >下单</Button>
           </Col>
-          <Col :span="8">
+          <Col :span="6">
           <Button
             type="error"
             @click="clean"
             long
           >清空</Button>
+          </Col>
+          <Col :span="6">
+          <h2>￥{{totalPrice}}</h2>
           </Col>
         </Row>
       </div>
@@ -270,6 +272,7 @@ export default {
       })
       if (code == 0) {
         this.$Message.success('下单成功。')
+        setTimeout(function () { location.href = '/teahouse/order' }, 1500);
       } else {
         this.$Message.error(res.msg);
       }
