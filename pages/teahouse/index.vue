@@ -3,7 +3,7 @@
     <Divider>欢迎来到Teahub-Chakela</Divider>
     <div
       class="banner"
-      style="background: transparent url('/agriculture-1846649_1920.jpg') 0 0 no-repeat fixed;"
+      style="background: transparent url('/closeup-photo-of-brown-and-black-wooden-houses-digital-734102.jpg') 0 0 no-repeat fixed;"
     >
       <div class="banner-head">
       🍰🍪🍩🍨🍧🍦🥧<br>

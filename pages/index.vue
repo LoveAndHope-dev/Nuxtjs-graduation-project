@@ -5,10 +5,10 @@
         <a
           href="/login"
           class="pure-menu-heading"
-        >点击此处登录，本店地址：{{posi}}</a>
+        >点击此处登录</a>
       </div>
       <div v-else>
-        <a class="pure-menu-heading">您已登录 欢迎您 {{infos[0].name}}，本店地址：{{posi}}</a>
+        <a class="pure-menu-heading">您已登录 欢迎您 {{infos[0].name}}</a>
         <ul class="pure-menu-list">
           <li
             v-if="!infos[0].type"
@@ -33,10 +33,15 @@
     </div>
     <div
       class="banner"
-      style="background: transparent url('./agriculture-1846649_1920.jpg') 0 0 no-repeat fixed;"
+      style="background: transparent url('./closeup-photo-of-brown-and-black-wooden-houses-digital-734102.jpg') 0 0 no-repeat fixed;"
     >
       <h1 class="banner-head">
-        欢迎来到Teahub-Chakela
+        欢迎来到Teahub-Chakela<br />
+        <Button
+          to="/article"
+          style="margin:10px 0;width:50%;opacity:0.85"
+          long
+        >>>>>>点击此处进入文章页可阅读文章>>>>></Button>
       </h1>
     </div>
     <div
@@ -48,15 +53,6 @@
           <Divider>最近新品</Divider>
           <div class="l-box">
             <indexnew />
-          </div>
-          <Divider>最新文章</Divider>
-          <div class="l-box">
-            <indexarticle :articles="articles" />
-            <Button
-              to="/article"
-              style="margin:20px 0 50px"
-              long
-            >>>>>>查看更多文章>>>>></Button>
           </div>
         </div>
         <div class="pure-u-1 pure-u-md-1-2">
@@ -98,7 +94,7 @@
           </div>
         </div>
         <div class="pure-u-1 pure-u-md-1-2">
-          <Divider>本店方位</Divider>
+          <Divider>本店方位：{{posi}}</Divider>
           <div
             id="container"
             tabindex="0"
@@ -109,6 +105,7 @@
   </div>
 </template>
 <script>
+import xss from 'xss'
 import { mapState } from 'vuex'
 import indexarticle from '@/components/indexpage/indexarticle'
 import indexnew from '@/components/indexpage/indexnew'
@@ -116,21 +113,6 @@ export default {
   components: {
     indexarticle,
     indexnew
-  },
-  async asyncData (ctx) {
-    let { status, data: { code, result } } = await ctx.$axios.get('/index/gethomepageArticle')
-    if (status === 200 && code === 0) {
-      return {
-        articles: result.filter(item => item._id.length).map(item => {
-          return {
-            id: item._id,
-            name: item.articlename,
-            date: item.articledate,
-            text: item.articletext
-          }
-        })
-      }
-    }
   },
   computed: {
     ...mapState({ infos: state => state.usermodal.user.user }),

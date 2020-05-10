@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import xss from 'xss'
 export default {
   data () {
     return {
@@ -61,7 +62,17 @@ export default {
     if (code === 0 & status === 200) {
       this.article.name = result.articlename
       this.article.id = result._id
-      this.article.text = result.articletext
+      this.article.text = xss(result.articletext, {
+        onTagAttr: function (tag, name, value, isWhiteAttr) {
+          if (tag === 'img') {
+            if (name === 'src') {
+              if (value.substr(0, 5) === 'data:') {
+                return name + '="' + value + '"';
+              }
+            }
+          }
+        }
+      })
       this.article.date = result.articledate
     }
   }

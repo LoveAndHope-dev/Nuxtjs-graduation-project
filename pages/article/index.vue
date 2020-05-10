@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import xss from 'xss'
 import axios from 'axios'
 import articlemain from '@/components/indexpage/articlemain'
 export default {
@@ -69,7 +70,17 @@ export default {
             id: item._id,
             name: item.articlename,
             date: item.articledate,
-            text: item.articletext
+            text: xss(item.articletext, {
+              onTagAttr: function (tag, name, value, isWhiteAttr) {
+                if (tag === 'img') {
+                  if (name === 'src') {
+                    if (value.substr(0, 5) === 'data:') {
+                      return name + '="' + value + '"';
+                    }
+                  }
+                }
+              }
+            })
           }
         }, isMore)
       }
@@ -117,7 +128,17 @@ export default {
             id: item._id,
             name: item.articlename,
             date: item.articledate,
-            text: item.articletext
+            text: xss(item.articletext, {
+              onTagAttr: function (tag, name, value, isWhiteAttr) {
+                if (tag === 'img') {
+                  if (name === 'src') {
+                    if (value.substr(0, 5) === 'data:') {
+                      return name + '="' + value + '"';
+                    }
+                  }
+                }
+              }
+            })
           }
         })
         this.articles = loadMore
@@ -133,10 +154,6 @@ export default {
 
 <style scoped>
 @import "@/assets/common/pricing.css";
-/*
- * -- PHONE MEDIA QUERIES --
- * On phones, we want to reduce the height and font-size of the banner further
- */
 @media (min-width: 900px) {
   .banner {
     height: 800px;
