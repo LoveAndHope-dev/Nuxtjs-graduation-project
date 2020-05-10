@@ -3,11 +3,15 @@
     <Divider orientation="left">文章管理</Divider>
     <articlefunc @addArticleSubmit="addArticleSubmit" />
     <Divider orientation="left">文章列表</Divider>
-    <articlecontent :articles="articles" @searchArticleSubmit="searchArticleSubmit" />
+    <articlecontent
+      :articles="articles"
+      @searchArticleSubmit="searchArticleSubmit"
+    />
   </div>
 </template>
 
 <script>
+import xss from 'xss'
 import axios from 'axios'
 import articlecontent from '@/components/admin/adminpage/articlemanage/article_content'
 import articlefunc from '@/components/admin/adminpage/articlemanage/article_func'
@@ -25,7 +29,17 @@ export default {
             id: item._id,
             name: item.articlename,
             date: item.articledate,
-            text: item.articletext
+            text: xss(item.articletext, {
+              onTagAttr: function (tag, name, value, isWhiteAttr) {
+                if (tag === 'img') {
+                  if (name === 'src') {
+                    if (value.substr(0, 5) === 'data:') {
+                      return name + '="' + value + '"';
+                    }
+                  }
+                }
+              }
+            })
           }
         })
       }
@@ -64,7 +78,17 @@ export default {
             id: item._id,
             name: item.articlename,
             date: item.articledate,
-            text: item.articletext
+            text: xss(item.articletext, {
+              onTagAttr: function (tag, name, value, isWhiteAttr) {
+                if (tag === 'img') {
+                  if (name === 'src') {
+                    if (value.substr(0, 5) === 'data:') {
+                      return name + '="' + value + '"';
+                    }
+                  }
+                }
+              }
+            })
           }
         })
         this.$Message.success('查询成功')

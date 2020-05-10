@@ -69,12 +69,22 @@ export default {
     async addarticle () {
       let formData = new FormData()
       let date = new Date()
+      var text = xss(this.articleForm.text, {
+         onTagAttr: function (tag, name, value, isWhiteAttr) {
+          if (tag === 'img') {
+            if (name === 'src') {
+              if (value.substr(0, 5) === 'data:') {
+                return name + '="' + value + '"';
+              }
+            }
+          }
+        }
+      })
       formData.append('articlename', this.articleForm.name)
       formData.append('articledate', date.toLocaleDateString())
-      formData.append('articletext', this.articleForm.text)
+      formData.append('articletext', text)
       this.$emit('addArticleSubmit', formData)
     }
-
   }
 }
 </script>

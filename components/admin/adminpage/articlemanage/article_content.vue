@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import xss from 'xss'
 import axios from 'axios'
 export default {
   props: {
