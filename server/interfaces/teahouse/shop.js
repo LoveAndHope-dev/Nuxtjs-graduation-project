@@ -10,11 +10,13 @@ let router = new Router({ prefix: '/teahouse/shop' })
 router.get('/getTea', async (ctx) => {
   let pageSize = ctx.request.query.pageSize ? parseInt(ctx.request.query.pageSize) : 12
   let page = ctx.request.query.page ? parseInt(ctx.request.query.page) : 1
+  let keyword = ctx.request.query.word || ''
+  var reg = new RegExp(keyword, 'i');
   // 跳多少条数据
   let skip = (page - 1) * pageSize
   try {
-    const total = await Drink.find().count()
-    let result = await Drink.find().skip(skip).limit(pageSize)
+    const total = await Drink.find({ $or: [{ drinkname: { $regex: reg } }] }).sort({ _id: -1 }).count()
+    let result = await Drink.find({ $or: [{ drinkname: { $regex: reg } }] }).sort({ _id: -1 }).skip(skip).limit(pageSize)
     let isMore = total - (((page - 1) * pageSize) + result.length) > 0 ? true : false
     ctx.body = {
       thtcode: 0,
@@ -32,11 +34,13 @@ router.get('/getTea', async (ctx) => {
 router.get('/getCake', async (ctx) => {
   let pageSize = ctx.request.query.pageSize ? parseInt(ctx.request.query.pageSize) : 12
   let page = ctx.request.query.page ? parseInt(ctx.request.query.page) : 1
+  let keyword = ctx.request.query.word || ''
+  var reg = new RegExp(keyword, 'i');
   // 跳多少条数据
   let skip = (page - 1) * pageSize
   try {
-    const total = await Cake.find().count()
-    let result = await Cake.find().skip(skip).limit(pageSize)
+    const total = await Cake.find({ $or: [{ cakename: { $regex: reg } }] }).sort({ _id: -1 }).count()
+    let result = await Cake.find({ $or: [{ cakename: { $regex: reg } }] }).sort({ _id: -1 }).skip(skip).limit(pageSize)
     let isMore = total - (((page - 1) * pageSize) + result.length) > 0 ? true : false
     ctx.body = {
       thccode: 0,

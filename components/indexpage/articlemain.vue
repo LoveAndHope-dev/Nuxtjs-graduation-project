@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Card style="margin:15px 0">
+    <Card style="margin:15px 0;cursor:pointer">
       <div slot="title">
         <h1>{{item.name}}</h1>
         <h2>{{item.date}}</h2>

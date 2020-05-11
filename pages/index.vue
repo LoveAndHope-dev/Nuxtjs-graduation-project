@@ -13,17 +13,15 @@
           <li
             v-if="!infos[0].type"
             class="pure-menu-item"
-          ><a
-              href="/teahouse"
-              class="pure-menu-link"
-            >进入点餐系统</a></li>
+          >
+            <nuxt-link to="/teahouse"><a class="pure-menu-link">进入点餐系统</a></nuxt-link>
+          </li>
           <li
             v-else
             class="pure-menu-item"
-          ><a
-              href="/manager"
-              class="pure-menu-link"
-            >进入管理系统</a></li>
+          >
+            <nuxt-link to="/manager"><a class="pure-menu-link">进入管理系统</a></nuxt-link>
+          </li>
           <li class="pure-menu-item"><a
               @click="exit()"
               class="pure-menu-link"

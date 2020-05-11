@@ -48,7 +48,18 @@
       long
       @click="openCart()"
     >打开你的预订单</Button>
-    <Tabs style="margin:20px 0">
+    <Input
+      v-model="word"
+      search
+      enter-button
+      @on-search="search"
+      style="margin:15px auto;width: 70%"
+    />
+    <Tabs
+      style="margin:20px 0"
+      value="tea"
+      v-model="type"
+    >
       <TabPane
         label="茶品"
         name="tea"
@@ -159,7 +170,9 @@ export default {
       isMoreTea: true,
       isMoreCake: true,
       pageSize: 12,
-      page: 1
+      page: 1,
+      word: '',
+      type: 'tea'
     }
   },
   computed: {
@@ -173,19 +186,29 @@ export default {
     }
   },
   methods: {
+    search () {
+      this.page = 1
+      if (this.type === 'tea') {
+        this.getTeaLists({ word: this.word });
+      } else {
+        this.getCakeLists({ word: this.word });
+      }
+    },
     loadMoreTea () {
-      this.getTeaLists({ page: ++this.page, loadMore: true });
+      this.getTeaLists({ page: ++this.page, loadMore: true, word: this.word });
     },
     loadMoreCake () {
-      this.getCakeLists({ page: ++this.page, loadMore: true });
+      this.getCakeLists({ page: ++this.page, loadMore: true, word: this.word });
     },
     async getTeaLists ({
+      word = '',
       pageSize = 12,
       page = 1,
       loadMore = false
     }) {
       let { data: { thtcode, thtresult, isMoreTea } } = await axios.get('/teahouse/shop/getTea', {
         params: {
+          word: word,
           pageSize: pageSize,
           page: page
         }
@@ -210,12 +233,14 @@ export default {
       }
     },
     async getCakeLists ({
+      word = '',
       pageSize = 12,
       page = 1,
       loadMore = false
     }) {
       let { data: { thccode, thcresult, isMoreCake } } = await axios.get('/teahouse/shop/getCake', {
         params: {
+          word: word,
           pageSize: pageSize,
           page: page
         }
