@@ -1,36 +1,23 @@
 <template>
   <div @click="modal1 = true">
-    <Card class="shop_item_card">
-      <Row>
-        <Col span="12">
-        <Avatar
-          shape="square"
-          style="width: 150px; height: 150px"
-          :src="item.photo"
-        >
-        </Avatar>
-        </Col>
-        <Col span="12">
-        <Row>
-          <Col span="12">
-          <h2>{{item.name}}</h2>
-          </Col>
-          <Col span="12">
-          <h2>￥{{item.price}}</h2>
-          </Col>
-        </Row>
-        <h4>类型：{{item.type}}</h4>
-        <h4>口味：{{item.taste}}</h4>
-        <h4>描述：{{item.description | ellipsis}}</h4>
-        </Col>
-      </Row>
+    <Card>
+      <img
+        shape="square"
+        style="width: 100%;"
+        :src="item.photo"
+      >
+      </img>
+      <h2>{{item.name}}</h2>
+      <h2>￥{{item.price}}</h2>
+      <h4>类型：{{item.type}}</h4>
+      <h4>口味：{{item.taste}}</h4>
+      <h4>描述：{{item.description | ellipsis}}</h4>
     </Card>
     <Modal
       v-model="modal1"
       title="物品详情"
       width="800px"
     >
-
       <Row>
         <Col span="8">
         <Avatar

@@ -64,18 +64,24 @@
         label="茶品"
         name="tea"
       >
-        <Row>
-          <Col
-            :xl="8"
-            :md="12"
-            :xs="24"
-            class="shop_item_div"
-            v-for="item in drink"
-            :key="item.name"
+        <no-ssr>
+          <div
+            v-masonry
+            transition-duration="0.5s"
+            item-selector=".item"
+            class="masonry-container"
           >
-          <itemcard :item="item" />
-          </Col>
-        </Row>
+            <div
+              v-masonry-tile
+              class="item"
+              style="width:16%;margin: 0.3%"
+              v-for="item in drink"
+              :key="item.name"
+            >
+              <itemcard :item="item" />
+            </div>
+          </div>
+        </no-ssr>
         <Button
           v-if="isMoreTea"
           long
@@ -86,18 +92,24 @@
         label="茶点"
         name="cake"
       >
-        <Row>
-          <Col
-            :xl="8"
-            :md="12"
-            :xs="24"
-            class="shop_item_div"
-            v-for="item in cake"
-            :key="item.name"
+        <no-ssr>
+          <div
+            v-masonry
+            transition-duration="0.5s"
+            item-selector=".item"
+            class="masonry-container"
           >
-          <cakecard :item="item" />
-          </Col>
-        </Row>
+            <div
+              v-masonry-tile
+              class="item"
+              style="width:19%;margin: 0.5%"
+              v-for="item in cake"
+              :key="item.name"
+            >
+              <itemcard :item="item" />
+            </div>
+          </div>
+        </no-ssr>
         <Button
           v-if="isMoreCake"
           long
@@ -113,6 +125,7 @@
 import axios from 'axios'
 import { mapState } from 'vuex'
 import moment from 'moment'
+import NoSSR from 'vue-no-ssr'
 import itemcard from '@/components/frontplatform/frontpage/shoppage/itemcard'
 import cakecard from '@/components/frontplatform/frontpage/shoppage/cakecard'
 import cartlist from '@/components/frontplatform/frontpage/shoppage/cartlist'
@@ -120,7 +133,8 @@ export default {
   components: {
     itemcard,
     cakecard,
-    cartlist
+    cartlist,
+    'no-ssr': NoSSR
   },
   async asyncData (ctx) {
     let [
@@ -183,6 +197,11 @@ export default {
         total += item.price * item.num;
       });
       return total;
+    }
+  },
+  mounted () {
+    if (typeof this.$redrawVueMasonry === 'function') {
+      this.$redrawVueMasonry()
     }
   },
   methods: {

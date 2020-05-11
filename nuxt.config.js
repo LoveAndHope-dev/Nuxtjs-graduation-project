@@ -36,7 +36,8 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '@/plugins/iview', ssr: true }
+    { src: '@/plugins/iview', ssr: true },
+    { src: '@/plugins/masonry', ssr: false }
   ],
   /*
 ** Nuxt.js dev-modules
