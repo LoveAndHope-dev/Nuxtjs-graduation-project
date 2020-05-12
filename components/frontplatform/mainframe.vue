@@ -48,8 +48,8 @@
         <div
           id="coloregg"
           @click="change"
-          class="banner"
-          style="background: transparent url('/closeup-photo-of-brown-and-black-wooden-houses-digital-734102.jpg') 0 0 no-repeat fixed;height:560px;cursor: pointer"
+          class="b-background1"
+          style="height:450px"
         >
         </div>
         <nuxt-child></nuxt-child>
@@ -82,7 +82,7 @@ export default {
       }
       if (this.m14_appear == 17) {
         var coloregg = document.getElementById('coloregg');//查找元素
-        coloregg.style = "background: transparent url('/illust_61283291_20190910_163354.jpg') 0 0 no-repeat fixed;height:460px";//改变样式
+        coloregg.className = 'b-background4';
         this.$Message.success('这是一个小彩蛋，m14出现啦')
       }
     }

@@ -14,10 +14,7 @@
         </nuxt-link>
       </ul>
     </div>
-    <div
-      class="banner"
-      style="background: transparent url('../landscape-1622739_1920.jpg') 0 0 no-repeat fixed;"
-    >
+    <div class="banner b-background3">
       <div class="banner-head">
         {{article.name}}<br />
         {{article.date}}
@@ -81,13 +78,4 @@ export default {
 
 <style scoped>
 @import "@/assets/common/pricing.css";
-@media (min-width: 900px) {
-  .banner {
-    height: 500px;
-  }
-
-  .banner-head {
-    font-size: 3em;
-  }
-}
 </style>

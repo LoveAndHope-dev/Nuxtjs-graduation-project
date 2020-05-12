@@ -1,17 +1,25 @@
 <template>
   <div @click="modal1 = true">
     <Card>
-      <img
-        shape="square"
-        style="width: 100%;"
-        :src="item.photo"
-      >
-      </img>
-      <h2>{{item.name}}</h2>
-      <h2>￥{{item.price}}</h2>
-      <h4>类型：{{item.type}}</h4>
-      <h4>口味：{{item.taste}}</h4>
-      <h4>描述：{{item.description | ellipsis}}</h4>
+      <Row>
+        <Col span="8">
+        <img
+          style="width: 100%;"
+          v-lazy="item.photo"
+        >
+        </img>
+        </Col>
+        <Col
+          span="15"
+          offset="1"
+        >
+        <h2>{{item.name}}</h2>
+        <h2>￥{{item.price}}</h2>
+        <h4>类型：{{item.type}}</h4>
+        <h4>口味：{{item.taste}}</h4>
+        <h4>{{item.description | ellipsis}}</h4>
+        </col>
+      </Row>
     </Card>
     <Modal
       v-model="modal1"
@@ -19,15 +27,16 @@
       width="800px"
     >
       <Row>
-        <Col span="8">
-        <Avatar
-          shape="square"
-          style="width: 150px; height: 150px"
+        <Col span="6">
+        <img
+          style="width: 100%"
           :src="item.photo"
         >
-        </Avatar>
         </Col>
-        <Col span="16">
+        <Col
+          span="16"
+          offset="2"
+        >
         <h1>茶品名称：{{item.name}}</h1>
         <h1>价格：￥{{item.price*itemvalue}}</h1>
         <InputNumber
@@ -48,7 +57,7 @@
       <Divider dashed />
       <h2>类型：{{item.type}}</h2>
       <h2>口味：{{item.taste}}</h2>
-      <h2>描述：{{item.description}}</h2>
+      <h2>{{item.description}}</h2>
       <div slot="footer"></div>
     </Modal>
   </div>

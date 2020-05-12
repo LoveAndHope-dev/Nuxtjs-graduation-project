@@ -35,3 +35,30 @@
   color: #2d8cf0
 }
 
+
+.shop-container {
+  width: 24%;
+  margin: 0.5%
+}
+
+
+@media (max-width: 1200px) {
+  .shop-container {
+    width: 33%;
+    margin: 0.15%
+  }
+}
+
+@media (max-width: 900px) {
+  .shop-container {
+    width: 49.5%;
+    margin: 0.25%
+  }
+}
+
+@media (max-width: 600px) {
+  .shop-container {
+    width: 99%;
+    margin: 0.5%
+  }
+}

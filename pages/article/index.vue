@@ -10,10 +10,7 @@
         </nuxt-link>
       </ul>
     </div>
-    <div
-      class="banner"
-      style="background: transparent url('./alberta-2297204_1920.jpg') 0 0 no-repeat fixed;"
-    >
+    <div class="banner b-background2">
       <div class="banner-head">
         欢迎来到Teahub-Chakela<br>
         <Input
@@ -154,13 +151,4 @@ export default {
 
 <style scoped>
 @import "@/assets/common/pricing.css";
-@media (min-width: 900px) {
-  .banner {
-    height: 800px;
-  }
-
-  .banner-head {
-    font-size: 3em;
-  }
-}
 </style>

@@ -9,7 +9,7 @@ let router = new Router({ prefix: '/teahouse/shop' })
 
 router.get('/getTea', async (ctx) => {
   let pageSize = ctx.request.query.pageSize ? parseInt(ctx.request.query.pageSize) : 12
-  let page = ctx.request.query.page ? parseInt(ctx.request.query.page) : 1
+  let page = ctx.request.query.teapage ? parseInt(ctx.request.query.teapage) : 1
   let keyword = ctx.request.query.word || ''
   var reg = new RegExp(keyword, 'i');
   // 跳多少条数据
@@ -33,7 +33,7 @@ router.get('/getTea', async (ctx) => {
 
 router.get('/getCake', async (ctx) => {
   let pageSize = ctx.request.query.pageSize ? parseInt(ctx.request.query.pageSize) : 12
-  let page = ctx.request.query.page ? parseInt(ctx.request.query.page) : 1
+  let page = ctx.request.query.cakepage ? parseInt(ctx.request.query.cakepage) : 1
   let keyword = ctx.request.query.word || ''
   var reg = new RegExp(keyword, 'i');
   // 跳多少条数据

@@ -67,14 +67,13 @@
         <no-ssr>
           <div
             v-masonry
-            transition-duration="0.5s"
+            transition-duration="0.3s"
             item-selector=".item"
             class="masonry-container"
           >
             <div
               v-masonry-tile
-              class="item"
-              style="width:16%;margin: 0.3%"
+              class="item shop-container"
               v-for="item in drink"
               :key="item.name"
             >
@@ -95,18 +94,17 @@
         <no-ssr>
           <div
             v-masonry
-            transition-duration="0.5s"
+            transition-duration="0.3s"
             item-selector=".item"
             class="masonry-container"
           >
             <div
               v-masonry-tile
-              class="item"
-              style="width:19%;margin: 0.5%"
+              class="item shop-container"
               v-for="item in cake"
               :key="item.name"
             >
-              <itemcard :item="item" />
+              <cakecard :item="item" />
             </div>
           </div>
         </no-ssr>
@@ -184,7 +182,8 @@ export default {
       isMoreTea: true,
       isMoreCake: true,
       pageSize: 12,
-      page: 1,
+      teapage: 1,
+      cakepage: 1,
       word: '',
       type: 'tea'
     }
@@ -206,30 +205,31 @@ export default {
   },
   methods: {
     search () {
-      this.page = 1
       if (this.type === 'tea') {
+        this.teapage = 1
         this.getTeaLists({ word: this.word });
       } else {
+        this.cakepage = 1
         this.getCakeLists({ word: this.word });
       }
     },
     loadMoreTea () {
-      this.getTeaLists({ page: ++this.page, loadMore: true, word: this.word });
+      this.getTeaLists({ teapage: ++this.teapage, loadMore: true, word: this.word });
     },
     loadMoreCake () {
-      this.getCakeLists({ page: ++this.page, loadMore: true, word: this.word });
+      this.getCakeLists({ cakepage: ++this.cakepage, loadMore: true, word: this.word });
     },
     async getTeaLists ({
       word = '',
       pageSize = 12,
-      page = 1,
+      teapage = 1,
       loadMore = false
     }) {
       let { data: { thtcode, thtresult, isMoreTea } } = await axios.get('/teahouse/shop/getTea', {
         params: {
           word: word,
           pageSize: pageSize,
-          page: page
+          teapage: teapage
         }
       });
       if (thtcode == 0) {
@@ -254,14 +254,14 @@ export default {
     async getCakeLists ({
       word = '',
       pageSize = 12,
-      page = 1,
+      cakepage = 1,
       loadMore = false
     }) {
       let { data: { thccode, thcresult, isMoreCake } } = await axios.get('/teahouse/shop/getCake', {
         params: {
           word: word,
           pageSize: pageSize,
-          page: page
+          cakepage: cakepage
         }
       });
       if (thccode == 0) {

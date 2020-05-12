@@ -48,7 +48,7 @@
 import axios from 'axios'
 export default {
   props: {
-    cartitem: Object
+    cartitem: null
   },
   methods: {
     async deleteProduct (id, index) {

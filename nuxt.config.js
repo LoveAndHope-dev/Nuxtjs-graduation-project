@@ -37,7 +37,8 @@ module.exports = {
   */
   plugins: [
     { src: '@/plugins/iview', ssr: true },
-    { src: '@/plugins/masonry', ssr: false }
+    { src: '@/plugins/masonry', ssr: false },
+    { src: '@/plugins/lazyload', ssr: false }
   ],
   /*
 ** Nuxt.js dev-modules
@@ -63,7 +64,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    transpile: [/^element-ui/],
+    transpile: [/^element-ui/]
     /*
     ** You can extend webpack config here
     */

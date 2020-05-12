@@ -77,7 +77,7 @@
       </Col>
       <Col
         span="11"
-        offset="1"
+        offset="2"
       >
 
       <List
@@ -107,15 +107,14 @@
       </List>
       </Col>
       <Col
-        span="3"
+        span="6"
         offset="2"
       >
-      <Avatar
-        shape="square"
-        style="width: 280px; height: 392px"
-        :src="infos[0].photo"
+      <img
+        style="width: 100%"
+        v-lazy="infos[0].photo"
       >
-      </Avatar>
+      </img>
       </Col>
     </Row>
 

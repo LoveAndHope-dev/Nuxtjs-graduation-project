@@ -29,17 +29,14 @@
         </ul>
       </div>
     </div>
-    <div
-      class="banner"
-      style="background: transparent url('./closeup-photo-of-brown-and-black-wooden-houses-digital-734102.jpg') 0 0 no-repeat fixed;"
-    >
+    <div class="banner b-background1">
       <h1 class="banner-head">
         欢迎来到Teahub-Chakela<br />
         <Button
           to="/article"
           style="margin:10px 0;width:50%;opacity:0.85"
           long
-        >>>>>>点击此处进入文章页可阅读文章>>>>></Button>
+        >点击此处进入文章页可阅读文章</Button>
       </h1>
     </div>
     <div
@@ -160,17 +157,5 @@ export default {
   height: 200px;
   margin: 0px;
 }
-/*
- * -- PHONE MEDIA QUERIES --
- * On phones, we want to reduce the height and font-size of the banner further
- */
-@media (min-width: 900px) {
-  .banner {
-    height: 800px;
-  }
 
-  .banner-head {
-    font-size: 3em;
-  }
-}
 </style>

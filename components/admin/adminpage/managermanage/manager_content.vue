@@ -158,10 +158,6 @@ export default {
           }
         },
         {
-          title: 'id',
-          slot: 'id'
-        },
-        {
           title: '姓名',
           key: 'name'
         },
