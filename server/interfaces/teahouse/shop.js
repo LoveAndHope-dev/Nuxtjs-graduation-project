@@ -66,7 +66,6 @@ router.post('/addTea', async (ctx) => {
     let params = {
       goodsId: tea._id,
       goodsPrice: tea.drinkprice,
-      goodsPhoto: tea.drinkphoto,
       goodsName: tea.drinkname,
       goodsNum: teanum
     }
@@ -113,7 +112,6 @@ router.post('/addCake', async (ctx) => {
     let params = {
       goodsId: cake._id,
       goodsPrice: cake.cakeprice,
-      goodsPhoto: cake.cakephoto,
       goodsName: cake.cakename,
       goodsNum: cakenum
     }

@@ -5,8 +5,26 @@
   padding: 30px
 }
 
+.main_title_logo_small {
+  font-size: 26px;
+  font-weight: bold;
+  color: white;
+  padding: 20px 
+}
+
+.siderchange span{
+  display:none;
+}
+
+.transport-s-or-l {
+  transition: margin 0.8s, transform 0.8s;
+  -moz-transition: margin 0.8s, -moz-transform 0.8s;
+  -webkit-transition: margin 0.8s,-webkit-transform 0.8s;
+  -o-transition: margin 0.8s, -o-transform 0.8s;
+}
+
 .content_background {
-  padding: 0 16px 50px
+  padding: 70px 16px 0;
 }
 
 .layout {
@@ -17,14 +35,21 @@
   overflow: hidden;
 }
 
-page .layout-header-bar {
-  background: #fff;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-}
-
 .admin_sider {
-  position: fixed; 
+  position: fixed;
   height: 100vh;
   left: 0;
   overflow: auto;
+  z-index: 1000;
+}
+
+.header-right {
+  position: fixed;
+  right: 0;
+  margin-right: 75px
+}
+
+.pop-item {
+  margin:2px 0;
+  width: 100%
 }

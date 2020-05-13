@@ -4,11 +4,19 @@ import Table from '../../dbs/models/table'
 let router = new Router({ prefix: '/manager/table_manage' })
 
 router.get('/getTable', async ctx => {
+  let pageSize = ctx.request.query.pageSize ? parseInt(ctx.request.query.pageSize) : 15
+  let page = ctx.request.query.page ? parseInt(ctx.request.query.page) : 1
+  let keyword = ctx.request.query.word || ''
+  var reg = new RegExp(keyword, 'i');
+  let skip = (page - 1) * pageSize
   try {
-    let result = await Table.find()
+    const total = await Table.find({ $or: [{ tablename: { $regex: reg } }] }).sort({_id: -1}).count()
+    let result = await Table.find({ $or: [{ tablename: { $regex: reg } }] }).sort({_id: -1}).skip(skip).limit(pageSize)
+    let isMore = total - (((page - 1) * pageSize) + result.length) > 0 ? true : false
     ctx.body = {
       tmcode: 0,
-      tmresult: result
+      tmresult: result,
+      isMore: isMore
     }
   } catch (e) {
     ctx.body = {

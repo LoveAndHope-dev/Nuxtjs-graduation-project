@@ -26,25 +26,13 @@
         </FormItem>
       </Form>
     </TabPane>
-    <TabPane label="查询桌位">
-      <Input
-        v-model="searchtableForm.name"
-        search
-        enter-button
-        @on-search="searchTableSubmit"
-        placeholder="输入您的查询桌位"
-        style="margin:20px 0"
-      />
-    </TabPane>
   </Tabs>
 </template>
 <script>
 export default {
   data () {
     return {
-      searchtableForm: {
-        name: ''
-      },
+      
       tableForm: {
         id: ''
       }
@@ -57,12 +45,6 @@ export default {
       formData.append('tablepeople', this.tableForm.people)
       formData.append('tablecondition', '可用')
       this.$emit('addTableSubmit', formData)
-    },
-    searchTableSubmit: async function () {
-      let self = this
-      let formData = new FormData()
-      formData.append('tablename', self.searchtableForm.name)
-      this.$emit('searchTableSubmit', formData)
     }
   }
 }

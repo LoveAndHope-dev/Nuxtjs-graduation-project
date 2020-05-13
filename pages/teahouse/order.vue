@@ -5,15 +5,24 @@
         label="未完成的订单"
         name="name1"
       >
-        <Row :gutter="16">
-          <Col
-            span="12"
-            v-for="(item, index) in ordersList"
-            :key="index"
+        <no-ssr>
+          <div
+            v-masonry
+            transition-duration="0.3s"
+            item-selector=".item"
+            class="masonry-container"
           >
-          <unfinishedorder :data="item" />
-          </Col>
-        </Row>
+            <div
+              v-masonry-tile
+              class="item order-container"
+              :key="index"
+              v-for="(item, index) in ordersList"
+            >
+              <unfinishedorder :data="item" />
+            </div>
+          </div>
+        </no-ssr>
+        
         <Button
           v-if="isMore"
           long
@@ -21,13 +30,9 @@
         >———— 加载更多 ————</Button>
       </TabPane>
       <TabPane
-        label="标签二"
+        label="已完成订单"
         name="name2"
       >标签二的内容</TabPane>
-      <TabPane
-        label="标签三"
-        name="name3"
-      >标签三的内容</TabPane>
     </Tabs>
   </div>
 
@@ -35,14 +40,21 @@
 
 <script>
 import axios from 'axios'
+import NoSSR from 'vue-no-ssr'
 import unfinishedorder from '@/components/frontplatform/frontpage/order/unfinishedorder.vue'
 export default {
   components: {
+    'no-ssr': NoSSR,
     unfinishedorder
   },
   async asyncData (ctx) {
     let { data: { code, data, isMore } } = await ctx.$axios.get('/teahouse/order/getOrder')
     return { ordersList: data, isMore };
+  },
+  mounted () {
+    if (typeof this.$redrawVueMasonry === 'function') {
+      this.$redrawVueMasonry()
+    }
   },
   data () {
     return {
@@ -81,4 +93,5 @@ export default {
 </script>
 
 <style scoped>
+@import "@/assets/frontpage/frontcomp/orderpage.css";
 </style>

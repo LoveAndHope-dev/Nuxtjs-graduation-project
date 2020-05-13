@@ -97,12 +97,6 @@
             @click="changeForm()"
           >修改个人信息
           </Button>
-          <Button
-            style="margin:0 20px"
-            type="error"
-            @click="exit()"
-          >退出登录
-          </Button>
         </ListItem>
       </List>
       </Col>
@@ -191,10 +185,6 @@ export default {
       formData.append('adminsex', this.changeinfoForm.radio)
       formData.append('adminphoto', this.fileSrc)
       this.$emit('changeInfoSubmit', formData)
-    },
-    async exit () {
-      this.$Message.success('你已经退出，请重新登录')
-      this.$router.push('/exit')
     },
     before (file) {
       this.file = file

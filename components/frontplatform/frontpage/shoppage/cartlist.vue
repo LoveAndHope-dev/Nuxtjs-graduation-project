@@ -1,46 +1,19 @@
 <template>
   <div>
-    <Row>
-      <Col
-        span="24"
-        v-for="(item, index) in cartitem"
-        :key="item.name"
+    <Table
+      border
+      size="small"
+      :columns="cart"
+      :data="cartitem"
+    >
+      <template
+        slot-scope="scope"
+        slot="name"
       >
-      <Card style="margin:20px 0">
-        <Row>
-          <Col span="9">
-          <img
-            style="width:100px"
-            :src="item.photo"
-          >
-          </img>
-          </Col>
-          <Col
-            span="14"
-            offset="1"
-          >
-          <h3>商品名称：{{item.name}}</h3>
-          <h3>价格：￥{{item.price * item.num}}</h3>
-          <h3>单价：￥{{item.price}}</h3>
-          <InputNumber
-            v-model="item.num"
-            size="large"
-            :min="1"
-            :editable="true"
-            @on-change="changeNum($event, item.id)"
-          ></InputNumber>
-          <Icon
-            type="ios-trash-outline"
-            size="50"
-            color="#ed4014"
-            style="margin:0 50px;cursor:pointer"
-            @click.stop="deleteProduct(item.id, index)"
-          />
-          </Col>
-        </Row>
-      </Card>
-      </Col>
-    </Row>
+        <strong>{{ scope.row.name }}</strong>
+      </template>
+    </Table>
+    <h2 style="text-align: right;margin-right: 15%">总价：{{totalPrice}}</h2>
   </div>
 </template>
 
@@ -49,6 +22,79 @@ import axios from 'axios'
 export default {
   props: {
     cartitem: null
+  },
+  data () {
+    return {
+      cart: [
+        {
+          title: '商品名',
+          slot: 'name'
+        },
+        {
+          title: '单价',
+          key: 'price'
+        },
+        {
+          title: '消费金额',
+          key: 'money',
+          render: (h, params) => {
+            if (!params.row.money) {
+              let str = params.row.price * params.row.num;
+              this.$set(this.cartitem[params.index], 'money', str)
+              return h('span', {}, str)
+            } else {
+              return h('span', {}, params.row.money)
+            }
+          }
+        },
+        {
+          title: '操作',
+          key: 'num',
+          width: 200,
+          render: (h, params) => {
+            return h('div', [
+              h('InputNumber', {
+                props: {
+                  min: 1,
+                  value: params.row.num
+                },
+                on: {
+                  'on-change': e => {
+                    params.row.num = e
+                    let str = params.row.price * params.row.num;
+                    this.$set(this.cartitem[params.index], 'money', str)
+                    this.changeNum(e, params.row.id)
+                  }
+                }
+              }),
+              h('Button', {
+                props: {
+                  type: 'error'
+                },
+                style: {
+                  margin: '0 10px'
+                },
+                on: {
+                  click: e => {
+                    this.deleteProduct(params.row.id, params.index)
+                  }
+                }
+              }, '删除')
+            ])
+          }
+        }
+      ]
+    }
+  },
+  computed: {
+    totalPrice () {
+      let total = 0;
+      let list = Array.from(this.cartitem)
+      list.forEach(item => {
+        total += item.money;
+      });
+      return total;
+    }
   },
   methods: {
     async deleteProduct (id, index) {

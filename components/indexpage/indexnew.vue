@@ -33,7 +33,7 @@
       <CarouselItem>
         <div class="demo-carousel">
           <card class="index_new_card">
-            <img src="/illust_61283291_20190910_163354.jpg" style="width:100%"></img>
+            
           </card>
         </div>
       </CarouselItem>

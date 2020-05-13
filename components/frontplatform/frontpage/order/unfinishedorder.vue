@@ -1,36 +1,27 @@
+<style scoped>
+@import "@/assets/frontpage/frontcomp/orderpage.css";
+</style>
 <template>
   <div>
-    <Card :bordered="false" style="margin:20px 0">
-      <h2
-        slot="title"
-        style="height: 40px"
-      >
+    <Card>
+      <div slot="title">
         <Row>
-          <Col span="20">未完成的订单：订单流水号：{{data._id}}<br>下单时间：{{data.ordertime}}，桌位：{{data.ordertable}}</Col>
+          <Col span="20">
+          <h3>未完成的订单 流水号：{{data._id}}</h3><br />
+          <h4>下单时间：{{data.ordertime}}，桌位：{{data.ordertable}}</h4>
+          </Col>
           <Col span="4">
           <Button type="success">完成订单</Button>
           </Col>
         </Row>
-      </h2>
-      <div
-        v-for="item in data.orderlist"
-        :key="item._id"
-        style="margin: 20px 50px"
-      >
-        <Row>
-          <Col span="6">
-          <img :src="item.photo" width="100px">
-          </Col>
-          <Col span="18">
-          <h2>商品名称：{{item.name}}</h2>
-          <h2>选择数量：{{item.num}}</h2>
-          <h2>单个价格：{{item.price}}</h2>
-          <h2>总体价格：{{item.num * item.price}}</h2>
-          </Col>
-        </Row>
-        <Divider></Divider>
       </div>
-      <h2 style="margin:0 150px">总价：{{totalPrice}}</h2>
+      <Table
+        style="width:100%"
+        :columns="columns1"
+        :data="data.orderlist"
+      >
+      </Table>
+      <h2 class="total-cost">总价：{{totalPrice}}</h2>
     </Card>
   </div>
 </template>
@@ -39,6 +30,33 @@
 export default {
   props: {
     data: Object
+  },
+  data () {
+    return {
+      columns1: [
+        {
+          title: '名称',
+          key: 'name'
+        },
+        {
+          title: '数量',
+          key: 'num'
+        },
+        {
+          title: '单个价格',
+          key: 'price'
+        },
+        {
+          title: '总体价格',
+          key: 'cost',
+          render: (h, params) => {
+            return h('div', [
+              h('p', params.row.num * params.row.price)
+            ])
+          }
+        }
+      ]
+    }
   },
   computed: {
     totalPrice () {

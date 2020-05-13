@@ -48,8 +48,7 @@
         <div
           id="coloregg"
           @click="change"
-          class="b-background1"
-          style="height:450px"
+          class="b-background1 head-pic"
         >
         </div>
         <nuxt-child></nuxt-child>
@@ -82,7 +81,7 @@ export default {
       }
       if (this.m14_appear == 17) {
         var coloregg = document.getElementById('coloregg');//查找元素
-        coloregg.className = 'b-background4';
+        coloregg.className = 'b-background4 head-pic';
         this.$Message.success('这是一个小彩蛋，m14出现啦')
       }
     }

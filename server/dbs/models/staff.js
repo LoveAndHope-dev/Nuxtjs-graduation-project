@@ -37,9 +37,7 @@ const StaffSchema = new Schema({
     {
       goodsId: String,
       goodsPrice: Number,
-      goodsPhoto: String,
       goodsName: String,
-      checked: { type: Boolean, default: false },
       goodsNum: Number
     }
   ]

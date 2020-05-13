@@ -1,0 +1,16 @@
+.total-cost {
+  text-align: right;
+  margin-right: 15%
+}
+
+.order-container {
+  width: 49.5%;
+  margin: 0.25%
+}
+
+@media (max-width: 1200px) {
+  .order-container {
+    width: 99%;
+    margin: 0.5%
+  }
+}

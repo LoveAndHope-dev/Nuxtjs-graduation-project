@@ -3,37 +3,54 @@
 </style>
 <template>
   <div class="layout">
-    <Sider class="admin_sider">
-      <nuxt-link to="/">
-        <div class="main_title_logo">🍵TeaHub<br>Chakela🍮</div>
+    <Sider
+      collapsible
+      :collapsed-width="78"
+      v-model="isCollapsed"
+      :class="siderstyle"
+    >
+      <nuxt-link to="/manager">
+        <div
+          v-if="!isCollapsed"
+          class="main_title_logo"
+        >🍵TeaHub<br>Chakela🍮</div>
+        <div
+          v-else
+          class="main_title_logo_small"
+        >🍵</div>
       </nuxt-link>
       <Menu
         theme="dark"
         width="auto"
       >
-        <MenuGroup title="食品管理">
+        <Submenu name="1">
+          <p slot="title">
+            <span>食品管理</span></p>
           <MenuItem
             name="1"
             to="/manager/tea_manage"
           >
           <Icon type="md-leaf" />
-          茶品管理
+          <span>茶品管理</span>
           </MenuItem>
           <MenuItem
             name="2"
             to="/manager/cake_manage"
           >
           <Icon type="md-ice-cream" />
-          茶点管理
+          <span>茶点管理</span>
           </MenuItem>
-        </MenuGroup>
-        <MenuGroup title="人员管理">
+        </Submenu>
+        <Submenu name="2">
+          <p slot="title">
+            <span>人员管理</span>
+          </p>
           <MenuItem
             name="3"
             to="/manager/worker_manage"
           >
           <Icon type="md-contacts" />
-          工作人员管理
+          <span>工作人员管理</span>
           </MenuItem>
           <MenuItem
             name="4"
@@ -41,45 +58,45 @@
             v-if="users[0].type === true"
           >
           <Icon type="md-contact" />
-          管理员管理
+          <span>管理员管理</span>
           </MenuItem>
           <div v-else></div>
-        </MenuGroup>
-        <MenuGroup title="杂项">
+        </Submenu>
+        <Submenu name="3">
+          <p slot="title">
+            <span>杂项</span>
+          </p>
           <MenuItem
             name="5"
             to="/manager/table_manage"
           >
-          <Icon type="md-desktop" />桌位管理
+          <Icon type="md-desktop" />
+          <span>桌位管理</span>
           </MenuItem>
           <MenuItem
             name="6"
             to="/manager/order_manage"
           >
-          <Icon type="md-paper" />订单管理
+          <Icon type="md-paper" />
+          <span>订单管理</span>
           </MenuItem>
           <MenuItem
             name="7"
             to="/manager/article_manage"
           >
-          <Icon type="md-book" />文章管理
+          <Icon type="md-book" />
+          <span>文章管理</span>
           </MenuItem>
-          <MenuItem
-            name="8"
-            to="/manager/myself_infomation"
-          >
-          <Icon type="md-people" />个人信息
-          </MenuItem>
-          <MenuItem
-            name="9"
-            to="/manager"
-          >
-          <Icon type="ios-apps-outline" />管理员首页
-          </MenuItem>
-        </MenuGroup>
+        </Submenu>
       </Menu>
     </Sider>
-    <Layout :style="{marginLeft: '200px', marginTop: '20px'}">
+    <Layout
+      :style="contentstyle"
+      class="transport-s-or-l"
+    >
+      <Header style="z-index:500;position:fixed;width: 100%;top: 0; background: #fff; boxShadow:0 2px 0 0 rgba(0,0,0,.1)">
+        <headercomp :users="users" />
+      </Header>
       <Content class="content_background">
         <nuxt-child></nuxt-child>
       </Content>
@@ -88,9 +105,27 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import headercomp from '@/components/admin/headercomp'
 export default {
+  components: {
+    headercomp
+  },
+  data () {
+    return {
+      isCollapsed: false
+    };
+  },
   computed: {
-    ...mapState({ users: state => state.usermodal.user.user })
+    ...mapState({ users: state => state.usermodal.user.user }),
+    contentstyle: function () {
+      return this.isCollapsed ? `margin-left:78px` : `margin-left:200px`
+    },
+    siderstyle: function () {
+      return [
+        'admin_sider',
+        this.isCollapsed ? `siderchange` : ``
+      ]
+    }
   }
 }
 </script>

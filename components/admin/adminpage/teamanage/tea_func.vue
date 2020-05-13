@@ -76,7 +76,7 @@
                 <Icon
                   type="ios-cloud-upload"
                   size="100"
-                  style="color: #fff; padding: 20px 0"
+                  style="color: #fff; padding: 40px 0"
                 ></Icon>
                 <h3>点击此处上传图片</h3>
               </Avatar>

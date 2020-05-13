@@ -1,16 +1,16 @@
 <template>
   <div>
-    <Divider>老哥你要吃点啥，来点老八秘制小憨包？</Divider>
+    <Divider>老哥你要吃点啥</Divider>
     <Drawer
       v-model="value1"
-      width="500"
+      width="550"
     >
       <div slot="header">
         <Row
           :gutter="16"
           class="drawer-header-button"
         >
-          <Col :span="6">
+          <Col :span="8">
           <Select
             v-model="tableselect"
             placeholder="您的桌位请选择"
@@ -37,7 +37,6 @@
           >清空</Button>
           </Col>
           <Col :span="6">
-          <h2>￥{{totalPrice}}</h2>
           </Col>
         </Row>
       </div>
@@ -176,7 +175,7 @@ export default {
       drink: [],
       cake: [],
       value1: false,
-      cartitem: {},
+      cartitem: [],
       table: '',
       tableselect: '',
       isMoreTea: true,
@@ -186,16 +185,6 @@ export default {
       cakepage: 1,
       word: '',
       type: 'tea'
-    }
-  },
-  computed: {
-    totalPrice () {
-      let total = 0;
-      let list = Array.from(this.cartitem)
-      list.forEach(item => {
-        total += item.price * item.num;
-      });
-      return total;
     }
   },
   mounted () {
@@ -286,7 +275,7 @@ export default {
     async openCart () {
       this.value1 = true
       let { status, data: { code, result, tableresult } } = await axios.get('/teahouse/shop/getCart')
-      if (status === 200 & code === 0) {
+      if (status === 200 & code === 0 && result) {
         this.cartitem = result.filter(item => item.goodsId.length).map(item => {
           return {
             id: item.goodsId,

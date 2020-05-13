@@ -21,7 +21,6 @@ const orderSchema = new Schema({
     {
       id: String,
       price: Number,
-      photo: String,
       name: String,
       num: Number
     }

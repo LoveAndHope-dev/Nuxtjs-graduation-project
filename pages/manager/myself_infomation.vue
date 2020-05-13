@@ -25,8 +25,8 @@ export default {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
-        this.$Message.success('修改成功,三秒后刷新页面')
-        setTimeout(function () { location.reload() }, 3000);
+        this.$Message.success('修改成功,正在刷新页面')
+        setTimeout(function () { location.reload() }, 1000);
       }
     }
   }

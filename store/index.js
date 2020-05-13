@@ -23,7 +23,8 @@ export const actions = {
               phonenumber: item.adminphonenumber,
               password: item.adminpassword,
               type: item.admintype,
-              wages: item.adminwages
+              wages: item.adminwages,
+              isadmin: true
             }
           })
         })
@@ -42,7 +43,8 @@ export const actions = {
               photo: item.staffphoto,
               phonenumber: item.staffphonenumber,
               password: item.staffpassword,
-              wages: item.staffwages
+              wages: item.staffwages,
+              isadmin: false
             }
           })
         })

@@ -10,9 +10,9 @@ router.get('/getOrder', async (ctx) => {
   // 跳多少条数据
   let skip = (page - 1) * pageSize
   // 总数
-  const total = await Order.find({ staffid: ctx.req.user.result._id }).count()
+  const total = await Order.find({ staffid: ctx.req.user.result._id }).sort({ _id: -1 }).count()
   // 数据
-  const lists = await Order.find({ staffid: ctx.req.user.result._id }).skip(skip).limit(pageSize)
+  const lists = await Order.find({ staffid: ctx.req.user.result._id }).sort({ _id: -1 }).skip(skip).limit(pageSize)
 
   if (lists) {
     let isMore = total - (((page - 1) * pageSize) + lists.length) > 0 ? true : false

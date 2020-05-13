@@ -44,35 +44,53 @@
         </FormItem>
       </Form>
     </Drawer>
-    <Table
-      border
-      height="720"
-      :columns="tableColumns"
-      :data="tables"
-    >
-      <template
-        slot-scope="{ row }"
-        slot="id"
-      >
-        <strong>{{ row.id }}</strong>
-      </template>
-      <template
-        slot-scope="{ row, index }"
-        slot="action"
-      >
-        <Button
-          type="primary"
-          size="small"
-          style="margin-right: 5px"
-          @click="changeForm(index)"
-        >View</Button>
-        <Button
-          type="error"
-          size="small"
-          @click="remove(index)"
-        >Delete</Button>
-      </template>
-    </Table>
+    <Tabs>
+      <TabPane label="查询桌位">
+        <Input
+          v-model="searchtableForm.name"
+          search
+          enter-button
+          @on-search="searchTableSubmit"
+          placeholder="输入您的查询桌位"
+          style="margin:20px 0"
+        />
+        <Table
+          border
+          height="720"
+          :columns="tableColumns"
+          :data="tables"
+        >
+          <template
+            slot-scope="{ row }"
+            slot="id"
+          >
+            <strong>{{ row.id }}</strong>
+          </template>
+          <template
+            slot-scope="{ row, index }"
+            slot="action"
+          >
+            <Button
+              type="primary"
+              size="small"
+              style="margin-right: 5px"
+              @click="changeForm(index)"
+            >View</Button>
+            <Button
+              type="error"
+              size="small"
+              @click="remove(index)"
+            >Delete</Button>
+          </template>
+        </Table>
+         <Button
+            :disabled="!ismore"
+            long
+            @click="loadMore"
+          >———— 加载更多 ————
+          </Button>
+      </TabPane>
+    </Tabs>
   </div>
 </template>
 
@@ -82,10 +100,14 @@ export default {
   components: {
   },
   props: {
-    tables: Array
+    tables: Array,
+    ismore: Boolean
   },
   data () {
     return {
+      searchtableForm: {
+        name: ''
+      },
       tableColumns: [
         {
           title: '桌位名',
@@ -108,10 +130,19 @@ export default {
       ],
       value2: false,
       changetableFormTitle: '',
-      changetableForm: {}
+      changetableForm: {},
+      pageSize: 15,
+      page: 1
     }
   },
   methods: {
+    loadMore () {
+      this.$emit('getTableLists', { page: ++this.page, loadMore: true, word: this.searchtableForm.name });
+    },
+    searchTableSubmit () {
+      this.page = 1
+      this.$emit('getTableLists', { word: this.searchtableForm.name })
+    },
     async remove (index) {
       let formData = new FormData()
       formData.append('submitID', this.tables[index].id)
@@ -148,6 +179,12 @@ export default {
         this.$Message.success('修改成功')
       }
     }
+    // searchTableSubmit: async function () {
+    //   let self = this
+    //   let formData = new FormData()
+    //   formData.append('tablename', self.searchtableForm.name)
+    //   this.$emit('searchTableSubmit', formData)
+    // }
   }
 }
 </script>

@@ -9,7 +9,6 @@
       @getCakeLists="getCakeLists"
     />
   </div>
-
 </template>
 
 <script>
