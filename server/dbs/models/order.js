@@ -9,6 +9,10 @@ const orderSchema = new Schema({
     type: String,
     unique: false
   },
+  ordertableid: {
+    type: mongoose.Types.ObjectId,
+    unique: false
+  },
   ordertable: {
     type: String,
     unique: false

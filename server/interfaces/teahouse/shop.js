@@ -247,15 +247,19 @@ router.delete('/cleanCart', async (ctx) => {
 })
 
 router.post('/addOrder', async (ctx) => {
+  let tresult = await Table.findByIdAndUpdate(ctx.request.body.ordertableid, {
+    tablecondition: '已满'
+  }, { 'new': true })
   let addnew = new Order({
     ordertime: ctx.request.body.ordertime,
     staffid: ctx.req.user.result._id,
-    ordertable: ctx.request.body.ordertable,
+    ordertableid: ctx.request.body.ordertableid,
+    ordertable: tresult.tablename,
     orderstatus: true,
     orderlist: JSON.parse(ctx.request.body.orderlist)
   })
   let result = await addnew.save()
-  if (result) {
+  if (result && tresult) {
     ctx.body = {
       code: 0,
       msg: ''

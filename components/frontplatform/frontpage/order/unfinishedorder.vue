@@ -11,7 +11,10 @@
           <h4>下单时间：{{data.ordertime}}，桌位：{{data.ordertable}}</h4>
           </Col>
           <Col span="4">
-          <Button type="success">完成订单</Button>
+          <Button
+            type="success"
+            @click="finishOrder"
+          >完成订单</Button>
           </Col>
         </Row>
       </div>
@@ -66,6 +69,22 @@ export default {
         total += item.price * item.num;
       });
       return total;
+    }
+  },
+  methods: {
+    async finishOrder () {
+      let formdata = new FormData()
+      formdata.append('orderid', this.data._id)
+      formdata.append('tableid', this.data.ordertableid)
+      let { status, data: { code } } = await this.$axios.post(`/teahouse/order/finishOrder`, formdata, {
+        headers: { 'content-type': 'multipart/form-data' }
+      })
+      if (code === 0) {
+        this.$Message.success('您已经完成订单，正在刷新页面')
+        setTimeout(function () { location.reload() }, 1000);
+      } else {
+        this.$Message.serror('出错请重试')
+      }
     }
   }
 }

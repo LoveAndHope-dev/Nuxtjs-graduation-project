@@ -17,7 +17,7 @@
           >
             <Option
               v-for="item in table"
-              :value="item.name"
+              :value="item.id"
               :key="item.id"
             >{{item.name}}</Option>
           </Select>
@@ -297,9 +297,8 @@ export default {
     async goCount () {
       let formData = new FormData()
       formData.append('orderlist', JSON.stringify(this.cartitem))
-      formData.append('ordertable', this.tableselect)
+      formData.append('ordertableid', this.tableselect)
       formData.append('ordertime', moment().format('MMMM Do YYYY, h:mm:ss'))
-
       let { data: { code, msg } } = await axios.post('/teahouse/shop/addOrder', formData, {
         headers: { 'content-type': 'multipart/form-data' }
       })
