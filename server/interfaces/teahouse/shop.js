@@ -253,6 +253,7 @@ router.post('/addOrder', async (ctx) => {
   let addnew = new Order({
     ordertime: ctx.request.body.ordertime,
     staffid: ctx.req.user.result._id,
+    staffname: ctx.req.user.result.staffname,
     ordertableid: ctx.request.body.ordertableid,
     ordertable: tresult.tablename,
     orderstatus: true,

@@ -10,6 +10,7 @@ import userauth from './interfaces/utils/userauth'
 import dbConfig from './dbs/config'
 import Staff from './interfaces/admin/staff'
 import Article from './interfaces/admin/article'
+import Order from './interfaces/admin/order'
 import Mainpage from './interfaces/admin/mainpage'
 import Admin from './interfaces/admin/admin'
 import Drink from './interfaces/admin/drink'
@@ -82,6 +83,7 @@ async function start () {
   app.use(ArticlePage.routes()).use(ArticlePage.allowedMethods())
   app.use(teahouseshop.routes()).use(teahouseshop.allowedMethods())
   app.use(teahouseorder.routes()).use(teahouseorder.allowedMethods())
+  app.use(Order.routes()).use(Order.allowedMethods())
   app.use(Homepage.routes()).use(Homepage.allowedMethods())
 
   app.use(ctx => {

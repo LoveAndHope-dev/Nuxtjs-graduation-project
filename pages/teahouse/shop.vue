@@ -303,8 +303,8 @@ export default {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (code == 0) {
-        this.$Message.success('下单成功。')
-        setTimeout(function () { location.href = '/teahouse/order' }, 1500);
+        this.$Message.success('下单成功,正在跳转至订单页')
+        // setTimeout(function () { location.href = '/teahouse/order' }, 1000);
       } else {
         this.$Message.error(res.msg);
       }
