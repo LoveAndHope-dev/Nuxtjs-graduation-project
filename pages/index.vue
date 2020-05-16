@@ -47,7 +47,20 @@
         <div class="pure-u-1 pure-u-md-1-2">
           <Divider>最近新品</Divider>
           <div class="l-box">
-            <indexnew />
+            <Carousel
+              autoplay
+              class="index_new_card"
+            >
+              <CarouselItem
+                v-for="(item, index) in photos.slice(0,5)"
+                :key="index"
+              >
+                <img
+                  style=" width: 100%"
+                  v-lazy="item.photo"
+                />
+              </CarouselItem>
+            </Carousel>
           </div>
         </div>
         <div class="pure-u-1 pure-u-md-1-2">
@@ -92,11 +105,22 @@
 import xss from 'xss'
 import { mapState } from 'vuex'
 import indexarticle from '@/components/indexpage/indexarticle'
-import indexnew from '@/components/indexpage/indexnew'
 export default {
   components: {
-    indexarticle,
-    indexnew
+    indexarticle
+  },
+  async asyncData (ctx) {
+    let { status, data: { code, result } } = await ctx.$axios.get('/index/getPhoto')
+    if (status === 200 & code === 0) {
+      return {
+        photos: result.filter(item => item._id.length).map(item => {
+          return {
+            id: item._id,
+            photo: item.photo
+          }
+        })
+      }
+    }
   },
   computed: {
     ...mapState({ infos: state => state.usermodal.user.user }),
@@ -115,7 +139,6 @@ export default {
       })
       mapObj.addControl(geolocation);
       geolocation.getCurrentPosition(function (status, result) {
-        console.log(result, status)
         if (status == 'complete') {
           onComplete(result)
         } else {
@@ -141,10 +164,10 @@ export default {
 
 <style>
 @import "@/assets/common/pricing.css";
+@import "@/assets/frontpage/frontcomp/indexpage.css";
 #container {
   width: 100%;
   height: 200px;
   margin: 0px;
 }
-
 </style>

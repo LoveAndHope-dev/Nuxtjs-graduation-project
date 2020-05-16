@@ -250,6 +250,7 @@ export default {
     },
     deletepic () {
       this.fileSrc = null
+      this.photo = null
     },
     changeDrinkSubmit: async function () {
       let formData = new FormData()

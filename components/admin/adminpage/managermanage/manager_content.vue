@@ -241,6 +241,7 @@ export default {
       return false
     },
     deletepic () {
+      this.photo = null
       this.fileSrc = null
     },
     changeadminSubmit: async function () {

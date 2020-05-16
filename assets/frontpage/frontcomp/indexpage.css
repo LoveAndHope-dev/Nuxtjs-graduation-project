@@ -8,8 +8,11 @@
 
 .index_new_card {
   width: 100%;
-  height: 0;
+  height: 0px;
   padding-bottom: 30%;
+  overflow:hidden;
+  margin: 0;
+  position:relative;
 }
 
 .index_article_div {

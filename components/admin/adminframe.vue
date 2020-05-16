@@ -78,7 +78,7 @@
             to="/manager/order_manage"
           >
           <Icon type="md-paper" />
-          <span>订单管理</span>
+          <span>订单查看</span>
           </MenuItem>
           <MenuItem
             name="7"
@@ -86,6 +86,13 @@
           >
           <Icon type="md-book" />
           <span>文章管理</span>
+          </MenuItem>
+          <MenuItem
+            name="8"
+            to="/manager/new_manage"
+          >
+          <Icon type="logo-designernews" />
+          <span>新品图片上传</span>
           </MenuItem>
         </Submenu>
       </Menu>

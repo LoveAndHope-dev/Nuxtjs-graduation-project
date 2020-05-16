@@ -249,6 +249,7 @@ export default {
     },
     deletepic () {
       this.fileSrc = null
+      this.photo = null
     },
     changeWorkerSubmit: async function () {
       let formData = new FormData()

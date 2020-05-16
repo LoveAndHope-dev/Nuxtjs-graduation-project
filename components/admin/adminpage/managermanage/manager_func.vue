@@ -174,6 +174,7 @@ export default {
     },
     deletepic () {
       this.fileSrc = null
+      this.photo = null
     }
   }
 }

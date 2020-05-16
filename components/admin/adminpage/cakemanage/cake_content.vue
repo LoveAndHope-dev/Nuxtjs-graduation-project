@@ -253,6 +253,7 @@ export default {
     },
     deletepic () {
       this.fileSrc = null
+      this.photo = null
     },
     changecakeSubmit: async function () {
       let formData = new FormData()

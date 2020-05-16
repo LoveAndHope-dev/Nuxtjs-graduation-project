@@ -25,6 +25,7 @@
 
 .content_background {
   padding: 70px 16px 0;
+  min-height: 900px;
 }
 
 .layout {

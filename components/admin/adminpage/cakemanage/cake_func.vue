@@ -138,6 +138,7 @@ export default {
     },
     deletepic () {
       this.fileSrc = null
+      this.photo = null
     },
     async addcake () {
       let formData = new FormData()
