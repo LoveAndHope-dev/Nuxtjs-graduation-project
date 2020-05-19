@@ -1,14 +1,18 @@
 <template>
   <div>
-    <Card :style="{margin: '50px 0',height: '400px'}">
-    <h2>欢迎回来</h2>
+    <Card style="text-align: center">
+      <h2>欢迎回来 {{infos[0].name}}</h2>
+      <h2>今天又是充满希望的一天</h2>
     </Card>
   </div>
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
-  
+  computed: {
+    ...mapState({ infos: state => state.usermodal.user.user })
+  }
 }
 </script>
 

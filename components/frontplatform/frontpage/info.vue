@@ -211,12 +211,7 @@ export default {
       formData.append('staffphonenumber', this.changeinfoForm.phonenumber)
       formData.append('staffpassword', CryptoJS.MD5(changePassword).toString())
       formData.append('staffphoto', this.fileSrc)
-      let { status, data: { code, msg, staff } } = await this.$axios.post(`/teahouse/info/changeInfo`, formData, {
-        headers: { 'content-type': 'multipart/form-data' }
-      })
-      if (status === 200 & code === 0) {
-        this.$Message.success('修改成功')
-      }
+      this.$emit('changeInfoSubmit', formData)
     }
   }
 }

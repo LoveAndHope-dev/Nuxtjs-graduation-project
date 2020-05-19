@@ -5,7 +5,8 @@
     <Divider orientation="left">文章列表</Divider>
     <articlecontent
       :articles="articles"
-      @searchArticleSubmit="searchArticleSubmit"
+      :ismore="isMore"
+      @getArticleLists="getArticleLists"
     />
   </div>
 </template>
@@ -21,7 +22,7 @@ export default {
     articlefunc
   },
   async asyncData (ctx) {
-    let { status: amstatus, data: { amcode, amresult } } = await ctx.$axios.get('/manager/article_manage/getArticle')
+    let { status: amstatus, data: { amcode, amresult, isMore } } = await ctx.$axios.get('/manager/article_manage/getArticle')
     if (amstatus === 200 & amcode === 0) {
       return {
         articles: amresult.filter(item => item._id.length).map(item => {
@@ -41,13 +42,15 @@ export default {
               }
             })
           }
-        })
+        }),
+        isMore
       }
     }
   },
   data () {
     return {
-      article: Array
+      article: Array,
+      isMore: true
     }
   },
   methods: {
@@ -64,16 +67,25 @@ export default {
             text: item.articletext
           }
         })
-        this.articles.push(this.article[0])
+        this.getArticleLists({page: 1})
         this.$Message.success('添加成功')
       }
     },
-    async searchArticleSubmit (formData) {
-      let { status, data: { code, msg, result } } = await axios.post(`/manager/article_manage/searcharticle`, formData, {
-        headers: { 'content-type': 'multipart/form-data' }
-      })
-      if (status === 200 & code === 0) {
-        this.articles = result.filter(item => item._id.length).map(item => {
+    async getArticleLists ({
+      word = '',
+      pageSize = 15,
+      page = 1,
+      loadMore = false
+    }) {
+      let { data: { amcode, amresult, isMore } } = await axios.get('/manager/article_manage/getArticle', {
+        params: {
+          word: word,
+          pageSize: pageSize,
+          page: page
+        }
+      });
+      if (amcode == 0) {
+        let more = amresult.filter(item => item._id.length).map(item => {
           return {
             id: item._id,
             name: item.articlename,
@@ -91,7 +103,10 @@ export default {
             })
           }
         })
-        this.$Message.success('查询成功')
+        this.articles = loadMore
+          ? [...this.articles, ...more]
+          : more;
+        this.isMore = isMore
       }
     }
   }

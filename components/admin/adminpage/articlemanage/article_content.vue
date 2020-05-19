@@ -23,37 +23,43 @@
             placeholder="文章名字"
             style="margin:20px 0"
           />
+          <Table
+            border
+            height="500"
+            :columns="articleColumns"
+            :data="articles"
+          >
+            <template
+              slot-scope="{ row }"
+              slot="id"
+            >
+              <strong>{{ row.id }}</strong>
+            </template>
+            <template
+              slot-scope="{ row, index }"
+              slot="action"
+            >
+              <Button
+                type="primary"
+                size="small"
+                style="margin-right: 5px"
+                @click="show(index)"
+              >View</Button>
+              <Button
+                type="error"
+                size="small"
+                @click="remove(index)"
+              >Delete</Button>
+            </template>
+          </Table>
+          <Button
+            :disabled="!ismore"
+            long
+            @click="loadMore"
+          >———— 加载更多 ————
+          </Button>
         </TabPane>
       </Tabs>
-      <Table
-        border
-        height="500"
-        :columns="articleColumns"
-        :data="articles"
-      >
-        <template
-          slot-scope="{ row }"
-          slot="id"
-        >
-          <strong>{{ row.id }}</strong>
-        </template>
-        <template
-          slot-scope="{ row, index }"
-          slot="action"
-        >
-          <Button
-            type="primary"
-            size="small"
-            style="margin-right: 5px"
-            @click="show(index)"
-          >View</Button>
-          <Button
-            type="error"
-            size="small"
-            @click="remove(index)"
-          >Delete</Button>
-        </template>
-      </Table>
     </card>
   </div>
 </template>
@@ -63,7 +69,8 @@ import xss from 'xss'
 import axios from 'axios'
 export default {
   props: {
-    articles: Array
+    articles: Array,
+    ismore: Boolean
   },
   data () {
     return {
@@ -89,10 +96,19 @@ export default {
       modal1: false,
       text: '',
       title: '',
-      time: ''
+      time: '',
+      pageSize: 15,
+      page: 1
     }
   },
   methods: {
+    loadMore () {
+      this.$emit('getArticleLists', { page: ++this.page, loadMore: true, word: this.searcharticleForm.name });
+    },
+    searchArticleSubmit () {
+      this.page = 1
+      this.$emit('getArticleLists', { word: this.searcharticleForm.name })
+    },
     show (index) {
       this.modal1 = true
       this.text = this.articles[index].text
@@ -106,15 +122,9 @@ export default {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
-        this.articles.splice(index, 1);
+         this.$emit('getArticleLists', { word: this.searcharticleForm.name })
         this.$Message.success('删除成功')
       }
-    },
-    searchArticleSubmit: async function () {
-      let self = this
-      let formData = new FormData()
-      formData.append('articlename', self.searcharticleForm.name)
-      this.$emit('searchArticleSubmit', formData)
     }
   }
 }

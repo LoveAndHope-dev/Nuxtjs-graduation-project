@@ -49,6 +49,7 @@
           id="coloregg"
           @click="change"
           class="b-background1 head-pic"
+          style="width: 100%;height: 0;padding-bottom: 35%;"
         >
         </div>
         <nuxt-child></nuxt-child>

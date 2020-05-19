@@ -41,6 +41,12 @@
             placeholder="Enter something..."
           ></Input>
         </FormItem>
+        <FormItem label="性别">
+          <RadioGroup v-model="changeWorkerForm.radio">
+            <Radio label="male">Male</Radio>
+            <Radio label="female">Female</Radio>
+          </RadioGroup>
+        </FormItem>
         <FormItem label="密码">
           <Input
             v-model="changeWorkerForm.password"
@@ -120,7 +126,7 @@
               >删除</Button>
             </template>
           </Table>
-           <Button
+          <Button
             :disabled="!ismore"
             long
             @click="loadMore"
@@ -223,6 +229,7 @@ export default {
       this.changeWorkerForm.phonenumber = this.staffs[index].phonenumber
       this.changeWorkerForm.email = this.staffs[index].email
       this.changeWorkerForm.wages = this.staffs[index].wages
+      this.changeWorkerForm.radio = this.staffs[index].sex
       this.fileSrc = this.staffs[index].photo
     },
     before (file) {
@@ -265,6 +272,7 @@ export default {
       formData.append('staffphonenumber', this.changeWorkerForm.phonenumber)
       formData.append('staffpassword', CryptoJS.MD5(changePassword).toString())
       formData.append('staffwages', parseInt(this.changeWorkerForm.wages))
+      formData.append('staffsex', this.changeWorkerForm.radio)
       formData.append('staffphoto', this.fileSrc)
       let { status, data: { code, msg, staff } } = await axios.post(`/manager/worker_manage/changeStaff`, formData, {
         headers: { 'content-type': 'multipart/form-data' }

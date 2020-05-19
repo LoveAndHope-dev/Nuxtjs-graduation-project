@@ -82,6 +82,7 @@ router.post('/changeadmin', async ctx => {
   let result = await Admin.findOneAndUpdate({ '_id': changeID }, {
     adminname: ctx.request.body.adminname,
     adminemail: ctx.request.body.adminemail,
+    adminsex: ctx.request.body.adminsex,
     adminphonenumber: ctx.request.body.adminphonenumber,
     adminphoto: ctx.request.body.adminphoto,
     adminpassword: ctx.request.body.adminpassword,

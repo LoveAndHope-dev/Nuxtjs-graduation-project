@@ -4,11 +4,19 @@ import Article from '../../dbs/models/article'
 let router = new Router({ prefix: '/manager/article_manage' })
 
 router.get('/getArticle', async ctx => {
+  let pageSize = ctx.request.query.pageSize ? parseInt(ctx.request.query.pageSize) : 15
+  let page = ctx.request.query.page ? parseInt(ctx.request.query.page) : 1
+  let keyword = ctx.request.query.word || ''
+  var reg = new RegExp(keyword, 'i');
+  let skip = (page - 1) * pageSize
   try {
-    let result = await Article.find()
+    const total = await Article.find({ $or: [{ articlename: { $regex: reg } }] }).sort({_id: -1}).count()
+    let result = await Article.find({ $or: [{ articlename: { $regex: reg } }] }).sort({_id: -1}).skip(skip).limit(pageSize)
+    let isMore = total - (((page - 1) * pageSize) + result.length) > 0 ? true : false
     ctx.body = {
       amcode: 0,
-      amresult: result
+      amresult: result,
+      isMore: isMore
     }
   } catch (e) {
     ctx.body = {

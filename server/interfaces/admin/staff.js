@@ -92,7 +92,8 @@ router.post('/changeStaff', async ctx => {
     staffphonenumber: ctx.request.body.staffphonenumber,
     staffphoto: ctx.request.body.staffphoto,
     staffpassword: ctx.request.body.staffpassword,
-    staffwages: ctx.request.body.staffwages
+    staffwages: ctx.request.body.staffwages,
+    staffsex: ctx.request.body.staffsex
   }, { 'new': true })
   if (result) {
     ctx.body = {

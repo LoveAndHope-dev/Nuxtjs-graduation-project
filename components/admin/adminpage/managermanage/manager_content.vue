@@ -41,6 +41,12 @@
             placeholder="Enter something..."
           ></Input>
         </FormItem>
+        <FormItem label="性别">
+          <RadioGroup v-model="changeadminForm.radio">
+            <Radio label="male">Male</Radio>
+            <Radio label="female">Female</Radio>
+          </RadioGroup>
+        </FormItem>
         <FormItem label="密码">
           <Input
             v-model="changeadminForm.password"
@@ -216,6 +222,7 @@ export default {
       this.changeadminForm.phonenumber = this.admins[index].phonenumber
       this.changeadminForm.email = this.admins[index].email
       this.changeadminForm.wages = this.admins[index].wages
+      this.changeadminForm.radio = this.admins[index].sex
       this.fileSrc = this.admins[index].photo
     },
     before (file) {
@@ -257,6 +264,7 @@ export default {
       formData.append('adminemail', this.changeadminForm.email)
       formData.append('adminphonenumber', this.changeadminForm.phonenumber)
       formData.append('admintype', this.changeadminForm.type)
+      formData.append('adminsex', this.changeadminForm.radio)
       formData.append('adminpassword', CryptoJS.MD5(changePassword).toString())
       formData.append('adminwages', parseInt(this.changeadminForm.wages))
       formData.append('adminphoto', this.fileSrc)
