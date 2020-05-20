@@ -1,5 +1,28 @@
 <template>
   <div>
+    <Modal
+      v-model="modal1"
+      style="width:800px"
+      @on-ok="ok"
+      @on-cancel="cancel"
+    >
+      <div style="width:100%;height:400px">
+        <no-ssr>
+          <cropper
+            ref="cropper"
+            :img="fileSrc"
+            :canMoveBox="true"
+            :outputSize="1"
+            :fixed="true"
+            :canScale="true"
+            :fixedNumber="[5, 5]"
+            :autoCrop="true"
+            :centerBox="true"
+          >
+          </cropper>
+        </no-ssr>
+      </div>
+    </Modal>
     <Card>
       <Tabs>
         <TabPane label="添加管理员">
@@ -52,7 +75,7 @@
                   ></Input>
                 </FormItem>
                 </Col>
-                 <Col span="12">
+                <Col span="12">
                 <FormItem label="工资">
                   <Input
                     v-model="addadminForm.inputwages"
@@ -90,13 +113,13 @@
               >
                 <Avatar
                   shape="square"
-                  style="width: 180px; height: 252px"
+                  style="width: 180px; height: 180px"
                   :src="fileSrc"
                 >
                   <Icon
                     type="ios-cloud-upload"
                     size="100"
-                    style="color: #fff; padding: 40px 0"
+                    style="color: #fff; padding: 20px 0"
                   ></Icon>
                   <h3>点击此处上传图片</h3>
                 </Avatar>
@@ -132,10 +155,22 @@ export default {
       fileSrc: null,
       addadminForm: {
 
-      }
+      },
+      modal1: false
     }
   },
   methods: {
+    cancel () {
+      this.addadminForm.photo = null
+      this.fileSrc = null
+      this.modal1 = false
+    },
+    ok () {
+      this.$refs.cropper.getCropData((data) => {
+        this.fileSrc = data
+        this.addadminForm.photo = data
+      })
+    },
     addadminSubmit: async function () {
       let self = this;
       let formData = new FormData()
@@ -168,13 +203,14 @@ export default {
           console.log(code)
           this.addadminForm.photo = code
           this.fileSrc = code
+          this.modal1 = true
         }
       }
       return false
     },
     deletepic () {
       this.fileSrc = null
-      this.photo = null
+      this.addadminForm.photo = null
     }
   }
 }

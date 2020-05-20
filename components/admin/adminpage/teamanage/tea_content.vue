@@ -1,5 +1,28 @@
 <template>
   <div>
+    <Modal
+      v-model="modal1"
+      style="width:800px"
+      @on-ok="ok"
+      @on-cancel="cancel"
+    >
+      <div style="width:100%;height:400px">
+        <no-ssr>
+          <cropper
+            ref="cropper"
+            :img="fileSrc"
+            :canMoveBox="true"
+            :outputSize="1"
+            :fixed="true"
+            :canScale="true"
+            :fixedNumber="[5, 7]"
+            :autoCrop="true"
+            :centerBox="true"
+          >
+          </cropper>
+        </no-ssr>
+      </div>
+    </Modal>
     <Drawer
       :title="changeDrinkFormTitle"
       width="600"
@@ -193,10 +216,22 @@ export default {
       file: null,
       fileSrc: null,
       pageSize: 15,
-      page: 1
+      page: 1,
+      modal1: false
     }
   },
   methods: {
+    cancel () {
+      this.photo = null
+      this.fileSrc = null
+      this.modal1 = false
+    },
+    ok () {
+      this.$refs.cropper.getCropData((data) => {
+        this.fileSrc = data
+        this.photo = data
+      })
+    },
     loadMore () {
       this.$emit('getTeaLists', { page: ++this.page, loadMore: true, word: this.searchTeaForm.name });
     },
@@ -244,6 +279,7 @@ export default {
           const code = e.target.result;
           this.changeDrinkForm.photo = code
           this.fileSrc = code
+          this.modal1 = true
         }
       }
       return false

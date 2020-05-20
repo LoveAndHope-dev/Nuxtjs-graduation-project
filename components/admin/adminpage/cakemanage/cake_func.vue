@@ -1,5 +1,28 @@
 <template>
   <Card>
+    <Modal
+      v-model="modal1"
+      style="width:800px"
+      @on-ok="ok"
+      @on-cancel="cancel"
+    >
+      <div style="width:100%;height:400px">
+        <no-ssr>
+          <cropper
+            ref="cropper"
+            :img="fileSrc"
+            :canMoveBox="true"
+            :outputSize="1"
+            :fixed="true"
+            :canScale="true"
+            :fixedNumber="[5, 5]"
+            :autoCrop="true"
+            :centerBox="true"
+          >
+          </cropper>
+        </no-ssr>
+      </div>
+    </Modal>
     <Tabs>
       <TabPane label="添加茶点">
         <Form
@@ -41,7 +64,7 @@
               </Col>
               <Col span="12">
               <FormItem label="口味">
-                 <Select v-model="cakeForm.taste">
+                <Select v-model="cakeForm.taste">
                   <Option value="酸">酸</Option>
                   <Option value="甜">甜</Option>
                   <Option value="苦">苦</Option>
@@ -111,10 +134,22 @@ export default {
         id: ''
       },
       file: null,
-      fileSrc: null
+      fileSrc: null,
+      modal1: false
     }
   },
   methods: {
+    cancel () {
+      this.cakeForm.photo = null
+      this.fileSrc = null
+      this.modal1 = false
+    },
+    ok () {
+      this.$refs.cropper.getCropData((data) => {
+        this.fileSrc = data
+        this.cakeForm.photo = data
+      })
+    },
     before (file) {
       this.file = file
       const FileExt = this.file.name.replace(/.+\./, '');//取得文件的后缀名
@@ -132,12 +167,13 @@ export default {
           const code = e.target.result;
           this.cakeForm.photo = code
           this.fileSrc = code
+          this.modal1 = true
         }
       }
       return false
     },
     deletepic () {
-      this.fileSrc = null
+      this.cakeForm.fileSrc = null
       this.photo = null
     },
     async addcake () {

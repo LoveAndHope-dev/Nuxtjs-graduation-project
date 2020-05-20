@@ -34,7 +34,7 @@
         欢迎来到Teahub-Chakela<br />
         <Button
           to="/article"
-          style="margin:10px 0;width:50%;opacity:0.85"
+          style="margin:10px 0;width:50%;opacity:0.7"
           long
         >点击此处进入文章页可阅读文章</Button>
       </h1>

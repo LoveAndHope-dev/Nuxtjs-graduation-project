@@ -1,5 +1,28 @@
 <template>
   <Card>
+    <Modal
+      v-model="modal1"
+      style="width:800px"
+      @on-ok="ok"
+      @on-cancel="cancel"
+    >
+      <div style="width:100%;height:400px">
+        <no-ssr>
+          <cropper
+            ref="cropper"
+            :img="fileSrc"
+            :canMoveBox="true"
+            :outputSize="1"
+            :fixed="true"
+            :canScale="true"
+            :fixedNumber="[5, 7]"
+            :autoCrop="true"
+            :centerBox="true"
+          >
+          </cropper>
+        </no-ssr>
+      </div>
+    </Modal>
     <Tabs>
       <TabPane label="添加茶品">
         <Form
@@ -108,10 +131,22 @@ export default {
         id: ''
       },
       file: null,
-      fileSrc: null
+      fileSrc: null,
+      modal1: false
     }
   },
   methods: {
+    cancel () {
+      this.TeaForm.photo = null
+      this.fileSrc = null
+      this.modal1 = false
+    },
+    ok () {
+      this.$refs.cropper.getCropData((data) => {
+        this.fileSrc = data
+        this.TeaForm.photo = data
+      })
+    },
     before (file) {
       this.file = file
       const FileExt = this.file.name.replace(/.+\./, '');//取得文件的后缀名
@@ -129,13 +164,14 @@ export default {
           const code = e.target.result;
           this.TeaForm.photo = code
           this.fileSrc = code
+          this.modal1 = true
         }
       }
       return false
     },
     deletepic () {
       this.fileSrc = null
-      this.photo = null
+      this.TeaForm.photo = null
     },
     addDrink () {
       let formData = new FormData()

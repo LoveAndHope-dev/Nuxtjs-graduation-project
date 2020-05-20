@@ -1,5 +1,28 @@
 <template>
   <Card>
+    <Modal
+      v-model="modal1"
+      style="width:800px"
+      @on-ok="ok"
+      @on-cancel="cancel"
+    >
+      <div style="width:100%;height:400px">
+        <no-ssr>
+          <cropper
+            ref="cropper"
+            :img="fileSrc"
+            :canMoveBox="true"
+            :outputSize="1"
+            :fixed="true"
+            :canScale="true"
+            :fixedNumber="[5, 5]"
+            :autoCrop="true"
+            :centerBox="true"
+          >
+          </cropper>
+        </no-ssr>
+      </div>
+    </Modal>
     <Drawer
       title="信息修改"
       width="600"
@@ -42,7 +65,7 @@
           >
             <Avatar
               shape="square"
-              style="width: 180px; height: 252px"
+              style="width: 180px; height: 180px"
               :src="fileSrc"
             >
               <Icon
@@ -164,10 +187,22 @@ export default {
       },
       value2: false,
       file: null,
-      fileSrc: null
+      fileSrc: null,
+      modal1: false
     }
   },
-  methods: {
+  methods: { 
+    cancel () {
+      this.changeinfoForm.photo = null
+      this.fileSrc = null
+      this.modal1 = false
+    },
+    ok () {
+      this.$refs.cropper.getCropData((data) => {
+        this.fileSrc = data
+        this.changeinfoForm.photo = data
+      })
+    },
     changeForm (index) {
       this.value2 = true
       this.changeinfoForm.name = this.infos[0].name
@@ -204,13 +239,14 @@ export default {
           console.log(code)
           this.changeinfoForm.photo = code
           this.fileSrc = code
+          this.modal1 = true
         }
       }
       return false
     },
     deletepic () {
       this.fileSrc = null
-      this.photo = null
+     this.changeinfoForm.photo = null
     }
   }
 }

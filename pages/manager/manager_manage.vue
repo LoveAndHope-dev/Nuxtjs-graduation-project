@@ -4,6 +4,7 @@
     <managerfunc @addAdminSubmit="addAdminSubmit" />
     <Divider orientation="left">人员列表</Divider>
     <managercontent
+      :infos="infos"
       :admins="admins"
       @searchAdminSubmit="searchAdminSubmit"
     />
@@ -11,6 +12,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import axios from 'axios'
 import managerfunc from '@/components/admin/adminpage/managermanage/manager_func'
 import managercontent from '@/components/admin/adminpage/managermanage/manager_content'
@@ -39,6 +41,9 @@ export default {
         })
       }
     }
+  },
+  computed: {
+    ...mapState({ infos: state => state.usermodal.user.user })
   },
   methods: {
     async addAdminSubmit (formData) {

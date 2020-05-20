@@ -39,7 +39,8 @@ module.exports = {
     { src: '@/plugins/iview', ssr: true },
     { src: '@/plugins/masonry', ssr: false },
     { src: '@/plugins/lazyload', ssr: false },
-    { src: '@/plugins/cropper', ssr: false }
+    { src: '@/plugins/cropper', ssr: false },
+    { src: '@/plugins/nossr' }
   ],
   /*
 ** Nuxt.js dev-modules
