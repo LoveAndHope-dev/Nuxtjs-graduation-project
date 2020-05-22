@@ -1,14 +1,16 @@
 <template>
   <Card>
     <Form
+      :rules="ruleValidate"
+      ref="articleValidate"
       :model="articleForm"
       label-position="left"
       :label-width="100"
     >
-      <FormItem label="标题">
+      <FormItem label="标题" prop="name">
         <Input v-model="articleForm.name"></Input>
       </FormItem>
-      <FormItem label="正文">
+      <FormItem label="正文" prop="text">
         <editor
           api-key="7mg47kzvekvgnpznozy1enojhbi3et2vijn6etwce55uakhz"
           :init="tinyconf"
@@ -36,6 +38,8 @@ export default {
   data () {
     return {
       articleForm: {
+        name: '',
+        text: ''
       },
       tinyconf: {
         height: 500,
@@ -62,28 +66,42 @@ export default {
            alignleft aligncenter alignright alignjustify | \
            bullist numlist outdent indent | removeformat | help'
 
+      },
+      ruleValidate: {
+        name: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        text: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ]
       }
     }
   },
   methods: {
     async addarticle () {
-      let formData = new FormData()
-      let date = new Date()
-      var text = xss(this.articleForm.text, {
-         onTagAttr: function (tag, name, value, isWhiteAttr) {
-          if (tag === 'img') {
-            if (name === 'src') {
-              if (value.substr(0, 5) === 'data:') {
-                return name + '="' + value + '"';
+      this.$refs.articleValidate.validate(async valid => {
+        if (!valid) {
+          this.$Message.error('请正确填写文章详情')
+        } else {
+          let formData = new FormData()
+          let date = new Date()
+          var text = xss(this.articleForm.text, {
+            onTagAttr: function (tag, name, value, isWhiteAttr) {
+              if (tag === 'img') {
+                if (name === 'src') {
+                  if (value.substr(0, 5) === 'data:') {
+                    return name + '="' + value + '"';
+                  }
+                }
               }
             }
-          }
+          })
+          formData.append('articlename', this.articleForm.name)
+          formData.append('articledate', date.toLocaleDateString())
+          formData.append('articletext', text)
+          this.$emit('addArticleSubmit', formData)
         }
       })
-      formData.append('articlename', this.articleForm.name)
-      formData.append('articledate', date.toLocaleDateString())
-      formData.append('articletext', text)
-      this.$emit('addArticleSubmit', formData)
     }
   }
 }

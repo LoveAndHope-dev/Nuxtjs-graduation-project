@@ -28,12 +28,17 @@
         <Form
           :model="cakeForm"
           :label-width="80"
+          :rules="ruleValidate"
+          ref="cakeValidate"
         >
           <Row>
             <Col span="16">
             <Row>
               <Col span="12">
-              <FormItem label="茶点名称">
+              <FormItem
+                label="茶点名称"
+                prop="name"
+              >
                 <Input
                   v-model="cakeForm.name"
                   placeholder="Enter something..."
@@ -41,7 +46,10 @@
               </FormItem>
               </Col>
               <Col span="12">
-              <FormItem label="茶点价格">
+              <FormItem
+                label="茶点价格"
+                prop="price"
+              >
                 <Input
                   v-model="cakeForm.price"
                   placeholder="Enter something..."
@@ -51,7 +59,10 @@
               <Col span="12">
               </Col>
               <Col span="12">
-              <FormItem label="茶点类型">
+              <FormItem
+                label="茶点类型"
+                prop="type"
+              >
                 <Select v-model="cakeForm.type">
                   <Option value="糕点">糕点</Option>
                   <Option value="糖果">糖果</Option>
@@ -63,7 +74,10 @@
               </FormItem>
               </Col>
               <Col span="12">
-              <FormItem label="口味">
+              <FormItem
+                label="口味"
+                prop="taste"
+              >
                 <Select v-model="cakeForm.taste">
                   <Option value="酸">酸</Option>
                   <Option value="甜">甜</Option>
@@ -74,7 +88,10 @@
               </FormItem>
               </Col>
               <Col span="24">
-              <FormItem label="描述">
+              <FormItem
+                label="描述"
+                prop="description"
+              >
                 <Input
                   v-model="cakeForm.description"
                   type="textarea"
@@ -86,31 +103,36 @@
             </Row>
             </Col>
             <Col
-              span="6"
-              offset="2"
+              span="7"
+              offset="1"
             >
-            <Upload
-              :before-upload="before"
-              v-model="cakeForm.photo"
-              action=""
+            <FormItem
+              prop="photo"
+              label="茶点图片"
             >
-              <Avatar
-                shape="square"
-                style="width: 200px; height: 200px"
-                :src="fileSrc"
+              <Upload
+                :before-upload="before"
+                v-model="cakeForm.photo"
+                action=""
               >
-                <Icon
-                  type="ios-cloud-upload"
-                  size="100"
-                  style="color: #fff; padding: 20px 0"
-                ></Icon>
-                <h3>点击此处上传图片</h3>
-              </Avatar>
-            </Upload>
-            <Button
-              icon="ios-close"
-              @click="deletepic()"
-            >删除</Button>
+                <Avatar
+                  shape="square"
+                  style="width: 200px; height: 200px"
+                  :src="fileSrc"
+                >
+                  <Icon
+                    type="ios-cloud-upload"
+                    size="100"
+                    style="color: #fff; padding: 20px 0"
+                  ></Icon>
+                  <h3>点击此处上传图片</h3>
+                </Avatar>
+              </Upload>
+              <Button
+                icon="ios-close"
+                @click="deletepic()"
+              >删除</Button>
+            </FormItem>
             </Col>
           </Row>
           <Divider></Divider>
@@ -135,7 +157,48 @@ export default {
       },
       file: null,
       fileSrc: null,
-      modal1: false
+      modal1: false,
+      ruleValidate: {
+        name: [
+          { required: true, message: '茶点名不能为空', trigger: 'blur' },
+          {
+            type: 'string',
+            min: 2,
+            max: 25,
+            message: '商品名称在2-25字之间',
+            trigger: 'blur'
+          }
+        ],
+        price: [
+          { required: true, message: '茶点价格不能为空', trigger: 'blur' },
+          {
+            type: 'number',
+            message: '请输入数字',
+            trigger: 'blur',
+            transform (value) {
+              return Number(value);
+            }
+          }
+        ],
+        type: [
+          { required: true, message: '茶点类型不能为空', trigger: 'blur' }
+        ],
+        taste: [
+          { required: true, message: '茶点口味不能为空', trigger: 'blur' }
+        ],
+        description: [
+          { required: true, message: '茶点描述不能为空', trigger: 'blur' },
+          {
+            type: 'string',
+            min: 20,
+            message: '20字以上',
+            trigger: 'blur'
+          }
+        ],
+        photo: [
+          { required: true, message: '图片非空', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
@@ -173,18 +236,24 @@ export default {
       return false
     },
     deletepic () {
-      this.cakeForm.fileSrc = null
-      this.photo = null
+      this.fileSrc = null
+      this.cakeForm.photo = null
     },
     async addcake () {
-      let formData = new FormData()
-      formData.append('cakename', this.cakeForm.name)
-      formData.append('cakeprice', this.cakeForm.price)
-      formData.append('caketype', this.cakeForm.type)
-      formData.append('caketaste', this.cakeForm.taste)
-      formData.append('cakedescription', this.cakeForm.description)
-      formData.append('cakephoto', this.cakeForm.photo)
-      this.$emit('addCakeSubmit', formData)
+      this.$refs.cakeValidate.validate(async valid => {
+        if (!valid) {
+          this.$Message.error('请仔细检查茶点详情')
+        } else {
+          let formData = new FormData()
+          formData.append('cakename', this.cakeForm.name)
+          formData.append('cakeprice', this.cakeForm.price)
+          formData.append('caketype', this.cakeForm.type)
+          formData.append('caketaste', this.cakeForm.taste)
+          formData.append('cakedescription', this.cakeForm.description)
+          formData.append('cakephoto', this.cakeForm.photo)
+          this.$emit('addCakeSubmit', formData)
+        }
+      })
     }
   }
 }

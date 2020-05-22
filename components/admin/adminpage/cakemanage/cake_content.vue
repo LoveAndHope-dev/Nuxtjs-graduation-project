@@ -11,13 +11,13 @@
           <cropper
             ref="cropper"
             :img="fileSrc"
-            :canMoveBox="true"
-            :outputSize="1"
+            :can-move-box="true"
+            :output-size="1"
             :fixed="true"
-            :canScale="true"
-            :fixedNumber="[5, 5]"
-            :autoCrop="true"
-            :centerBox="true"
+            :can-scale="true"
+            :fixed-number="[5, 5]"
+            :auto-crop="true"
+            :center-box="true"
           >
           </cropper>
         </no-ssr>
@@ -32,6 +32,8 @@
       <Form
         :model="changecakeForm"
         :label-width="80"
+        ref="cakeValidate"
+        :rules="ruleValidate"
       >
         <FormItem label="ID">
           <Input
@@ -40,19 +42,28 @@
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="茶点名">
+        <FormItem
+          label="茶点名"
+          prop="name"
+        >
           <Input
             v-model="changecakeForm.name"
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="茶点价格">
+        <FormItem
+          label="茶点价格"
+          prop="price"
+        >
           <Input
             v-model="changecakeForm.price"
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="茶点类型">
+        <FormItem
+          label="茶点类型"
+          prop="type"
+        >
           <Select v-model="changecakeForm.type">
             <Option value="糕点">糕点</Option>
             <Option value="糖果">糖果</Option>
@@ -62,7 +73,10 @@
             <Option value="鲜果">鲜果</Option>
           </Select>
         </FormItem>
-        <FormItem label="口味">
+        <FormItem
+          label="口味"
+          prop="taste"
+        >
           <Select v-model="changecakeForm.taste">
             <Option value="酸">酸</Option>
             <Option value="甜">甜</Option>
@@ -71,7 +85,10 @@
             <Option value="咸">咸</Option>
           </Select>
         </FormItem>
-        <FormItem label="茶点描述">
+        <FormItem
+          label="茶点描述"
+          prop="description"
+        >
           <Input
             type="textarea"
             :autosize="{minRows: 4,maxRows: 4}"
@@ -79,7 +96,10 @@
             placeholder=""
           ></Input>
         </FormItem>
-        <FormItem label="照骗">
+        <FormItem
+          label="照骗"
+          prop="photo"
+        >
           <Upload
             :before-upload="before"
             v-model="changecakeForm.photo"
@@ -215,12 +235,60 @@ export default {
       },
       value2: false,
       changecakeFormTitle: '',
-      changecakeForm: {},
+      changecakeForm: {
+        name: '',
+        price: null,
+        type: '',
+        taste: '',
+        description: '',
+        photo: ''
+      },
       file: null,
       fileSrc: null,
       pageSize: 15,
       page: 1,
-      modal1: false
+      modal1: false,
+      ruleValidate: {
+        name: [
+          { required: true, message: '茶点名不能为空', trigger: 'blur' },
+          {
+            type: 'string',
+            min: 2,
+            max: 25,
+            message: '商品名称在2-25字之间',
+            trigger: 'blur'
+          }
+        ],
+        price: [
+          { required: true, message: '茶点价格不能为空' },
+          {
+            type: 'number',
+            message: '请输入数字',
+            trigger: 'blur',
+            transform (value) {
+              return Number(value);
+            }
+          }
+        ],
+        type: [
+          { required: true, message: '茶点类型不能为空', trigger: 'blur' }
+        ],
+        taste: [
+          { required: true, message: '茶点口味不能为空', trigger: 'blur' }
+        ],
+        description: [
+          { required: true, message: '茶点描述不能为空', trigger: 'blur' },
+          {
+            type: 'string',
+            min: 20,
+            message: '20字以上',
+            trigger: 'blur'
+          }
+        ],
+        photo: [
+          { required: true, message: '图片非空', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
@@ -263,6 +331,7 @@ export default {
       this.changecakeForm.type = this.cakes[index].type
       this.changecakeForm.taste = this.cakes[index].taste
       this.changecakeForm.description = this.cakes[index].description
+      this.changecakeForm.photo = this.cakes[index].photo
       this.fileSrc = this.cakes[index].photo
     },
     before (file) {
@@ -292,24 +361,30 @@ export default {
       this.changecakeForm.photo = null
     },
     changecakeSubmit: async function () {
-      let formData = new FormData()
-      formData.append('cakeid', this.changecakeForm.id)
-      formData.append('cakename', this.changecakeForm.name)
-      formData.append('cakeprice', this.changecakeForm.price)
-      formData.append('caketype', this.changecakeForm.type)
-      formData.append('caketaste', this.changecakeForm.taste)
-      formData.append('cakedescription', this.changecakeForm.description)
-      formData.append('cakephoto', this.fileSrc)
-      let { status, data: { code, msg, cake } } = await axios.post(`/manager/cake_manage/changeCake`, formData, {
-        headers: { 'content-type': 'multipart/form-data' }
-      })
-      if (status === 200 & code === 0) {
-        const i = this.cakes.findIndex(x => x.id === cake.id)
-        if (i !== -1) {
-          this.cakes.splice(i, 1, cake)
+      this.$refs.cakeValidate.validate(async valid => {
+        if (!valid) {
+          this.$Message.error('请仔细检查茶点详情')
+        } else {
+          let formData = new FormData()
+          formData.append('cakeid', this.changecakeForm.id)
+          formData.append('cakename', this.changecakeForm.name)
+          formData.append('cakeprice', this.changecakeForm.price)
+          formData.append('caketype', this.changecakeForm.type)
+          formData.append('caketaste', this.changecakeForm.taste)
+          formData.append('cakedescription', this.changecakeForm.description)
+          formData.append('cakephoto', this.fileSrc)
+          let { status, data: { code, msg, cake } } = await axios.post(`/manager/cake_manage/changeCake`, formData, {
+            headers: { 'content-type': 'multipart/form-data' }
+          })
+          if (status === 200 & code === 0) {
+            const i = this.cakes.findIndex(x => x.id === cake.id)
+            if (i !== -1) {
+              this.cakes.splice(i, 1, cake)
+            }
+            this.$Message.success('修改成功')
+          }
         }
-        this.$Message.success('修改成功')
-      }
+      })
     }
   }
 }
