@@ -3,7 +3,7 @@ const allowpage = ['/login']
 export default {
   userAuth: async (ctx, next) => {
     let url = ctx.originalUrl
-    var parts = url.split('/', 2);
+    var parts = url.split('/', 3);
     if (allowpage.indexOf(url) > -1) {
       return next()
     } else {
@@ -16,6 +16,8 @@ export default {
           }
         } else if (ctx.req.user.auth === 'admin') {
           if (parts[1] === 'teahouse') {
+            await ctx.redirect('/login')
+          } else if (parts[2] === 'manager_manage' & ctx.req.user.result.admintype === false) {
             await ctx.redirect('/login')
           } else {
             return next()
