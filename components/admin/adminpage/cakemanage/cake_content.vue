@@ -372,7 +372,7 @@ export default {
           formData.append('caketype', this.changecakeForm.type)
           formData.append('caketaste', this.changecakeForm.taste)
           formData.append('cakedescription', this.changecakeForm.description)
-          formData.append('cakephoto', this.fileSrc)
+          formData.append('cakephoto', this.changecakeForm.photo)
           let { status, data: { code, msg, cake } } = await axios.post(`/manager/cake_manage/changeCake`, formData, {
             headers: { 'content-type': 'multipart/form-data' }
           })

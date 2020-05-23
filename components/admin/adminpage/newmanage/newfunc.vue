@@ -26,33 +26,41 @@
     <Tabs>
       <TabPane label="添加图片">
         <div style="width: 700px; margin: 0 auto">
-          <Upload
-            :before-upload="before"
-            v-model="photo"
-            action=""
+          <Form
+            :rules="ruleValidate"
+            ref="newValidate"
+            :model="newitem"
           >
-            <Avatar
-              shape="square"
-              style="width: 700px; height: 210px"
-              :src="fileSrc"
-            >
-              <Icon
-                type="ios-cloud-upload"
-                size="100"
-                style="color: #fff; padding: 20px 0"
-              ></Icon>
-              <h3>点击此处上传图片</h3>
-            </Avatar>
-          </Upload>
-          <Button
-            type="primary"
-            :disabled="full"
-            @click="addPhoto()"
-          >添加</Button>
-          <Button
-            icon="ios-close"
-            @click="deletepic()"
-          >删除</Button>
+            <FormItem prop="photo">
+              <Upload
+                :before-upload="before"
+                v-model="newitem.photo"
+                action=""
+              >
+                <Avatar
+                  shape="square"
+                  style="width: 700px; height: 210px"
+                  :src="fileSrc"
+                >
+                  <Icon
+                    type="ios-cloud-upload"
+                    size="100"
+                    style="color: #fff; padding: 20px 0"
+                  ></Icon>
+                  <h3>点击此处上传图片</h3>
+                </Avatar>
+              </Upload>
+              <Button
+                type="primary"
+                :disabled="full"
+                @click="addPhoto()"
+              >添加</Button>
+              <Button
+                icon="ios-close"
+                @click="deletepic()"
+              >删除</Button>
+            </FormItem>
+          </Form>
         </div>
       </TabPane>
     </Tabs>
@@ -75,21 +83,28 @@ export default {
   },
   data () {
     return {
-      photo: null,
+      newitem: {
+        photo: null
+      },
       fileSrc: null,
-      modal1: false
+      modal1: false,
+      ruleValidate: {
+        photo: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
     cancel () {
-      this.photo = null
+      this.newitem.photo = null
       this.fileSrc = null
       this.modal1 = false
     },
     ok () {
       this.$refs.cropper.getCropData((data) => {
         this.fileSrc = data
-        this.photo = data
+        this.newitem.photo = data
       })
     },
     before (file) {
@@ -107,7 +122,7 @@ export default {
         reader.onload = e => {
           // 读取到的图片base64 数据编码 将此编码字符串传给后台即可
           const code = e.target.result;
-          this.photo = code
+          this.newitem.photo = code
           this.fileSrc = code
           this.modal1 = true
         }
@@ -115,13 +130,20 @@ export default {
       return false
     },
     deletepic () {
-      this.photo = null
+      this.newitem.photo = null
       this.fileSrc = null
     },
     addPhoto () {
-      let formData = new FormData()
-      formData.append('photo', this.photo)
-      this.$emit('addPhotoSubmit', formData)
+      this.$refs.newValidate.validate(async valid => {
+        if (!valid) {
+          this.$Message.error('未上传图片')
+        } else {
+          console.log('ok')
+          let formData = new FormData()
+          formData.append('photo', this.newitem.photo)
+          this.$emit('addPhotoSubmit', formData)
+        }
+      })
     }
   }
 }

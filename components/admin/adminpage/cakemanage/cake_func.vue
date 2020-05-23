@@ -27,7 +27,7 @@
       <TabPane label="添加茶点">
         <Form
           :model="cakeForm"
-          :label-width="80"
+          :label-width="100"
           :rules="ruleValidate"
           ref="cakeValidate"
         >
@@ -117,7 +117,7 @@
               >
                 <Avatar
                   shape="square"
-                  style="width: 200px; height: 200px"
+                  style="width: 180px; height: 180px"
                   :src="fileSrc"
                 >
                   <Icon

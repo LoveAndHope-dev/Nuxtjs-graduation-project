@@ -32,6 +32,8 @@
       <Form
         :model="changeWorkerForm"
         :label-width="80"
+        :rules="ruleValidate"
+        ref="workerValidate"
       >
         <FormItem label="ID">
           <Input
@@ -40,43 +42,64 @@
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="姓名">
+        <FormItem
+          label="姓名"
+          prop="name"
+        >
           <Input
             v-model="changeWorkerForm.name"
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="邮箱账号">
+        <FormItem
+          label="邮箱账号"
+          prop="email"
+        >
           <Input
             v-model="changeWorkerForm.email"
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="手机号码">
+        <FormItem
+          label="手机号码"
+          prop="phonenumber"
+        >
           <Input
             v-model="changeWorkerForm.phonenumber"
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="工资">
+        <FormItem
+          label="工资"
+          prop="wages"
+        >
           <Input
             v-model="changeWorkerForm.wages"
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="性别">
+        <FormItem
+          label="性别"
+          prop="radio"
+        >
           <RadioGroup v-model="changeWorkerForm.radio">
             <Radio label="male">Male</Radio>
             <Radio label="female">Female</Radio>
           </RadioGroup>
         </FormItem>
-        <FormItem label="密码">
+        <FormItem
+          label="密码"
+          prop="password"
+        >
           <Input
             v-model="changeWorkerForm.password"
             placeholder="不填默认密码：123456789"
           ></Input>
         </FormItem>
-        <FormItem label="照骗">
+        <FormItem
+          label="照骗"
+          prop="photo"
+        >
           <Upload
             :before-upload="before"
             v-model="changeWorkerForm.photo"
@@ -176,7 +199,12 @@ export default {
   data () {
     return {
       changeWorkerForm: {
-
+        name: '',
+        wages: null,
+        email: '',
+        phonenumber: '',
+        radio: '',
+        photo: ''
       },
       searchWorkerForm: {
         inputphonenumber: ''
@@ -222,7 +250,40 @@ export default {
       fileSrc: null,
       pageSize: 15,
       page: 1,
-      modal1: false
+      modal1: false,
+      ruleValidate: {
+        name: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: '禁止为空', trigger: 'blur' },
+          {
+            type: 'email',
+            message: '邮箱形式不对',
+            trigger: 'blur'
+          }
+        ],
+        phonenumber: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        wages: [
+          { required: true, message: '禁止为空' },
+          {
+            type: 'number',
+            message: '请输入数字',
+            trigger: 'blur',
+            transform (value) {
+              return Number(value);
+            }
+          }
+        ],
+        radio: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        photo: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
@@ -265,6 +326,7 @@ export default {
       this.changeWorkerForm.email = this.staffs[index].email
       this.changeWorkerForm.wages = this.staffs[index].wages
       this.changeWorkerForm.radio = this.staffs[index].sex
+      this.changeWorkerForm.photo = this.staffs[index].photo
       this.fileSrc = this.staffs[index].photo
     },
     before (file) {
@@ -295,31 +357,37 @@ export default {
       this.changeWorkerForm.photo = null
     },
     changeWorkerSubmit: async function () {
-      let formData = new FormData()
-      let changePassword = ''
-      if (!this.changeWorkerForm.password) {
-        changePassword = '123456789'
-      } else {
-        changePassword = this.changeWorkerForm.password
-      }
-      formData.append('staffid', this.changeWorkerForm.id)
-      formData.append('staffname', this.changeWorkerForm.name)
-      formData.append('staffemail', this.changeWorkerForm.email)
-      formData.append('staffphonenumber', this.changeWorkerForm.phonenumber)
-      formData.append('staffpassword', CryptoJS.MD5(changePassword).toString())
-      formData.append('staffwages', parseInt(this.changeWorkerForm.wages))
-      formData.append('staffsex', this.changeWorkerForm.radio)
-      formData.append('staffphoto', this.fileSrc)
-      let { status, data: { code, msg, staff } } = await axios.post(`/manager/worker_manage/changeStaff`, formData, {
-        headers: { 'content-type': 'multipart/form-data' }
-      })
-      if (status === 200 & code === 0) {
-        const i = this.staffs.findIndex(x => x.id === staff.id)
-        if (i !== -1) {
-          this.staffs.splice(i, 1, staff)
+      this.$refs.workerValidate.validate(async valid => {
+        if (!valid) {
+          this.$Message.error('请仔细检查茶点详情')
+        } else {
+          let formData = new FormData()
+          let changePassword = ''
+          if (!this.changeWorkerForm.password) {
+            changePassword = '123456789'
+          } else {
+            changePassword = this.changeWorkerForm.password
+          }
+          formData.append('staffid', this.changeWorkerForm.id)
+          formData.append('staffname', this.changeWorkerForm.name)
+          formData.append('staffemail', this.changeWorkerForm.email)
+          formData.append('staffphonenumber', this.changeWorkerForm.phonenumber)
+          formData.append('staffpassword', CryptoJS.MD5(changePassword).toString())
+          formData.append('staffwages', parseInt(this.changeWorkerForm.wages))
+          formData.append('staffsex', this.changeWorkerForm.radio)
+          formData.append('staffphoto', this.changeWorkerForm.photo)
+          let { status, data: { code, msg, staff } } = await axios.post(`/manager/worker_manage/changeStaff`, formData, {
+            headers: { 'content-type': 'multipart/form-data' }
+          })
+          if (status === 200 & code === 0) {
+            const i = this.staffs.findIndex(x => x.id === staff.id)
+            if (i !== -1) {
+              this.staffs.splice(i, 1, staff)
+            }
+            this.$Message.success('修改成功')
+          }
         }
-        this.$Message.success('修改成功')
-      }
+      })
     }
   }
 }

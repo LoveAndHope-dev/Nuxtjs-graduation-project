@@ -32,6 +32,8 @@
       <Form
         :model="changeDrinkForm"
         :label-width="80"
+        :rules="ruleValidate"
+        ref="teaValidate"
       >
         <FormItem label="ID">
           <Input
@@ -40,19 +42,28 @@
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="茶品名">
+        <FormItem
+          label="茶品名"
+          prop="name"
+        >
           <Input
             v-model="changeDrinkForm.name"
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="茶品价格">
+        <FormItem
+          label="茶品价格"
+          prop="price"
+        >
           <Input
             v-model="changeDrinkForm.price"
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="茶品类别">
+        <FormItem
+          label="茶品类别"
+          prop="type"
+        >
           <Select v-model="changeDrinkForm.type">
             <Option value="红茶">红茶</Option>
             <Option value="绿茶">绿茶</Option>
@@ -62,13 +73,19 @@
             <Option value="奶茶">奶茶</Option>
           </Select>
         </FormItem>
-        <FormItem label="茶品产地">
+        <FormItem
+          label="茶品产地"
+          prop="position"
+        >
           <Input
             v-model="changeDrinkForm.position"
             placeholder=""
           ></Input>
         </FormItem>
-        <FormItem label="茶品描述">
+        <FormItem
+          label="茶品描述"
+          prop="description"
+        >
           <Input
             type="textarea"
             :autosize="{minRows: 4,maxRows: 4}"
@@ -76,7 +93,10 @@
             placeholder=""
           ></Input>
         </FormItem>
-        <FormItem label="照骗">
+        <FormItem
+          label="照骗"
+          prop="photo"
+        >
           <Upload
             :before-upload="before"
             v-model="changeDrinkForm.photo"
@@ -212,12 +232,60 @@ export default {
       },
       value2: false,
       changeDrinkFormTitle: '',
-      changeDrinkForm: {},
+      changeDrinkForm: {
+        name: '',
+        price: null,
+        type: '',
+        position: '',
+        description: '',
+        photo: ''
+      },
       file: null,
       fileSrc: null,
       pageSize: 15,
       page: 1,
-      modal1: false
+      modal1: false,
+      ruleValidate: {
+        name: [
+          { required: true, message: '茶品名不能为空', trigger: 'blur' },
+          {
+            type: 'string',
+            min: 2,
+            max: 25,
+            message: '商品名称在2-25字之间',
+            trigger: 'blur'
+          }
+        ],
+        price: [
+          { required: true, message: '茶品价格不能为空' },
+          {
+            type: 'number',
+            message: '请输入数字',
+            trigger: 'blur',
+            transform (value) {
+              return Number(value);
+            }
+          }
+        ],
+        type: [
+          { required: true, message: '茶品类型不能为空', trigger: 'blur' }
+        ],
+        position: [
+          { required: true, message: '茶品口味不能为空', trigger: 'blur' }
+        ],
+        description: [
+          { required: true, message: '茶品描述不能为空', trigger: 'blur' },
+          {
+            type: 'string',
+            min: 20,
+            message: '20字以上',
+            trigger: 'blur'
+          }
+        ],
+        photo: [
+          { required: true, message: '图片非空', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
@@ -229,7 +297,7 @@ export default {
     ok () {
       this.$refs.cropper.getCropData((data) => {
         this.fileSrc = data
-        this.photo = data
+        this.changeDrinkForm.photo = data
       })
     },
     loadMore () {
@@ -260,6 +328,7 @@ export default {
       this.changeDrinkForm.type = this.drinks[index].type
       this.changeDrinkForm.position = this.drinks[index].position
       this.changeDrinkForm.description = this.drinks[index].description
+      this.changeDrinkForm.photo = this.drinks[index].photo
       this.fileSrc = this.drinks[index].photo
     },
     before (file) {
@@ -286,27 +355,33 @@ export default {
     },
     deletepic () {
       this.fileSrc = null
-      this.photo = null
+      this.changeDrinkForm.photo = null
     },
     changeDrinkSubmit: async function () {
-      let formData = new FormData()
-      formData.append('drinkid', this.changeDrinkForm.id)
-      formData.append('drinkname', this.changeDrinkForm.name)
-      formData.append('drinkprice', this.changeDrinkForm.price)
-      formData.append('drinktype', this.changeDrinkForm.type)
-      formData.append('drinkposition', this.changeDrinkForm.position)
-      formData.append('drinkdescription', this.changeDrinkForm.description)
-      formData.append('drinkphoto', this.fileSrc)
-      let { status, data: { code, msg, drink } } = await axios.post(`/manager/tea_manage/changeDrink`, formData, {
-        headers: { 'content-type': 'multipart/form-data' }
-      })
-      if (status === 200 & code === 0) {
-        const i = this.drinks.findIndex(x => x.id === drink.id)
-        if (i !== -1) {
-          this.drinks.splice(i, 1, drink)
+      this.$refs.teaValidate.validate(async valid => {
+        if (!valid) {
+          this.$Message.error('请仔细检查茶品详情')
+        } else {
+          let formData = new FormData()
+          formData.append('drinkid', this.changeDrinkForm.id)
+          formData.append('drinkname', this.changeDrinkForm.name)
+          formData.append('drinkprice', this.changeDrinkForm.price)
+          formData.append('drinktype', this.changeDrinkForm.type)
+          formData.append('drinkposition', this.changeDrinkForm.position)
+          formData.append('drinkdescription', this.changeDrinkForm.description)
+          formData.append('drinkphoto', this.changeDrinkForm.photo)
+          let { status, data: { code, msg, drink } } = await axios.post(`/manager/tea_manage/changeDrink`, formData, {
+            headers: { 'content-type': 'multipart/form-data' }
+          })
+          if (status === 200 & code === 0) {
+            const i = this.drinks.findIndex(x => x.id === drink.id)
+            if (i !== -1) {
+              this.drinks.splice(i, 1, drink)
+            }
+            this.$Message.success('修改成功')
+          }
         }
-        this.$Message.success('修改成功')
-      }
+      })
     }
   }
 }

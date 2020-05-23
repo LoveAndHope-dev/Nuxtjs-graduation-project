@@ -32,6 +32,8 @@
       <Form
         :model="changeadminForm"
         :label-width="80"
+        :rules="ruleValidate"
+        ref="managerValidate"
       >
         <FormItem label="ID">
           <Input
@@ -40,43 +42,64 @@
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="姓名">
+        <FormItem
+          label="姓名"
+          prop="name"
+        >
           <Input
             v-model="changeadminForm.name"
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="邮箱账号">
+        <FormItem
+          label="邮箱账号"
+          prop="email"
+        >
           <Input
             v-model="changeadminForm.email"
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="手机号码">
+        <FormItem
+          label="手机号码"
+          prop="phonenumber"
+        >
           <Input
             v-model="changeadminForm.phonenumber"
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="工资">
+        <FormItem
+          label="工资"
+          prop="wages"
+        >
           <Input
             v-model="changeadminForm.wages"
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="性别">
+        <FormItem
+          label="性别"
+          prop="radio"
+        >
           <RadioGroup v-model="changeadminForm.radio">
             <Radio label="male">Male</Radio>
             <Radio label="female">Female</Radio>
           </RadioGroup>
         </FormItem>
-        <FormItem label="密码">
+        <FormItem
+          label="密码"
+          prop="password"
+        >
           <Input
             v-model="changeadminForm.password"
             placeholder="不填默认密码：123456789"
           ></Input>
         </FormItem>
-        <FormItem label="照骗">
+        <FormItem
+          label="照骗"
+          prop="photo"
+        >
           <Upload
             :before-upload="before"
             v-model="changeadminForm.photo"
@@ -171,7 +194,12 @@ export default {
   data () {
     return {
       changeadminForm: {
-
+        name: '',
+        wages: null,
+        email: '',
+        phonenumber: '',
+        radio: '',
+        photo: ''
       },
       searchadminForm: {
 
@@ -220,7 +248,40 @@ export default {
       file: null,
       fileSrc: null,
       isself: false,
-      modal1: false
+      modal1: false,
+      ruleValidate: {
+        name: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: '禁止为空', trigger: 'blur' },
+          {
+            type: 'email',
+            message: '邮箱形式不对',
+            trigger: 'blur'
+          }
+        ],
+        phonenumber: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        wages: [
+          { required: true, message: '禁止为空' },
+          {
+            type: 'number',
+            message: '请输入数字',
+            trigger: 'blur',
+            transform (value) {
+              return Number(value);
+            }
+          }
+        ],
+        radio: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        photo: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
@@ -268,6 +329,7 @@ export default {
       this.changeadminForm.email = this.admins[index].email
       this.changeadminForm.wages = this.admins[index].wages
       this.changeadminForm.radio = this.admins[index].sex
+      this.changeadminForm.photo = this.admins[index].photo
       this.fileSrc = this.admins[index].photo
     },
     before (file) {
@@ -298,32 +360,39 @@ export default {
       this.fileSrc = null
     },
     changeadminSubmit: async function () {
-      let formData = new FormData()
-      let changePassword = ''
-      if (!this.changeadminForm.password) {
-        changePassword = '123456789'
-      } else {
-        changePassword = this.changeadminForm.password
-      }
-      formData.append('adminid', this.changeadminForm.id)
-      formData.append('adminname', this.changeadminForm.name)
-      formData.append('adminemail', this.changeadminForm.email)
-      formData.append('adminphonenumber', this.changeadminForm.phonenumber)
-      formData.append('admintype', this.changeadminForm.type)
-      formData.append('adminsex', this.changeadminForm.radio)
-      formData.append('adminpassword', CryptoJS.MD5(changePassword).toString())
-      formData.append('adminwages', parseInt(this.changeadminForm.wages))
-      formData.append('adminphoto', this.fileSrc)
-      let { status, data: { code, msg, admin } } = await axios.post(`/manager/manager_manage/changeadmin`, formData, {
-        headers: { 'content-type': 'multipart/form-data' }
-      })
-      if (status === 200 & code === 0) {
-        const i = this.admins.findIndex(x => x.id === admin.id)
-        if (i !== -1) {
-          this.admins.splice(i, 1, admin)
+      this.$refs.managerValidate.validate(async valid => {
+        if (!valid) {
+          this.$Message.error('请仔细检查人员信息')
+        } else {
+          let formData = new FormData()
+          let changePassword = ''
+          if (!this.changeadminForm.password) {
+            changePassword = '123456789'
+          } else {
+            changePassword = this.changeadminForm.password
+          }
+          formData.append('adminid', this.changeadminForm.id)
+          formData.append('adminname', this.changeadminForm.name)
+          formData.append('adminemail', this.changeadminForm.email)
+          formData.append('adminphonenumber', this.changeadminForm.phonenumber)
+          formData.append('admintype', this.changeadminForm.type)
+          formData.append('adminsex', this.changeadminForm.radio)
+          formData.append('adminpassword', CryptoJS.MD5(changePassword).toString())
+          formData.append('adminwages', parseInt(this.changeadminForm.wages))
+          formData.append('adminphoto', this.changeadminForm.photo)
+          console.log('ok')
+          let { status, data: { code, msg, admin } } = await axios.post(`/manager/manager_manage/changeadmin`, formData, {
+            headers: { 'content-type': 'multipart/form-data' }
+          })
+          if (status === 200 & code === 0) {
+            const i = this.admins.findIndex(x => x.id === admin.id)
+            if (i !== -1) {
+              this.admins.splice(i, 1, admin)
+            }
+            this.$Message.success('修改成功')
+          }
         }
-        this.$Message.success('修改成功')
-      }
+      })
     }
   }
 }

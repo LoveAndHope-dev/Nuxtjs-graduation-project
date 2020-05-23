@@ -9,6 +9,8 @@
       <Form
         :model="changetableForm"
         :label-width="80"
+        :rules="ruleValidate"
+        ref="tableValidate"
       >
         <FormItem label="ID">
           <Input
@@ -17,22 +19,26 @@
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="桌位名">
+        <FormItem label="桌位名" prop="name">
           <Input
             v-model="changetableForm.name"
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="桌位人数">
+        <FormItem label="桌位人数" prop="people">
           <Input
             v-model="changetableForm.people"
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="桌位状态">
+        <FormItem label="桌位状态" prop="condition">
           <Select v-model="changetableForm.condition">
             <Option value="可用">可用</Option>
             <Option value="封锁">封锁</Option>
+            <Option
+              disabled
+              value="已满"
+            >已满</Option>
           </Select>
         </FormItem>
         <Divider></Divider>
@@ -83,12 +89,12 @@
             >Delete</Button>
           </template>
         </Table>
-         <Button
-            :disabled="!ismore"
-            long
-            @click="loadMore"
-          >———— 加载更多 ————
-          </Button>
+        <Button
+          :disabled="!ismore"
+          long
+          @click="loadMore"
+        >———— 加载更多 ————
+        </Button>
       </TabPane>
     </Tabs>
   </div>
@@ -130,9 +136,32 @@ export default {
       ],
       value2: false,
       changetableFormTitle: '',
-      changetableForm: {},
+      changetableForm: {
+        name: '',
+        people: null,
+        condition: ''
+      },
       pageSize: 15,
-      page: 1
+      page: 1,
+      ruleValidate: {
+        name: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        people: [
+          { required: true, message: '不能为空' },
+          {
+            type: 'number',
+            message: '请输入数字',
+            trigger: 'blur',
+            transform (value) {
+              return Number(value);
+            }
+          }
+        ],
+        condition: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {

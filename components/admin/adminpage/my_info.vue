@@ -32,32 +32,49 @@
       <Form
         :model="changeinfoForm"
         :label-width="80"
+        :rules="ruleValidate"
+        ref="Validate"
       >
-        <FormItem label="姓名">
+        <FormItem
+          label="姓名"
+          prop="name"
+        >
           <Input
             v-model="changeinfoForm.name"
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="邮箱账号">
+        <FormItem
+          label="邮箱账号"
+          prop="email"
+        >
           <Input
             v-model="changeinfoForm.email"
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="手机号码">
+        <FormItem
+          label="手机号码"
+          prop="phonenumber"
+        >
           <Input
             v-model="changeinfoForm.phonenumber"
             placeholder="Enter something..."
           ></Input>
         </FormItem>
-        <FormItem label="性别">
+        <FormItem
+          label="性别"
+          prop="radio"
+        >
           <RadioGroup v-model="changeinfoForm.radio">
             <Radio label="male">Male</Radio>
             <Radio label="female">Female</Radio>
           </RadioGroup>
         </FormItem>
-        <FormItem label="照骗">
+        <FormItem
+          label="照骗"
+          prop="photo"
+        >
           <Upload
             :before-upload="before"
             v-model="changeinfoForm.photo"
@@ -183,15 +200,41 @@ export default {
   data () {
     return {
       changeinfoForm: {
-
+        name: '',
+        email: '',
+        phonenumber: '',
+        radio: '',
+        photo: ''
       },
       value2: false,
       file: null,
       fileSrc: null,
-      modal1: false
+      modal1: false,
+      ruleValidate: {
+        name: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: '禁止为空', trigger: 'blur' },
+          {
+            type: 'email',
+            message: '邮箱形式不对',
+            trigger: 'blur'
+          }
+        ],
+        phonenumber: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        radio: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        photo: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ]
+      }
     }
   },
-  methods: { 
+  methods: {
     cancel () {
       this.changeinfoForm.photo = null
       this.fileSrc = null
@@ -210,16 +253,23 @@ export default {
       this.changeinfoForm.phonenumber = this.infos[0].phonenumber
       this.changeinfoForm.radio = this.infos[0].sex
       this.fileSrc = this.infos[0].photo
+      this.changeinfoForm.photo = this.infos[0].photo
     },
     changeInfoSubmit: async function () {
-      let formData = new FormData()
-      formData.append('adminid', this.infos[0].id)
-      formData.append('adminname', this.changeinfoForm.name)
-      formData.append('adminemail', this.changeinfoForm.email)
-      formData.append('adminphonenumber', this.changeinfoForm.phonenumber)
-      formData.append('adminsex', this.changeinfoForm.radio)
-      formData.append('adminphoto', this.fileSrc)
-      this.$emit('changeInfoSubmit', formData)
+      this.$refs.Validate.validate(async valid => {
+        if (!valid) {
+          this.$Message.error('请仔细检查人员信息')
+        } else {
+          let formData = new FormData()
+          formData.append('adminid', this.infos[0].id)
+          formData.append('adminname', this.changeinfoForm.name)
+          formData.append('adminemail', this.changeinfoForm.email)
+          formData.append('adminphonenumber', this.changeinfoForm.phonenumber)
+          formData.append('adminsex', this.changeinfoForm.radio)
+          formData.append('adminphoto', this.changeinfoForm.photo)
+          this.$emit('changeInfoSubmit', formData)
+        }
+      })
     },
     before (file) {
       this.file = file
@@ -246,7 +296,7 @@ export default {
     },
     deletepic () {
       this.fileSrc = null
-     this.changeinfoForm.photo = null
+      this.changeinfoForm.photo = null
     }
   }
 }

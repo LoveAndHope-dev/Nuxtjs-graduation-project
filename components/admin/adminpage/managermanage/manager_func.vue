@@ -28,13 +28,18 @@
         <TabPane label="添加管理员">
           <Form
             :model="addadminForm"
-            :label-width="80"
+            :label-width="100"
+            :rules="ruleValidate"
+            ref="managerValidate"
           >
             <Row>
               <Col span="16">
               <Row>
                 <Col span="12">
-                <FormItem label="入职日期">
+                <FormItem
+                  label="入职日期"
+                  prop="inputdate"
+                >
                   <DatePicker
                     type="date"
                     placeholder="Select date"
@@ -43,7 +48,10 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="姓名">
+                <FormItem
+                  label="姓名"
+                  prop="inputname"
+                >
                   <Input
                     v-model="addadminForm.inputname"
                     placeholder="Enter something..."
@@ -51,7 +59,10 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="邮箱账号">
+                <FormItem
+                  label="邮箱账号"
+                  prop="inputemail"
+                >
                   <Input
                     v-model="addadminForm.inputemail"
                     placeholder="Enter something..."
@@ -59,7 +70,10 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="手机号码">
+                <FormItem
+                  label="手机号码"
+                  prop="inputphonenumber"
+                >
                   <Input
                     v-model="addadminForm.inputphonenumber"
                     placeholder="Enter something..."
@@ -67,7 +81,10 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="密码">
+                <FormItem
+                  label="密码"
+                  prop="inputpassword"
+                >
                   <Input
                     v-model="addadminForm.inputpassword"
                     placeholder="Enter something..."
@@ -76,7 +93,10 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="工资">
+                <FormItem
+                  label="工资"
+                  prop="inputwages"
+                >
                   <Input
                     v-model="addadminForm.inputwages"
                     placeholder="Enter something..."
@@ -85,7 +105,10 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="性别">
+                <FormItem
+                  label="性别"
+                  prop="radio"
+                >
                   <RadioGroup v-model="addadminForm.radio">
                     <Radio label="male">Male</Radio>
                     <Radio label="female">Female</Radio>
@@ -93,7 +116,10 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="管理层级">
+                <FormItem
+                  label="管理层级"
+                  prop="type"
+                >
                   <RadioGroup v-model="addadminForm.type">
                     <Radio label="0">普通管理员</Radio>
                     <Radio label="1">超管</Radio>
@@ -103,31 +129,36 @@
               </Row>
               </Col>
               <Col
-                span="4"
-                offset="2"
+                span="5"
+                offset="1"
               >
-              <Upload
-                :before-upload="before"
-                v-model="addadminForm.photo"
-                action=""
+              <FormItem
+                label="照片"
+                prop="photo"
               >
-                <Avatar
-                  shape="square"
-                  style="width: 180px; height: 180px"
-                  :src="fileSrc"
+                <Upload
+                  :before-upload="before"
+                  v-model="addadminForm.photo"
+                  action=""
                 >
-                  <Icon
-                    type="ios-cloud-upload"
-                    size="100"
-                    style="color: #fff; padding: 20px 0"
-                  ></Icon>
-                  <h3>点击此处上传图片</h3>
-                </Avatar>
-              </Upload>
-              <Button
-                icon="ios-close"
-                @click="deletepic()"
-              >删除</Button>
+                  <Avatar
+                    shape="square"
+                    style="width: 180px; height: 180px"
+                    :src="fileSrc"
+                  >
+                    <Icon
+                      type="ios-cloud-upload"
+                      size="100"
+                      style="color: #fff; padding: 20px 0"
+                    ></Icon>
+                    <h3>点击此处上传图片</h3>
+                  </Avatar>
+                </Upload>
+                <Button
+                  icon="ios-close"
+                  @click="deletepic()"
+                >删除</Button>
+              </FormItem>
               </Col>
             </Row>
             <Divider></Divider>
@@ -154,9 +185,53 @@ export default {
       file: null,
       fileSrc: null,
       addadminForm: {
-
+        inputdate: '',
+        radio: '',
+        type: ''
       },
-      modal1: false
+      modal1: false,
+      ruleValidate: {
+        inputdate: [
+          { required: true, message: '禁止为空' }
+        ],
+        inputname: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        inputemail: [
+          { required: true, message: '禁止为空', trigger: 'blur' },
+          {
+            type: 'email',
+            message: '邮箱形式不对',
+            trigger: 'blur'
+          }
+        ],
+        inputphonenumber: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        inputpassword: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        inputwages: [
+          { required: true, message: '禁止为空', trigger: 'blur' },
+          {
+            type: 'number',
+            message: '请输入数字',
+            trigger: 'blur',
+            transform (value) {
+              return Number(value);
+            }
+          }
+        ],
+        radio: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        type: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        photo: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
@@ -172,18 +247,24 @@ export default {
       })
     },
     addadminSubmit: async function () {
-      let self = this;
-      let formData = new FormData()
-      formData.append('adminworkdate', moment(self.addadminForm.inputdate).format('LL'))
-      formData.append('adminname', self.addadminForm.inputname)
-      formData.append('adminemail', self.addadminForm.inputemail)
-      formData.append('adminphonenumber', window.encodeURIComponent(self.addadminForm.inputphonenumber))
-      formData.append('adminsex', self.addadminForm.radio)
-      formData.append('admintype', self.addadminForm.type)
-      formData.append('adminphoto', self.addadminForm.photo)
-      formData.append('adminpassword', CryptoJS.MD5(self.addadminForm.inputpassword).toString())
-      formData.append('adminwages', parseInt(self.addadminForm.inputwages))
-      this.$emit('addAdminSubmit', formData)
+      this.$refs.managerValidate.validate(async valid => {
+        if (!valid) {
+          this.$Message.error('请仔细检查茶点详情')
+        } else {
+          let self = this;
+          let formData = new FormData()
+          formData.append('adminworkdate', moment(self.addadminForm.inputdate).format('LL'))
+          formData.append('adminname', self.addadminForm.inputname)
+          formData.append('adminemail', self.addadminForm.inputemail)
+          formData.append('adminphonenumber', window.encodeURIComponent(self.addadminForm.inputphonenumber))
+          formData.append('adminsex', self.addadminForm.radio)
+          formData.append('admintype', self.addadminForm.type)
+          formData.append('adminphoto', self.addadminForm.photo)
+          formData.append('adminpassword', CryptoJS.MD5(self.addadminForm.inputpassword).toString())
+          formData.append('adminwages', self.addadminForm.inputwages)
+          this.$emit('addAdminSubmit', formData)
+        }
+      })
     },
     before (file) {
       this.file = file
@@ -191,7 +272,7 @@ export default {
       if (file.size > 2097152) {
         this.$Message.error(file.name + '大小超过2M!')
         this.file = null //超过大小将文件清空
-      } else if (!/image\/\w+/.test(file.type)) { //判断文件
+      } else if (!/image\/\w+/.test(file.type)) {
         this.$Message.error('请上传图片老铁');
         this.file = null
       } else {

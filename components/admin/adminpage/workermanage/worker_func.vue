@@ -28,13 +28,18 @@
         <TabPane label="添加工作人员">
           <Form
             :model="addWorkerForm"
-            :label-width="80"
+            :label-width="100"
+            :rules="ruleValidate"
+            ref="workerValidate"
           >
             <Row>
               <Col span="16">
               <Row>
                 <Col span="12">
-                <FormItem label="入职日期">
+                <FormItem
+                  label="入职日期"
+                  prop="inputdate"
+                >
                   <DatePicker
                     type="date"
                     placeholder="Select date"
@@ -43,7 +48,10 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="姓名">
+                <FormItem
+                  label="姓名"
+                  prop="inputname"
+                >
                   <Input
                     v-model="addWorkerForm.inputname"
                     placeholder="Enter something..."
@@ -51,7 +59,10 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="邮箱账号">
+                <FormItem
+                  label="邮箱账号"
+                  prop="inputemail"
+                >
                   <Input
                     v-model="addWorkerForm.inputemail"
                     placeholder="Enter something..."
@@ -59,7 +70,10 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="手机号码">
+                <FormItem
+                  label="手机号码"
+                  prop="inputphonenumber"
+                >
                   <Input
                     v-model="addWorkerForm.inputphonenumber"
                     placeholder="Enter something..."
@@ -67,7 +81,10 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="密码">
+                <FormItem
+                  label="密码"
+                  prop="inputpassword"
+                >
                   <Input
                     v-model="addWorkerForm.inputpassword"
                     placeholder="Enter something..."
@@ -76,7 +93,10 @@
                 </FormItem>
                 </Col>
                 <Col span="12">
-                <FormItem label="工资">
+                <FormItem
+                  label="工资"
+                  prop="inputwages"
+                >
                   <Input
                     v-model="addWorkerForm.inputwages"
                     placeholder="Enter something..."
@@ -85,7 +105,10 @@
                 </FormItem>
                 </Col>
                 <Col span="24">
-                <FormItem label="性别">
+                <FormItem
+                  label="性别"
+                  prop="radio"
+                >
                   <RadioGroup v-model="addWorkerForm.radio">
                     <Radio label="male">Male</Radio>
                     <Radio label="female">Female</Radio>
@@ -95,31 +118,36 @@
               </Row>
               </Col>
               <Col
-                span="4"
-                offset="2"
+                span="5"
+                offset="1"
               >
-              <Upload
-                :before-upload="before"
-                v-model="addWorkerForm.photo"
-                action=""
+              <FormItem
+                label="照片"
+                prop="photo"
               >
-                <Avatar
-                  shape="square"
-                  style="width: 180px; height: 180px"
-                  :src="fileSrc"
+                <Upload
+                  :before-upload="before"
+                  v-model="addWorkerForm.photo"
+                  action=""
                 >
-                  <Icon
-                    type="ios-cloud-upload"
-                    size="100"
-                    style="color: #fff; padding: 20px 0"
-                  ></Icon>
-                  <h3>点击此处上传图片</h3>
-                </Avatar>
-              </Upload>
-              <Button
-                icon="ios-close"
-                @click="deletepic()"
-              >删除</Button>
+                  <Avatar
+                    shape="square"
+                    style="width: 180px; height: 180px"
+                    :src="fileSrc"
+                  >
+                    <Icon
+                      type="ios-cloud-upload"
+                      size="100"
+                      style="color: #fff; padding: 20px 0"
+                    ></Icon>
+                    <h3>点击此处上传图片</h3>
+                  </Avatar>
+                </Upload>
+                <Button
+                  icon="ios-close"
+                  @click="deletepic()"
+                >删除</Button>
+              </FormItem>
               </Col>
             </Row>
             <Divider></Divider>
@@ -147,9 +175,49 @@ export default {
       file: null,
       fileSrc: null,
       addWorkerForm: {
-
+        inputdate: '',
+        radio: ''
       },
-      modal1: false
+      modal1: false,
+      ruleValidate: {
+        inputdate: [
+          { required: true, message: '禁止为空' }
+        ],
+        inputname: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        inputemail: [
+          { required: true, message: '禁止为空', trigger: 'blur' },
+          {
+            type: 'email',
+            message: '邮箱形式不对',
+            trigger: 'blur'
+          }
+        ],
+        inputphonenumber: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        inputpassword: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        inputwages: [
+          { required: true, message: '禁止为空', trigger: 'blur' },
+          {
+            type: 'number',
+            message: '请输入数字',
+            trigger: 'blur',
+            transform (value) {
+              return Number(value);
+            }
+          }
+        ],
+        radio: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ],
+        photo: [
+          { required: true, message: '禁止为空', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
@@ -165,17 +233,23 @@ export default {
       })
     },
     addWorkerSubmit: async function () {
-      let self = this;
-      let formData = new FormData()
-      formData.append('staffworkdate', moment(self.addWorkerForm.inputdate).format('LL'))
-      formData.append('staffname', self.addWorkerForm.inputname)
-      formData.append('staffemail', self.addWorkerForm.inputemail)
-      formData.append('staffphonenumber', window.encodeURIComponent(self.addWorkerForm.inputphonenumber))
-      formData.append('staffsex', self.addWorkerForm.radio)
-      formData.append('staffphoto', self.addWorkerForm.photo)
-      formData.append('staffpassword', CryptoJS.MD5(self.addWorkerForm.inputpassword).toString())
-      formData.append('staffwages', parseInt(self.addWorkerForm.inputwages))
-      this.$emit('addWorkerSubmit', formData)
+      this.$refs.workerValidate.validate(async valid => {
+        if (!valid) {
+          this.$Message.error('请仔细检查茶点详情')
+        } else {
+          let self = this;
+          let formData = new FormData()
+          formData.append('staffworkdate', moment(self.addWorkerForm.inputdate).format('LL'))
+          formData.append('staffname', self.addWorkerForm.inputname)
+          formData.append('staffemail', self.addWorkerForm.inputemail)
+          formData.append('staffphonenumber', window.encodeURIComponent(self.addWorkerForm.inputphonenumber))
+          formData.append('staffsex', self.addWorkerForm.radio)
+          formData.append('staffphoto', self.addWorkerForm.photo)
+          formData.append('staffpassword', CryptoJS.MD5(self.addWorkerForm.inputpassword).toString())
+          formData.append('staffwages', parseInt(self.addWorkerForm.inputwages))
+          this.$emit('addWorkerSubmit', formData)
+        }
+      })
     },
     before (file) {
       this.file = file

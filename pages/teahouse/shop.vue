@@ -11,16 +11,24 @@
           class="drawer-header-button"
         >
           <Col :span="8">
-          <Select
-            v-model="tableselect"
-            placeholder="您的桌位请选择"
+          <Form
+            :model="tableform"
+            :rules="ruleValidate"
+            ref="Validate"
           >
-            <Option
-              v-for="item in table"
-              :value="item.id"
-              :key="item.id"
-            >{{item.name}}</Option>
-          </Select>
+            <FormItem prop="tableselect">
+              <Select
+                v-model="tableform.tableselect"
+                placeholder="您的桌位请选择"
+              >
+                <Option
+                  v-for="item in table"
+                  :value="item.id"
+                  :key="item.id"
+                >{{item.name}}</Option>
+              </Select>
+            </FormItem>
+          </Form>
           </Col>
           <Col :span="6">
           <Button
@@ -177,14 +185,21 @@ export default {
       value1: false,
       cartitem: [],
       table: '',
-      tableselect: '',
+      tableform: {
+        tableselect: ''
+      },
       isMoreTea: true,
       isMoreCake: true,
       pageSize: 12,
       teapage: 1,
       cakepage: 1,
       word: '',
-      type: 'tea'
+      type: 'tea',
+      ruleValidate: {
+        tableselect: [
+          { required: true, message: '禁止为空' }
+        ]
+      }
     }
   },
   mounted () {
@@ -295,19 +310,25 @@ export default {
       }
     },
     async goCount () {
-      let formData = new FormData()
-      formData.append('orderlist', JSON.stringify(this.cartitem))
-      formData.append('ordertableid', this.tableselect)
-      formData.append('ordertime', moment().format('MMMM Do YYYY, h:mm:ss'))
-      let { data: { code, msg } } = await axios.post('/teahouse/shop/addOrder', formData, {
-        headers: { 'content-type': 'multipart/form-data' }
+      this.$refs.Validate.validate(async valid => {
+        if (!valid) {
+          this.$Message.error('请仔细检查人员信息')
+        } else {
+          let formData = new FormData()
+          formData.append('orderlist', JSON.stringify(this.cartitem))
+          formData.append('ordertableid', this.tableform.tableselect)
+          formData.append('ordertime', moment().format('MMMM Do YYYY, h:mm:ss'))
+          let { data: { code, msg } } = await axios.post('/teahouse/shop/addOrder', formData, {
+            headers: { 'content-type': 'multipart/form-data' }
+          })
+          if (code == 0) {
+            this.$Message.success('下单成功,正在跳转至订单页')
+            setTimeout(function () { location.href = '/teahouse/order' }, 1000);
+          } else {
+            this.$Message.error(res.msg);
+          }
+        }
       })
-      if (code == 0) {
-        this.$Message.success('下单成功,正在跳转至订单页')
-        // setTimeout(function () { location.href = '/teahouse/order' }, 1000);
-      } else {
-        this.$Message.error(res.msg);
-      }
     },
     async clean () {
       let { data: { code, msg } } = await axios.delete('/teahouse/shop/cleanCart')
