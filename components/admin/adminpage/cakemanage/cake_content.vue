@@ -33,7 +33,7 @@
         :model="changecakeForm"
         :label-width="80"
         ref="cakeValidate"
-        :rules="ruleValidate"
+        :rules="cakeruleValidate"
       >
         <FormItem label="ID">
           <Input
@@ -187,9 +187,9 @@
 <script>
 import axios from 'axios'
 import expandRow from './cakeexpand'
+import rules from '../rules'
 export default {
-  components: {
-  },
+  mixins: [rules],
   props: {
     cakes: Array,
     ismore: Boolean
@@ -247,48 +247,7 @@ export default {
       fileSrc: null,
       pageSize: 15,
       page: 1,
-      modal1: false,
-      ruleValidate: {
-        name: [
-          { required: true, message: '茶点名不能为空', trigger: 'blur' },
-          {
-            type: 'string',
-            min: 2,
-            max: 25,
-            message: '商品名称在2-25字之间',
-            trigger: 'blur'
-          }
-        ],
-        price: [
-          { required: true, message: '茶点价格不能为空' },
-          {
-            type: 'number',
-            message: '请输入数字',
-            trigger: 'blur',
-            transform (value) {
-              return Number(value);
-            }
-          }
-        ],
-        type: [
-          { required: true, message: '茶点类型不能为空', trigger: 'blur' }
-        ],
-        taste: [
-          { required: true, message: '茶点口味不能为空', trigger: 'blur' }
-        ],
-        description: [
-          { required: true, message: '茶点描述不能为空', trigger: 'blur' },
-          {
-            type: 'string',
-            min: 20,
-            message: '20字以上',
-            trigger: 'blur'
-          }
-        ],
-        photo: [
-          { required: true, message: '图片非空', trigger: 'blur' }
-        ]
-      }
+      modal1: false
     }
   },
   methods: {

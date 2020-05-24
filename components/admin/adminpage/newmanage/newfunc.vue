@@ -27,7 +27,7 @@
       <TabPane label="添加图片">
         <div style="width: 700px; margin: 0 auto">
           <Form
-            :rules="ruleValidate"
+            :rules="newruleValidate"
             ref="newValidate"
             :model="newitem"
           >
@@ -73,11 +73,13 @@
 </template>
 
 <script>
+import rules from '../rules'
 import NoSSR from 'vue-no-ssr'
 export default {
   components: {
     'no-ssr': NoSSR
   },
+  mixins: [rules],
   props: {
     full: null
   },
@@ -87,12 +89,7 @@ export default {
         photo: null
       },
       fileSrc: null,
-      modal1: false,
-      ruleValidate: {
-        photo: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ]
-      }
+      modal1: false
     }
   },
   methods: {

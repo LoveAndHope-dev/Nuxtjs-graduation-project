@@ -9,7 +9,7 @@
       <Form
         :model="changetableForm"
         :label-width="80"
-        :rules="ruleValidate"
+        :rules="tableruleValidate"
         ref="tableValidate"
       >
         <FormItem label="ID">
@@ -101,10 +101,10 @@
 </template>
 
 <script>
+import rules from '../rules'
 import axios from 'axios'
 export default {
-  components: {
-  },
+  mixins: [rules],
   props: {
     tables: Array,
     ismore: Boolean
@@ -142,26 +142,7 @@ export default {
         condition: ''
       },
       pageSize: 15,
-      page: 1,
-      ruleValidate: {
-        name: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ],
-        people: [
-          { required: true, message: '不能为空' },
-          {
-            type: 'number',
-            message: '请输入数字',
-            trigger: 'blur',
-            transform (value) {
-              return Number(value);
-            }
-          }
-        ],
-        condition: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ]
-      }
+      page: 1
     }
   },
   methods: {

@@ -32,7 +32,7 @@
       <Form
         :model="changeadminForm"
         :label-width="80"
-        :rules="ruleValidate"
+        :rules="managerruleValidate"
         ref="managerValidate"
       >
         <FormItem label="ID">
@@ -89,7 +89,6 @@
         </FormItem>
         <FormItem
           label="密码"
-          prop="password"
         >
           <Input
             v-model="changeadminForm.password"
@@ -182,11 +181,13 @@
 <script>
 import CryptoJS from 'crypto-js'
 import axios from 'axios'
+import rules from '../rules'
 import expandRow from './managerexpand';
 export default {
   components: {
     expandRow
   },
+  mixins: [rules],
   props: {
     admins: Array,
     infos: Array
@@ -248,40 +249,7 @@ export default {
       file: null,
       fileSrc: null,
       isself: false,
-      modal1: false,
-      ruleValidate: {
-        name: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ],
-        email: [
-          { required: true, message: '禁止为空', trigger: 'blur' },
-          {
-            type: 'email',
-            message: '邮箱形式不对',
-            trigger: 'blur'
-          }
-        ],
-        phonenumber: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ],
-        wages: [
-          { required: true, message: '禁止为空' },
-          {
-            type: 'number',
-            message: '请输入数字',
-            trigger: 'blur',
-            transform (value) {
-              return Number(value);
-            }
-          }
-        ],
-        radio: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ],
-        photo: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ]
-      }
+      modal1: false
     }
   },
   methods: {

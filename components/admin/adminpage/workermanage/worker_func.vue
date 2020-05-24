@@ -29,7 +29,7 @@
           <Form
             :model="addWorkerForm"
             :label-width="100"
-            :rules="ruleValidate"
+            :rules="workerruleValidate"
             ref="workerValidate"
           >
             <Row>
@@ -38,7 +38,7 @@
                 <Col span="12">
                 <FormItem
                   label="入职日期"
-                  prop="inputdate"
+                  prop="date"
                 >
                   <DatePicker
                     type="date"
@@ -50,7 +50,7 @@
                 <Col span="12">
                 <FormItem
                   label="姓名"
-                  prop="inputname"
+                  prop="name"
                 >
                   <Input
                     v-model="addWorkerForm.inputname"
@@ -61,7 +61,7 @@
                 <Col span="12">
                 <FormItem
                   label="邮箱账号"
-                  prop="inputemail"
+                  prop="email"
                 >
                   <Input
                     v-model="addWorkerForm.inputemail"
@@ -72,7 +72,7 @@
                 <Col span="12">
                 <FormItem
                   label="手机号码"
-                  prop="inputphonenumber"
+                  prop="phonenumber"
                 >
                   <Input
                     v-model="addWorkerForm.inputphonenumber"
@@ -83,7 +83,7 @@
                 <Col span="12">
                 <FormItem
                   label="密码"
-                  prop="inputpassword"
+                  prop="password"
                 >
                   <Input
                     v-model="addWorkerForm.inputpassword"
@@ -95,7 +95,7 @@
                 <Col span="12">
                 <FormItem
                   label="工资"
-                  prop="inputwages"
+                  prop="wages"
                 >
                   <Input
                     v-model="addWorkerForm.inputwages"
@@ -168,8 +168,10 @@
 <script>
 import axios from 'axios'
 import moment from 'moment'
+import rules from '../rules'
 import CryptoJS from 'crypto-js'
 export default {
+  mixins: [rules],
   data () {
     return {
       file: null,
@@ -178,46 +180,7 @@ export default {
         inputdate: '',
         radio: ''
       },
-      modal1: false,
-      ruleValidate: {
-        inputdate: [
-          { required: true, message: '禁止为空' }
-        ],
-        inputname: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ],
-        inputemail: [
-          { required: true, message: '禁止为空', trigger: 'blur' },
-          {
-            type: 'email',
-            message: '邮箱形式不对',
-            trigger: 'blur'
-          }
-        ],
-        inputphonenumber: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ],
-        inputpassword: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ],
-        inputwages: [
-          { required: true, message: '禁止为空', trigger: 'blur' },
-          {
-            type: 'number',
-            message: '请输入数字',
-            trigger: 'blur',
-            transform (value) {
-              return Number(value);
-            }
-          }
-        ],
-        radio: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ],
-        photo: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ]
-      }
+      modal1: false
     }
   },
   methods: {

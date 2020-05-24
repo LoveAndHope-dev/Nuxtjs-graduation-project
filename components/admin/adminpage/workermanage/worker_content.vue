@@ -32,7 +32,7 @@
       <Form
         :model="changeWorkerForm"
         :label-width="80"
-        :rules="ruleValidate"
+        :rules="workerruleValidate"
         ref="workerValidate"
       >
         <FormItem label="ID">
@@ -89,7 +89,6 @@
         </FormItem>
         <FormItem
           label="密码"
-          prop="password"
         >
           <Input
             v-model="changeWorkerForm.password"
@@ -187,11 +186,13 @@
 <script>
 import CryptoJS from 'crypto-js'
 import axios from 'axios'
+import rules from '../rules'
 import expandRow from './workerexpand';
 export default {
   components: {
     expandRow
   },
+  mixins: [rules],
   props: {
     staffs: Array,
     ismore: Boolean
@@ -250,40 +251,7 @@ export default {
       fileSrc: null,
       pageSize: 15,
       page: 1,
-      modal1: false,
-      ruleValidate: {
-        name: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ],
-        email: [
-          { required: true, message: '禁止为空', trigger: 'blur' },
-          {
-            type: 'email',
-            message: '邮箱形式不对',
-            trigger: 'blur'
-          }
-        ],
-        phonenumber: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ],
-        wages: [
-          { required: true, message: '禁止为空' },
-          {
-            type: 'number',
-            message: '请输入数字',
-            trigger: 'blur',
-            transform (value) {
-              return Number(value);
-            }
-          }
-        ],
-        radio: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ],
-        photo: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ]
-      }
+      modal1: false
     }
   },
   methods: {

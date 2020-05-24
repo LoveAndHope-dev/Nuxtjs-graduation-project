@@ -1,16 +1,22 @@
 <template>
   <Card>
     <Form
-      :rules="ruleValidate"
+      :rules="articleruleValidate"
       ref="articleValidate"
       :model="articleForm"
       label-position="left"
       :label-width="100"
     >
-      <FormItem label="标题" prop="name">
+      <FormItem
+        label="标题"
+        prop="name"
+      >
         <Input v-model="articleForm.name"></Input>
       </FormItem>
-      <FormItem label="正文" prop="text">
+      <FormItem
+        label="正文"
+        prop="text"
+      >
         <editor
           api-key="7mg47kzvekvgnpznozy1enojhbi3et2vijn6etwce55uakhz"
           :init="tinyconf"
@@ -31,10 +37,12 @@
 import xss from 'xss'
 import Editor from '@tinymce/tinymce-vue'
 import axios from 'axios'
+import rules from '../rules'
 export default {
   components: {
     Editor
   },
+  mixins: [rules],
   data () {
     return {
       articleForm: {
@@ -66,14 +74,6 @@ export default {
            alignleft aligncenter alignright alignjustify | \
            bullist numlist outdent indent | removeformat | help'
 
-      },
-      ruleValidate: {
-        name: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ],
-        text: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ]
       }
     }
   },

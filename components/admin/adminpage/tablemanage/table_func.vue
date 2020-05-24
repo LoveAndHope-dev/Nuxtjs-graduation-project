@@ -4,7 +4,7 @@
       <Form
         :model="tableForm"
         :label-width="80"
-        :rules="ruleValidate"
+        :rules="tableruleValidate"
         ref="tableValidate"
       >
         <FormItem
@@ -37,27 +37,13 @@
   </Tabs>
 </template>
 <script>
+import rules from '../rules'
 export default {
+  mixins: [rules],
   data () {
     return {
       tableForm: {
         id: ''
-      },
-      ruleValidate: {
-        name: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ],
-        people: [
-          { required: true, message: '不能为空', trigger: 'blur' },
-          {
-            type: 'number',
-            message: '请输入数字',
-            trigger: 'blur',
-            transform (value) {
-              return Number(value);
-            }
-          }
-        ]
       }
     }
   },

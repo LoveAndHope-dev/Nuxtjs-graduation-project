@@ -32,7 +32,7 @@
       <Form
         :model="changeDrinkForm"
         :label-width="80"
-        :rules="ruleValidate"
+        :rules="tearuleValidate"
         ref="teaValidate"
       >
         <FormItem label="ID">
@@ -183,10 +183,10 @@
 
 <script>
 import axios from 'axios'
+import rules from '../rules'
 import expandRow from './teaexpand'
 export default {
-  components: {
-  },
+  mixins: [rules],
   props: {
     drinks: Array,
     ismore: Boolean
@@ -244,48 +244,7 @@ export default {
       fileSrc: null,
       pageSize: 15,
       page: 1,
-      modal1: false,
-      ruleValidate: {
-        name: [
-          { required: true, message: '茶品名不能为空', trigger: 'blur' },
-          {
-            type: 'string',
-            min: 2,
-            max: 25,
-            message: '商品名称在2-25字之间',
-            trigger: 'blur'
-          }
-        ],
-        price: [
-          { required: true, message: '茶品价格不能为空' },
-          {
-            type: 'number',
-            message: '请输入数字',
-            trigger: 'blur',
-            transform (value) {
-              return Number(value);
-            }
-          }
-        ],
-        type: [
-          { required: true, message: '茶品类型不能为空', trigger: 'blur' }
-        ],
-        position: [
-          { required: true, message: '茶品口味不能为空', trigger: 'blur' }
-        ],
-        description: [
-          { required: true, message: '茶品描述不能为空', trigger: 'blur' },
-          {
-            type: 'string',
-            min: 20,
-            message: '20字以上',
-            trigger: 'blur'
-          }
-        ],
-        photo: [
-          { required: true, message: '图片非空', trigger: 'blur' }
-        ]
-      }
+      modal1: false
     }
   },
   methods: {

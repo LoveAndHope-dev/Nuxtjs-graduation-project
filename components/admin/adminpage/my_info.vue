@@ -32,7 +32,7 @@
       <Form
         :model="changeinfoForm"
         :label-width="80"
-        :rules="ruleValidate"
+        :rules="myselfruleValidate"
         ref="Validate"
       >
         <FormItem
@@ -193,7 +193,9 @@
 
 <script>
 import vuex from 'vuex'
+import rules from './rules'
 export default {
+  mixins: [rules],
   props: {
     infos: Array
   },
@@ -209,29 +211,7 @@ export default {
       value2: false,
       file: null,
       fileSrc: null,
-      modal1: false,
-      ruleValidate: {
-        name: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ],
-        email: [
-          { required: true, message: '禁止为空', trigger: 'blur' },
-          {
-            type: 'email',
-            message: '邮箱形式不对',
-            trigger: 'blur'
-          }
-        ],
-        phonenumber: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ],
-        radio: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ],
-        photo: [
-          { required: true, message: '禁止为空', trigger: 'blur' }
-        ]
-      }
+      modal1: false
     }
   },
   methods: {
