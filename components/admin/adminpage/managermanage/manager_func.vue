@@ -43,7 +43,7 @@
                   <DatePicker
                     type="date"
                     placeholder="Select date"
-                    v-model="addadminForm.inputdate"
+                    v-model="addadminForm.date"
                   ></DatePicker>
                 </FormItem>
                 </Col>
@@ -53,7 +53,7 @@
                   prop="name"
                 >
                   <Input
-                    v-model="addadminForm.inputname"
+                    v-model="addadminForm.name"
                     placeholder="Enter something..."
                   ></Input>
                 </FormItem>
@@ -64,7 +64,7 @@
                   prop="email"
                 >
                   <Input
-                    v-model="addadminForm.inputemail"
+                    v-model="addadminForm.email"
                     placeholder="Enter something..."
                   ></Input>
                 </FormItem>
@@ -75,7 +75,7 @@
                   prop="phonenumber"
                 >
                   <Input
-                    v-model="addadminForm.inputphonenumber"
+                    v-model="addadminForm.phonenumber"
                     placeholder="Enter something..."
                   ></Input>
                 </FormItem>
@@ -86,7 +86,7 @@
                   prop="password"
                 >
                   <Input
-                    v-model="addadminForm.inputpassword"
+                    v-model="addadminForm.password"
                     placeholder="Enter something..."
                     type="password"
                   ></Input>
@@ -98,7 +98,7 @@
                   prop="wages"
                 >
                   <Input
-                    v-model="addadminForm.inputwages"
+                    v-model="addadminForm.wages"
                     placeholder="Enter something..."
                     type="password"
                   ></Input>
@@ -187,7 +187,7 @@ export default {
       file: null,
       fileSrc: null,
       addadminForm: {
-        inputdate: '',
+        date: '',
         radio: '',
         type: ''
       },
@@ -213,15 +213,15 @@ export default {
         } else {
           let self = this;
           let formData = new FormData()
-          formData.append('adminworkdate', moment(self.addadminForm.inputdate).format('LL'))
-          formData.append('adminname', self.addadminForm.inputname)
-          formData.append('adminemail', self.addadminForm.inputemail)
-          formData.append('adminphonenumber', window.encodeURIComponent(self.addadminForm.inputphonenumber))
+          formData.append('adminworkdate', moment(self.addadminForm.date).format('LL'))
+          formData.append('adminname', self.addadminForm.name)
+          formData.append('adminemail', self.addadminForm.email)
+          formData.append('adminphonenumber', window.encodeURIComponent(self.addadminForm.phonenumber))
           formData.append('adminsex', self.addadminForm.radio)
           formData.append('admintype', self.addadminForm.type)
           formData.append('adminphoto', self.addadminForm.photo)
-          formData.append('adminpassword', CryptoJS.MD5(self.addadminForm.inputpassword).toString())
-          formData.append('adminwages', self.addadminForm.inputwages)
+          formData.append('adminpassword', CryptoJS.MD5(self.addadminForm.password).toString())
+          formData.append('adminwages', self.addadminForm.wages)
           this.$emit('addAdminSubmit', formData)
         }
       })

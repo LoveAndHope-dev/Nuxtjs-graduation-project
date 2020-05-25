@@ -61,22 +61,22 @@ router.post('/removearticle', async ctx => {
   }
 })
 
-router.post('/searcharticle', async ctx => {
-  var reg = new RegExp(ctx.request.body.articlename, 'i');
-  let result = await Article.find({ $or: [{ articlename: { $regex: reg } }] })
-  if (result) {
-    ctx.body = {
-      code: 0,
-      msg: 'success',
-      result: result
-    }
-  } else {
-    ctx.body = {
-      code: -1,
-      msg: 'fail',
-      result: []
-    }
-  }
-})
+// router.post('/searcharticle', async ctx => {
+//   var reg = new RegExp(ctx.request.body.articlename, 'i');
+//   let result = await Article.find({ $or: [{ articlename: { $regex: reg } }] })
+//   if (result) {
+//     ctx.body = {
+//       code: 0,
+//       msg: 'success',
+//       result: result
+//     }
+//   } else {
+//     ctx.body = {
+//       code: -1,
+//       msg: 'fail',
+//       result: []
+//     }
+//   }
+// })
 
 export default router

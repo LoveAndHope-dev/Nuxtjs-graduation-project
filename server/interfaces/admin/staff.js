@@ -11,8 +11,8 @@ router.get('/getStaff', async ctx => {
 
   let skip = (page - 1) * pageSize
   try {
-    const total = await Staff.find({ $or: [{ staffphonenumber: { $regex: reg } }] }).sort({_id: -1}).count()
-    let result = await Staff.find({ $or: [{ staffphonenumber: { $regex: reg } }] }).sort({_id: -1}).skip(skip).limit(pageSize)
+    const total = await Staff.find({ $or: [{ staffphonenumber: { $regex: reg } }] }).sort({ _id: -1 }).count()
+    let result = await Staff.find({ $or: [{ staffphonenumber: { $regex: reg } }] }).sort({ _id: -1 }).skip(skip).limit(pageSize)
     let isMore = total - (((page - 1) * pageSize) + result.length) > 0 ? true : false
     ctx.body = {
       code: 0,
@@ -23,6 +23,32 @@ router.get('/getStaff', async ctx => {
     ctx.body = {
       code: -1,
       result: {}
+    }
+  }
+})
+
+router.get(`/phonenumbervalid`, async ctx => {
+  let result = await Staff.findOne({ staffphonenumber: ctx.request.query.phonenumber })
+  if (result) {
+    ctx.body = {
+      vwpnc: 0
+    }
+  } else {
+    ctx.body = {
+      vwpnc: -1
+    }
+  }
+})
+
+router.get(`/emailvalid`, async ctx => {
+  let result = await Staff.findOne({ staffemail: ctx.request.query.email })
+  if (result) {
+    ctx.body = {
+      vwec: 0
+    }
+  } else {
+    ctx.body = {
+      vwec: -1
     }
   }
 })
@@ -120,22 +146,22 @@ router.post('/changeStaff', async ctx => {
   }
 })
 
-router.post('/searchStaff', async ctx => {
-  var reg = new RegExp(ctx.request.body.staffphonenumber, 'i');
-  let result = await Staff.find({ $or: [{ staffphonenumber: { $regex: reg } }] })
-  if (result) {
-    ctx.body = {
-      code: 0,
-      msg: 'success',
-      result: result
-    }
-  } else {
-    ctx.body = {
-      code: -1,
-      msg: 'fail',
-      result: ' '
-    }
-  }
-})
+// router.post('/searchStaff', async ctx => {
+//   var reg = new RegExp(ctx.request.body.staffphonenumber, 'i');
+//   let result = await Staff.find({ $or: [{ staffphonenumber: { $regex: reg } }] })
+//   if (result) {
+//     ctx.body = {
+//       code: 0,
+//       msg: 'success',
+//       result: result
+//     }
+//   } else {
+//     ctx.body = {
+//       code: -1,
+//       msg: 'fail',
+//       result: ' '
+//     }
+//   }
+// })
 
 export default router

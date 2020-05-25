@@ -26,6 +26,19 @@ router.get('/getTable', async ctx => {
   }
 })
 
+router.get(`/tablenamevalid`, async ctx => {
+  let result = await Table.findOne({ tablename: ctx.request.query.name })
+  if (result) {
+    ctx.body = {
+      code: 0
+    }
+  } else {
+    ctx.body = {
+      code: -1
+    }
+  }
+})
+
 router.post('/addTable', async ctx => {
   let addnew = new Table(ctx.request.body)
   let result = await addnew.save()
@@ -87,21 +100,21 @@ router.post('/changeTable', async ctx => {
   }
 })
 
-router.post('/searchTable', async ctx => {
-  var reg = new RegExp(ctx.request.body.tablename, 'i');
-  let result = await Table.find({ $or: [{ tablename: { $regex: reg } }] })
-  if (result) {
-    ctx.body = {
-      code: 0,
-      msg: 'success',
-      result: result
-    }
-  } else {
-    ctx.body = {
-      code: -1,
-      msg: 'fail',
-      result: ''
-    }
-  }
-})
+// router.post('/searchTable', async ctx => {
+//   var reg = new RegExp(ctx.request.body.tablename, 'i');
+//   let result = await Table.find({ $or: [{ tablename: { $regex: reg } }] })
+//   if (result) {
+//     ctx.body = {
+//       code: 0,
+//       msg: 'success',
+//       result: result
+//     }
+//   } else {
+//     ctx.body = {
+//       code: -1,
+//       msg: 'fail',
+//       result: ''
+//     }
+//   }
+// })
 export default router

@@ -43,7 +43,7 @@
                   <DatePicker
                     type="date"
                     placeholder="Select date"
-                    v-model="addWorkerForm.inputdate"
+                    v-model="addWorkerForm.date"
                   ></DatePicker>
                 </FormItem>
                 </Col>
@@ -53,7 +53,7 @@
                   prop="name"
                 >
                   <Input
-                    v-model="addWorkerForm.inputname"
+                    v-model="addWorkerForm.name"
                     placeholder="Enter something..."
                   ></Input>
                 </FormItem>
@@ -64,7 +64,7 @@
                   prop="email"
                 >
                   <Input
-                    v-model="addWorkerForm.inputemail"
+                    v-model="addWorkerForm.email"
                     placeholder="Enter something..."
                   ></Input>
                 </FormItem>
@@ -75,7 +75,7 @@
                   prop="phonenumber"
                 >
                   <Input
-                    v-model="addWorkerForm.inputphonenumber"
+                    v-model="addWorkerForm.phonenumber"
                     placeholder="Enter something..."
                   ></Input>
                 </FormItem>
@@ -86,7 +86,7 @@
                   prop="password"
                 >
                   <Input
-                    v-model="addWorkerForm.inputpassword"
+                    v-model="addWorkerForm.password"
                     placeholder="Enter something..."
                     type="password"
                   ></Input>
@@ -98,7 +98,7 @@
                   prop="wages"
                 >
                   <Input
-                    v-model="addWorkerForm.inputwages"
+                    v-model="addWorkerForm.wages"
                     placeholder="Enter something..."
                     type="password"
                   ></Input>
@@ -177,7 +177,7 @@ export default {
       file: null,
       fileSrc: null,
       addWorkerForm: {
-        inputdate: '',
+        date: '',
         radio: ''
       },
       modal1: false
@@ -202,14 +202,14 @@ export default {
         } else {
           let self = this;
           let formData = new FormData()
-          formData.append('staffworkdate', moment(self.addWorkerForm.inputdate).format('LL'))
-          formData.append('staffname', self.addWorkerForm.inputname)
-          formData.append('staffemail', self.addWorkerForm.inputemail)
-          formData.append('staffphonenumber', window.encodeURIComponent(self.addWorkerForm.inputphonenumber))
+          formData.append('staffworkdate', moment(self.addWorkerForm.date).format('LL'))
+          formData.append('staffname', self.addWorkerForm.name)
+          formData.append('staffemail', self.addWorkerForm.email)
+          formData.append('staffphonenumber', window.encodeURIComponent(self.addWorkerForm.phonenumber))
           formData.append('staffsex', self.addWorkerForm.radio)
           formData.append('staffphoto', self.addWorkerForm.photo)
-          formData.append('staffpassword', CryptoJS.MD5(self.addWorkerForm.inputpassword).toString())
-          formData.append('staffwages', parseInt(self.addWorkerForm.inputwages))
+          formData.append('staffpassword', CryptoJS.MD5(self.addWorkerForm.password).toString())
+          formData.append('staffwages', parseInt(self.addWorkerForm.wages))
           this.$emit('addWorkerSubmit', formData)
         }
       })

@@ -26,6 +26,19 @@ router.get('/getCake', async ctx => {
   }
 })
 
+router.get(`/cakenamevalid`, async ctx => {
+  let result = await Cake.findOne({ cakename: ctx.request.query.name })
+  if (result) {
+    ctx.body = {
+      code: 0
+    }
+  } else {
+    ctx.body = {
+      code: -1
+    }
+  }
+})
+
 router.post('/addCake', async ctx => {
   let addnew = new Cake(ctx.request.body)
   let result = await addnew.save()
@@ -93,22 +106,22 @@ router.post('/changeCake', async ctx => {
   }
 })
 
-router.post('/searchCake', async ctx => {
-  var reg = new RegExp(ctx.request.body.cakename, 'i');
-  let result = await Cake.find({ $or: [{ cakename: { $regex: reg } }] })
-  if (result) {
-    ctx.body = {
-      code: 0,
-      msg: 'success',
-      result: result
-    }
-  } else {
-    ctx.body = {
-      code: -1,
-      msg: 'fail',
-      result: ' '
-    }
-  }
-})
+// router.post('/searchCake', async ctx => {
+//   var reg = new RegExp(ctx.request.body.cakename, 'i');
+//   let result = await Cake.find({ $or: [{ cakename: { $regex: reg } }] })
+//   if (result) {
+//     ctx.body = {
+//       code: 0,
+//       msg: 'success',
+//       result: result
+//     }
+//   } else {
+//     ctx.body = {
+//       code: -1,
+//       msg: 'fail',
+//       result: ' '
+//     }
+//   }
+// })
 
 export default router

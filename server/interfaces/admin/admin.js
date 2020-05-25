@@ -18,6 +18,32 @@ router.get('/getAdmin', async ctx => {
   }
 })
 
+router.get(`/phonenumbervalid`, async ctx => {
+  let result = await Admin.findOne({ adminphonenumber: ctx.request.query.phonenumber })
+  if (result) {
+    ctx.body = {
+      code: 0
+    }
+  } else {
+    ctx.body = {
+      code: -1
+    }
+  }
+})
+
+router.get(`/emailvalid`, async ctx => {
+  let result = await Admin.findOne({ adminemail: ctx.request.query.email })
+  if (result) {
+    ctx.body = {
+      code: 0
+    }
+  } else {
+    ctx.body = {
+      code: -1
+    }
+  }
+})
+
 router.post('/addadmin', async ctx => {
   let addnew = new Admin({
     adminworkdate: ctx.request.body.adminworkdate,

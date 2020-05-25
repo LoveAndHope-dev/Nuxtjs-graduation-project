@@ -104,11 +104,7 @@
 <script>
 import xss from 'xss'
 import { mapState } from 'vuex'
-import indexarticle from '@/components/indexpage/indexarticle'
 export default {
-  components: {
-    indexarticle
-  },
   async asyncData (ctx) {
     let { status, data: { code, result } } = await ctx.$axios.get('/index/getPhoto')
     if (status === 200 & code === 0) {

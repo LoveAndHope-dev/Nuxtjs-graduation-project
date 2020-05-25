@@ -27,6 +27,19 @@ router.get('/getDrink', async ctx => {
   }
 })
 
+router.get(`/drinknamevalid`, async ctx => {
+  let result = await Drink.findOne({ drinkname: ctx.request.query.name })
+  if (result) {
+    ctx.body = {
+      vdnc: 0
+    }
+  } else {
+    ctx.body = {
+      vdnc: -1
+    }
+  }
+})
+
 router.post('/addDrink', async ctx => {
   let addnew = new Drink(ctx.request.body)
   let result = await addnew.save()
@@ -94,21 +107,21 @@ router.post('/changeDrink', async ctx => {
   }
 })
 
-router.post('/searchDrink', async ctx => {
-  var reg = new RegExp(ctx.request.body.drinkname, 'i');
-  let result = await Drink.find({ $or: [{ drinkname: { $regex: reg } }] })
-  if (result) {
-    ctx.body = {
-      code: 0,
-      msg: 'success',
-      result: result
-    }
-  } else {
-    ctx.body = {
-      code: -1,
-      msg: 'fail',
-      result: []
-    }
-  }
-})
+// router.post('/searchDrink', async ctx => {
+//   var reg = new RegExp(ctx.request.body.drinkname, 'i');
+//   let result = await Drink.find({ $or: [{ drinkname: { $regex: reg } }] })
+//   if (result) {
+//     ctx.body = {
+//       code: 0,
+//       msg: 'success',
+//       result: result
+//     }
+//   } else {
+//     ctx.body = {
+//       code: -1,
+//       msg: 'fail',
+//       result: []
+//     }
+//   }
+// })
 export default router
