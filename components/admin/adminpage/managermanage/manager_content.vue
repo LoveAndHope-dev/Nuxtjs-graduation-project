@@ -226,7 +226,7 @@ export default {
           key: 'sex'
         },
         {
-          title: '工作日期',
+          title: '工作日期（月/日/年）',
           key: 'workdate'
         },
         {
@@ -348,8 +348,7 @@ export default {
           formData.append('adminpassword', CryptoJS.MD5(changePassword).toString())
           formData.append('adminwages', parseInt(this.changeadminForm.wages))
           formData.append('adminphoto', this.changeadminForm.photo)
-          console.log('ok')
-          let { status, data: { code, msg, admin } } = await axios.post(`/manager/manager_manage/changeadmin`, formData, {
+          let { status, data: { code, msg, admin } } = await this.$axios.post(`/manager/manager_manage/changeadmin`, formData, {
             headers: { 'content-type': 'multipart/form-data' }
           })
           if (status === 200 & code === 0) {

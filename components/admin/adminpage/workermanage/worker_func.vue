@@ -11,13 +11,13 @@
           <cropper
             ref="cropper"
             :img="fileSrc"
-            :canMoveBox="true"
-            :outputSize="1"
+            :can-move-box="true"
+            :output-size="1"
             :fixed="true"
-            :canScale="true"
-            :fixedNumber="[5, 5]"
-            :autoCrop="true"
-            :centerBox="true"
+            :can-scale="true"
+            :fixed-number="[5, 5]"
+            :auto-crop="true"
+            :center-box="true"
           >
           </cropper>
         </no-ssr>
@@ -202,7 +202,7 @@ export default {
         } else {
           let self = this;
           let formData = new FormData()
-          formData.append('staffworkdate', moment(self.addWorkerForm.date).format('LL'))
+          formData.append('staffworkdate', moment(self.addWorkerForm.date).format('L'))
           formData.append('staffname', self.addWorkerForm.name)
           formData.append('staffemail', self.addWorkerForm.email)
           formData.append('staffphonenumber', window.encodeURIComponent(self.addWorkerForm.phonenumber))

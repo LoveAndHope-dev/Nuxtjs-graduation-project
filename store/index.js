@@ -21,7 +21,6 @@ export const actions = {
               workdate: item.adminworkdate,
               photo: item.adminphoto,
               phonenumber: item.adminphonenumber,
-              password: item.adminpassword,
               type: item.admintype,
               wages: item.adminwages,
               isadmin: true
@@ -42,7 +41,6 @@ export const actions = {
               workdate: item.staffworkdate,
               photo: item.staffphoto,
               phonenumber: item.staffphonenumber,
-              password: item.staffpassword,
               wages: item.staffwages,
               isadmin: false
             }

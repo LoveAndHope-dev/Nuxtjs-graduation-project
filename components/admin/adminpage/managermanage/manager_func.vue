@@ -213,7 +213,7 @@ export default {
         } else {
           let self = this;
           let formData = new FormData()
-          formData.append('adminworkdate', moment(self.addadminForm.date).format('LL'))
+          formData.append('adminworkdate', moment(self.addadminForm.date).format('L'))
           formData.append('adminname', self.addadminForm.name)
           formData.append('adminemail', self.addadminForm.email)
           formData.append('adminphonenumber', window.encodeURIComponent(self.addadminForm.phonenumber))

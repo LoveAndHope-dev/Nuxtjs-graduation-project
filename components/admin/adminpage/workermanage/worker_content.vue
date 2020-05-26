@@ -231,7 +231,7 @@ export default {
           key: 'sex'
         },
         {
-          title: '工作日期',
+          title: '工作日期(月/日/年)',
           key: 'workdate'
         },
         {
