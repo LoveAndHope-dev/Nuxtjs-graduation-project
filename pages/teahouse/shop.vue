@@ -315,9 +315,10 @@ export default {
           this.$Message.error('请仔细检查人员信息')
         } else {
           let formData = new FormData()
+          moment.locale('zh-cn')
           formData.append('orderlist', JSON.stringify(this.cartitem))
           formData.append('ordertableid', this.tableform.tableselect)
-          formData.append('ordertime', moment().format('MMMM Do YYYY, h:mm:ss'))
+          formData.append('ordertime', moment().format('lll'))
           let { data: { code, msg } } = await axios.post('/teahouse/shop/addOrder', formData, {
             headers: { 'content-type': 'multipart/form-data' }
           })

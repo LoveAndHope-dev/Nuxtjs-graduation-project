@@ -202,7 +202,8 @@ export default {
         } else {
           let self = this;
           let formData = new FormData()
-          formData.append('staffworkdate', moment(self.addWorkerForm.date).format('L'))
+          moment.locale('zh-cn')
+          formData.append('staffworkdate', moment(self.addWorkerForm.date).format('LL'))
           formData.append('staffname', self.addWorkerForm.name)
           formData.append('staffemail', self.addWorkerForm.email)
           formData.append('staffphonenumber', window.encodeURIComponent(self.addWorkerForm.phonenumber))
