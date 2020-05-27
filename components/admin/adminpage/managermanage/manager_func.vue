@@ -110,8 +110,8 @@
                   prop="radio"
                 >
                   <RadioGroup v-model="addadminForm.radio">
-                    <Radio label="male">Male</Radio>
-                    <Radio label="female">Female</Radio>
+                    <Radio label="1">男</Radio>
+                    <Radio label="0">女</Radio>
                   </RadioGroup>
                 </FormItem>
                 </Col>

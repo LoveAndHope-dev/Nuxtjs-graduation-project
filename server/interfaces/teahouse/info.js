@@ -19,6 +19,7 @@ router.get('/getInfo', async ctx => {
 
 router.post('/changeInfo', async ctx => {
   let changeID = ctx.request.body.staffid
+  console.log(ctx.request.body.staffid)
   let result = await Staff.findOneAndUpdate({ '_id': changeID }, {
     staffname: ctx.request.body.staffname,
     staffemail: ctx.request.body.staffemail,

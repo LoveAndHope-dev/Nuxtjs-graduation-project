@@ -67,8 +67,8 @@
           prop="radio"
         >
           <RadioGroup v-model="changeinfoForm.radio">
-            <Radio label="male">Male</Radio>
-            <Radio label="female">Female</Radio>
+            <Radio label="1">男</Radio>
+            <Radio label="0">女</Radio>
           </RadioGroup>
         </FormItem>
         <FormItem
@@ -125,7 +125,7 @@
         size="large"
       >
         <ListItem>姓名：{{infos[0].name}}</ListItem>
-        <ListItem>性别：{{infos[0].sex}}</ListItem>
+        <ListItem>性别：{{infos[0].sex ? '男' : '女'}}</ListItem>
         <ListItem>邮箱地址：{{infos[0].email}}</ListItem>
         <ListItem>开始工作日期：{{infos[0].workdate}}</ListItem>
         <ListItem>手机号码：{{infos[0].phonenumber}}</ListItem>
@@ -231,7 +231,7 @@ export default {
       this.changeinfoForm.name = this.infos[0].name
       this.changeinfoForm.email = this.infos[0].email
       this.changeinfoForm.phonenumber = this.infos[0].phonenumber
-      this.changeinfoForm.radio = this.infos[0].sex
+      this.changeinfoForm.radio = this.infos[0].sex ? '1' : '0'
       this.fileSrc = this.infos[0].photo
       this.changeinfoForm.photo = this.infos[0].photo
     },

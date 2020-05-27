@@ -83,13 +83,11 @@
           prop="radio"
         >
           <RadioGroup v-model="changeWorkerForm.radio">
-            <Radio label="male">Male</Radio>
-            <Radio label="female">Female</Radio>
+            <Radio label="1">男</Radio>
+            <Radio label="0">女</Radio>
           </RadioGroup>
         </FormItem>
-        <FormItem
-          label="密码"
-        >
+        <FormItem label="密码">
           <Input
             v-model="changeWorkerForm.password"
             placeholder="不填默认密码：123456789"
@@ -228,7 +226,14 @@ export default {
         },
         {
           title: '性别',
-          key: 'sex'
+          key: 'sex',
+          render: (h, params) => {
+            if (params.row.sex) {
+              return h('p', '男')
+            } else {
+              return h('p', '女')
+            }
+          }
         },
         {
           title: '工作日期',
@@ -293,7 +298,7 @@ export default {
       this.changeWorkerForm.phonenumber = this.staffs[index].phonenumber
       this.changeWorkerForm.email = this.staffs[index].email
       this.changeWorkerForm.wages = this.staffs[index].wages
-      this.changeWorkerForm.radio = this.staffs[index].sex
+      this.changeWorkerForm.radio = this.staffs[index].sex ? '1' : '0'
       this.changeWorkerForm.photo = this.staffs[index].photo
       this.fileSrc = this.staffs[index].photo
     },

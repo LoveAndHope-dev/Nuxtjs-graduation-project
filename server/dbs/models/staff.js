@@ -6,7 +6,7 @@ const StaffSchema = new Schema({
     unique: false
   },
   staffsex: {
-    type: String,
+    type: Boolean,
     unique: false
   },
   staffworkdate: {

@@ -120,7 +120,7 @@ export default {
           { validator: validcakename, trigger: 'blur' }
         ],
         price: [
-          { required: true, message: '茶点价格不能为空', trigger: 'blur' },
+          { required: true, message: '茶点价格不能为空' },
           {
             type: 'number',
             message: '请输入数字',
@@ -204,7 +204,7 @@ export default {
           { validator: validtablename, trigger: 'blur' }
         ],
         people: [
-          { required: true, message: '不能为空', trigger: 'blur' },
+          { required: true, message: '不能为空' },
           {
             type: 'number',
             message: '请输入数字',
@@ -228,7 +228,7 @@ export default {
           { validator: validdrinkname, trigger: 'blur' }
         ],
         price: [
-          { required: true, message: '茶品价格不能为空', trigger: 'blur' },
+          { required: true, message: '茶品价格不能为空' },
           {
             type: 'number',
             message: '请输入数字',
@@ -281,7 +281,7 @@ export default {
           { required: true, message: '禁止为空', trigger: 'blur' }
         ],
         wages: [
-          { required: true, message: '禁止为空', trigger: 'blur' },
+          { required: true, message: '禁止为空' },
           {
             type: 'number',
             message: '请输入数字',

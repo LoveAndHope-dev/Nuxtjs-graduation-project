@@ -37,8 +37,8 @@
         </FormItem>
         <FormItem label="性别">
           <RadioGroup v-model="changeinfoForm.radio">
-            <Radio label="male">Male</Radio>
-            <Radio label="female">Female</Radio>
+            <Radio label="1">男</Radio>
+            <Radio label="0">女</Radio>
           </RadioGroup>
         </FormItem>
         <FormItem label="照骗">
@@ -49,7 +49,7 @@
           >
             <Avatar
               shape="square"
-              style="width: 180px; height: 252px"
+              style="width: 180px; height: 180px"
               :src="fileSrc"
             >
               <Icon
@@ -92,7 +92,7 @@
         size="large"
       >
         <ListItem>姓名：{{infos[0].name}}</ListItem>
-        <ListItem>性别：{{infos[0].sex}}</ListItem>
+        <ListItem>性别：{{infos[0].sex ? '男' : '女'}}</ListItem>
         <ListItem>邮箱地址：{{infos[0].email}}</ListItem>
         <ListItem>开始工作日期：{{infos[0].workdate}}</ListItem>
         <ListItem>手机号码：{{infos[0].phonenumber}}</ListItem>
@@ -167,14 +167,15 @@ export default {
       this.changeinfoForm.name = this.infos[0].name
       this.changeinfoForm.email = this.infos[0].email
       this.changeinfoForm.phonenumber = this.infos[0].phonenumber
-      this.changeinfoForm.radio = this.infos[0].sex
+      this.changeinfoForm.radio = this.infos[0].sex ? '1' : '0'
       this.fileSrc = this.infos[0].photo
+      this.changeinfoForm.photo = this.infos[0].photo
     },
     before (file) {
       this.file = file
       const FileExt = this.file.name.replace(/.+\./, '');//取得文件的后缀名
-      if (file.size > 2097152) {
-        this.$Message.error(file.name + '大小超过2M!')
+      if (file.size > 100000) {
+        this.$Message.error(file.name + '大小超过1M!')
         this.file = null //超过大小将文件清空
       } else if (!/image\/\w+/.test(file.type)) { //判断文件
         this.$Message.error('请上传图片老铁');
@@ -185,7 +186,6 @@ export default {
         reader.onload = e => {
           // 读取到的图片base64 数据编码 将此编码字符串传给后台即可
           const code = e.target.result;
-          console.log(code)
           this.changeinfoForm.photo = code
           this.fileSrc = code
         }
@@ -194,7 +194,7 @@ export default {
     },
     deletepic () {
       this.fileSrc = null
-      this.photo = null
+      this.changeinfoForm.photo = null
     },
     changeInfoSubmit: async function () {
       let formData = new FormData()
@@ -210,7 +210,7 @@ export default {
       formData.append('staffemail', this.changeinfoForm.email)
       formData.append('staffphonenumber', this.changeinfoForm.phonenumber)
       formData.append('staffpassword', CryptoJS.MD5(changePassword).toString())
-      formData.append('staffphoto', this.fileSrc)
+      formData.append('staffphoto', this.changeinfoForm.photo)
       this.$emit('changeInfoSubmit', formData)
     }
   }

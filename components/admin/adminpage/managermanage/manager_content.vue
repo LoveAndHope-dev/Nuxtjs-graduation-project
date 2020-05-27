@@ -83,8 +83,8 @@
           prop="radio"
         >
           <RadioGroup v-model="changeadminForm.radio">
-            <Radio label="male">Male</Radio>
-            <Radio label="female">Female</Radio>
+            <Radio label="1">男</Radio>
+            <Radio label="0">女</Radio>
           </RadioGroup>
         </FormItem>
         <FormItem
@@ -223,7 +223,14 @@ export default {
         },
         {
           title: '性别',
-          key: 'sex'
+          key: 'sex',
+          render: (h, params) => {
+            if (params.row.sex) {
+              return h('p', '男')
+            } else {
+              return h('p', '女')
+            }
+          }
         },
         {
           title: '工作日期（月/日/年）',
@@ -296,7 +303,7 @@ export default {
       this.changeadminForm.phonenumber = this.admins[index].phonenumber
       this.changeadminForm.email = this.admins[index].email
       this.changeadminForm.wages = this.admins[index].wages
-      this.changeadminForm.radio = this.admins[index].sex
+      this.changeadminForm.radio = this.admins[index].sex ? '1' : '0'
       this.changeadminForm.photo = this.admins[index].photo
       this.fileSrc = this.admins[index].photo
     },

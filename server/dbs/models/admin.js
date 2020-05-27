@@ -6,7 +6,7 @@ const adminSchema = new Schema({
     unique: false
   },
   adminsex: {
-    type: String,
+    type: Boolean,
     unique: false
   },
   adminworkdate: {
