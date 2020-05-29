@@ -27,7 +27,12 @@ router.get('/getCake', async ctx => {
 })
 
 router.get(`/cakenamevalid`, async ctx => {
-  let result = await Cake.findOne({ cakename: ctx.request.query.name })
+  let result = await Cake.findOne({
+    $and: [
+      { cakename: ctx.request.query.name }, 
+      { $nor: [{ _id: ctx.request.query.id }] }
+    ]
+  })
   if (result) {
     ctx.body = {
       code: 0

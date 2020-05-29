@@ -28,7 +28,12 @@ router.get('/getStaff', async ctx => {
 })
 
 router.get(`/phonenumbervalid`, async ctx => {
-  let result = await Staff.findOne({ staffphonenumber: ctx.request.query.phonenumber })
+  let result = await Staff.findOne({
+    $and: [
+      { staffphonenumber: ctx.request.query.phonenumber }, 
+      { $nor: [{ _id: ctx.request.query.id }] }
+    ]
+  })
   if (result) {
     ctx.body = {
       vwpnc: 0
@@ -41,7 +46,12 @@ router.get(`/phonenumbervalid`, async ctx => {
 })
 
 router.get(`/emailvalid`, async ctx => {
-  let result = await Staff.findOne({ staffemail: ctx.request.query.email })
+  let result = await Staff.findOne({
+    $and: [
+      { staffemail: ctx.request.query.email }, 
+      { $nor: [{ _id: ctx.request.query.id }] }
+    ]
+  })
   if (result) {
     ctx.body = {
       vwec: 0

@@ -19,7 +19,12 @@ router.get('/getAdmin', async ctx => {
 })
 
 router.get(`/phonenumbervalid`, async ctx => {
-  let result = await Admin.findOne({ adminphonenumber: ctx.request.query.phonenumber })
+  let result = await Admin.findOne({
+    $and: [
+      { adminphonenumber: ctx.request.query.phonenumber }, 
+      { $nor: [{ _id: ctx.request.query.id }] }
+    ]
+  })
   if (result) {
     ctx.body = {
       code: 0
@@ -32,7 +37,12 @@ router.get(`/phonenumbervalid`, async ctx => {
 })
 
 router.get(`/emailvalid`, async ctx => {
-  let result = await Admin.findOne({ adminemail: ctx.request.query.email })
+  let result = await Admin.findOne({
+    $and: [
+      { adminemail: ctx.request.query.email }, 
+      { $nor: [{ _id: ctx.request.query.id }] }
+    ]
+  })
   if (result) {
     ctx.body = {
       code: 0

@@ -1,8 +1,12 @@
 export default {
   data () {
     const validworkerphonenumber = async (rule, value, callback) => {
+      if (this.changeWorkerForm === undefined) {
+        this.changeWorkerForm = NaN
+      } 
       let { status: vwpns, data: { vwpnc } } = await this.$axios.get(`/manager/worker_manage/phonenumbervalid`, {
         params: {
+          id: this.changeWorkerForm.id,
           phonenumber: value
         }
       })
@@ -15,8 +19,12 @@ export default {
       }
     }
     const validworkeremail = async (rule, value, callback) => {
+      if (this.changeWorkerForm === undefined) {
+        this.changeWorkerForm = NaN
+      } 
       let { status: vwes, data: { vwec } } = await this.$axios.get(`/manager/worker_manage/emailvalid`, {
         params: {
+          id: this.changeWorkerForm.id,
           email: value
         }
       })
@@ -29,8 +37,12 @@ export default {
       }
     }
     const validdrinkname = async (rule, value, callback) => {
+      if (this.changeDrinkForm === undefined) {
+        this.changeDrinkForm = NaN
+      } 
       let { status: vdns, data: { vdnc } } = await this.$axios.get(`/manager/tea_manage/drinknamevalid`, {
         params: {
+          id: this.changeDrinkForm.id,
           name: value
         }
       })
@@ -43,8 +55,12 @@ export default {
       }
     }
     const validcakename = async (rule, value, callback) => {
+      if (this.changecakeForm === undefined) {
+        this.changecakeForm = NaN
+      } 
       let { status, data: { code } } = await this.$axios.get(`/manager/cake_manage/cakenamevalid`, {
         params: {
+          id: this.changecakeForm.id,
           name: value
         }
       })
@@ -57,8 +73,12 @@ export default {
       }
     }
     const validmanagerphonenumber = async (rule, value, callback) => {
+      if (this.changeadminForm === undefined) {
+        this.changeadminForm = NaN
+      } 
       let { status, data: { code } } = await this.$axios.get(`/manager/manager_manage/phonenumbervalid`, {
         params: {
+          id: this.changeadminForm.id,
           phonenumber: value
         }
       })
@@ -71,8 +91,12 @@ export default {
       }
     }
     const validmanageremail = async (rule, value, callback) => {
+      if (this.changeadminForm === undefined) {
+        this.changeadminForm = NaN
+      } 
       let { status, data: { code } } = await this.$axios.get(`/manager/manager_manage/emailvalid`, {
         params: {
+          id: this.changeadminForm.id,
           email: value
         }
       })
@@ -85,8 +109,12 @@ export default {
       }
     }
     const validtablename = async (rule, value, callback) => {
+      if (this.changetableForm === undefined) {
+        this.changetableForm = NaN
+      } 
       let { status, data: { code } } = await this.$axios.get(`/manager/table_manage/tablenamevalid`, {
         params: {
+          id: this.changetableForm.id,
           name: value
         }
       })

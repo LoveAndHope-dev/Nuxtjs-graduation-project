@@ -11,8 +11,8 @@ router.get('/getDrink', async ctx => {
   // 跳多少条数据
   let skip = (page - 1) * pageSize
   try {
-    const total = await Drink.find({ $or: [{ drinkname: { $regex: reg } }] }).sort({_id: -1}).count()
-    let result = await Drink.find({ $or: [{ drinkname: { $regex: reg } }] }).sort({_id: -1}).skip(skip).limit(pageSize)
+    const total = await Drink.find({ $or: [{ drinkname: { $regex: reg } }] }).sort({ _id: -1 }).count()
+    let result = await Drink.find({ $or: [{ drinkname: { $regex: reg } }] }).sort({ _id: -1 }).skip(skip).limit(pageSize)
     let isMore = total - (((page - 1) * pageSize) + result.length) > 0 ? true : false
     ctx.body = {
       dmcode: 0,
@@ -28,7 +28,12 @@ router.get('/getDrink', async ctx => {
 })
 
 router.get(`/drinknamevalid`, async ctx => {
-  let result = await Drink.findOne({ drinkname: ctx.request.query.name })
+  let result = await Drink.findOne({
+    $and: [
+      { drinkname: ctx.request.query.name }, 
+      { $nor: [{ _id: ctx.request.query.id }] }
+    ]
+  })
   if (result) {
     ctx.body = {
       vdnc: 0
