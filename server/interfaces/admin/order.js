@@ -27,12 +27,12 @@ router.get('/getOrder', async ctx => {
     if (e.name == 'CastError') {
       ctx.body = {
         omcode: -1,
-        omesult: {}
+        omresult: [{}]
       }
     } else {
       ctx.body = {
         omcode: -2,
-        omesult: {}
+        omresult: [{}]
       }
     }
   }

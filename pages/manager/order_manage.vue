@@ -66,6 +66,8 @@ export default {
           ? [...this.orders, ...more]
           : more;
         this.isMore = isMore
+      } else if (omcode == -1) {
+        this.$Message.error('请输入二十四位订单号谢谢合作')
       }
     }
   }
