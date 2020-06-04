@@ -156,7 +156,7 @@ export default {
     async remove (index) {
       let formData = new FormData()
       formData.append('submitID', this.tables[index].id)
-      let { status, data: { code, msg, removeID } } = await axios.post(`/manager/table_manage/removeTable`, formData, {
+      let { status, data: { code, msg, removeID } } = await this.$axios.post(`/manager/table_manage/removeTable`, formData, {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
@@ -178,7 +178,7 @@ export default {
       formData.append('tablename', this.changetableForm.name)
       formData.append('tablecondition', this.changetableForm.condition)
       formData.append('tablepeople', this.changetableForm.people)
-      let { status, data: { code, msg, table } } = await axios.post(`/manager/table_manage/changeTable`, formData, {
+      let { status, data: { code, msg, table } } = await this.$axios.post(`/manager/table_manage/changeTable`, formData, {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
@@ -189,12 +189,6 @@ export default {
         this.$Message.success('修改成功')
       }
     }
-    // searchTableSubmit: async function () {
-    //   let self = this
-    //   let formData = new FormData()
-    //   formData.append('tablename', self.searchtableForm.name)
-    //   this.$emit('searchTableSubmit', formData)
-    // }
   }
 }
 </script>

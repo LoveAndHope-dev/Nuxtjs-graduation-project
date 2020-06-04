@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     async addArticleSubmit (formData) {
-      let { status, data: { code, msg, result } } = await axios.post(`/manager/article_manage/addarticle`, formData, {
+      let { status, data: { code, msg, result } } = await this.$axios.post(`/manager/article_manage/addarticle`, formData, {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
@@ -77,7 +77,7 @@ export default {
       page = 1,
       loadMore = false
     }) {
-      let { data: { amcode, amresult, isMore } } = await axios.get('/manager/article_manage/getArticle', {
+      let { data: { amcode, amresult, isMore } } = await this.$axios.get('/manager/article_manage/getArticle', {
         params: {
           word: word,
           pageSize: pageSize,

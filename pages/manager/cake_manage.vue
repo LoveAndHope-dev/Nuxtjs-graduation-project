@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     async addCakeSubmit (formData) {
-      let { status, data: { code, msg, result } } = await axios.post(`/manager/cake_manage/addCake`, formData, {
+      let { status, data: { code, msg, result } } = await this.$axios.post(`/manager/cake_manage/addCake`, formData, {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
@@ -72,7 +72,7 @@ export default {
       page = 1,
       loadMore = false
     }) {
-      let { data: { cmcode, cmresult, isMore } } = await axios.get('/manager/cake_manage/getCake', {
+      let { data: { cmcode, cmresult, isMore } } = await this.$axios.get('/manager/cake_manage/getCake', {
         params: {
           word: word,
           pageSize: pageSize,

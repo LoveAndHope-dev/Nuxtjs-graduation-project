@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     async changeInfoSubmit (formData) {
-      let { status, data: { code, msg, info } } = await axios.post(`/manager/myself_infomation/changeInfo`, formData, {
+      let { status, data: { code, msg, info } } = await this.$axios.post(`/manager/myself_infomation/changeInfo`, formData, {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {

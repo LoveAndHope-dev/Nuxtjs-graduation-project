@@ -229,7 +229,7 @@ export default {
       teapage = 1,
       loadMore = false
     }) {
-      let { data: { thtcode, thtresult, isMoreTea } } = await axios.get('/teahouse/shop/getTea', {
+      let { data: { thtcode, thtresult, isMoreTea } } = await this.$axios.get('/teahouse/shop/getTea', {
         params: {
           word: word,
           pageSize: pageSize,
@@ -261,7 +261,7 @@ export default {
       cakepage = 1,
       loadMore = false
     }) {
-      let { data: { thccode, thcresult, isMoreCake } } = await axios.get('/teahouse/shop/getCake', {
+      let { data: { thccode, thcresult, isMoreCake } } = await this.$axios.get('/teahouse/shop/getCake', {
         params: {
           word: word,
           pageSize: pageSize,
@@ -289,7 +289,7 @@ export default {
     },
     async openCart () {
       this.value1 = true
-      let { status, data: { code, result, tableresult } } = await axios.get('/teahouse/shop/getCart')
+      let { status, data: { code, result, tableresult } } = await this.$axios.get('/teahouse/shop/getCart')
       if (status === 200 & code === 0 && result) {
         this.cartitem = result.filter(item => item.goodsId.length).map(item => {
           return {
@@ -319,7 +319,7 @@ export default {
           formData.append('orderlist', JSON.stringify(this.cartitem))
           formData.append('ordertableid', this.tableform.tableselect)
           formData.append('ordertime', moment().format('lll'))
-          let { data: { code, msg } } = await axios.post('/teahouse/shop/addOrder', formData, {
+          let { data: { code, msg } } = await this.$axios.post('/teahouse/shop/addOrder', formData, {
             headers: { 'content-type': 'multipart/form-data' }
           })
           if (code == 0) {
@@ -332,7 +332,7 @@ export default {
       })
     },
     async clean () {
-      let { data: { code, msg } } = await axios.delete('/teahouse/shop/cleanCart')
+      let { data: { code, msg } } = await this.$axios.delete('/teahouse/shop/cleanCart')
       if (code === 0) {
         this.$Message.success('删除成功!');
         this.cartitem = []

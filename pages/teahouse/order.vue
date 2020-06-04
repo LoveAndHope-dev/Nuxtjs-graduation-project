@@ -109,7 +109,7 @@ export default {
       page = 1,
       loadMore = false
     }) {
-      let { data: { code, data, isMore } } = await axios.get('/teahouse/order/getOrder', {
+      let { data: { code, data, isMore } } = await this.$axios.get('/teahouse/order/getOrder', {
         params: {
           pageSize: pageSize,
           page: page
@@ -128,7 +128,7 @@ export default {
       finpage = 1,
       loadMore = false
     }) {
-      let { data: { fincode, findata, finisMore } } = await axios.get('/teahouse/order/getfinishOrder', {
+      let { data: { fincode, findata, finisMore } } = await this.$axios.get('/teahouse/order/getfinishOrder', {
         params: {
           pageSize: pageSize,
           finpage: finpage

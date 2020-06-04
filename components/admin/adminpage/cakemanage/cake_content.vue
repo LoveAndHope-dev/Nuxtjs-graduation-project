@@ -272,7 +272,7 @@ export default {
     async remove (index) {
       let formData = new FormData()
       formData.append('submitID', this.cakes[index].id)
-      let { status, data: { code, msg, removeID } } = await axios.post(`/manager/cake_manage/removeCake`, formData, {
+      let { status, data: { code, msg, removeID } } = await this.$axios.post(`/manager/cake_manage/removeCake`, formData, {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
@@ -332,7 +332,7 @@ export default {
           formData.append('caketaste', this.changecakeForm.taste)
           formData.append('cakedescription', this.changecakeForm.description)
           formData.append('cakephoto', this.changecakeForm.photo)
-          let { status, data: { code, msg, cake } } = await axios.post(`/manager/cake_manage/changeCake`, formData, {
+          let { status, data: { code, msg, cake } } = await this.$axios.post(`/manager/cake_manage/changeCake`, formData, {
             headers: { 'content-type': 'multipart/form-data' }
           })
           if (status === 200 & code === 0) {

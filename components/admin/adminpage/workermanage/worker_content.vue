@@ -281,7 +281,7 @@ export default {
     async remove (index) {
       let formData = new FormData()
       formData.append('submitID', this.staffs[index].id)
-      let { status, data: { code, msg, removeID } } = await axios.post(`/manager/worker_manage/removeStaff`, formData, {
+      let { status, data: { code, msg, removeID } } = await this.$axios.post(`/manager/worker_manage/removeStaff`, formData, {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
@@ -349,7 +349,7 @@ export default {
           formData.append('staffwages', parseInt(this.changeWorkerForm.wages))
           formData.append('staffsex', this.changeWorkerForm.radio)
           formData.append('staffphoto', this.changeWorkerForm.photo)
-          let { status, data: { code, msg, staff } } = await axios.post(`/manager/worker_manage/changeStaff`, formData, {
+          let { status, data: { code, msg, staff } } = await this.$axios.post(`/manager/worker_manage/changeStaff`, formData, {
             headers: { 'content-type': 'multipart/form-data' }
           })
           if (status === 200 & code === 0) {

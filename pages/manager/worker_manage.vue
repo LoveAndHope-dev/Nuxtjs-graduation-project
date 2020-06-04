@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     async addWorkerSubmit (formData) {
-      let { status, data: { code, msg, result } } = await axios.post(`/manager/worker_manage/addStaff`, formData, {
+      let { status, data: { code, msg, result } } = await this.$axios.post(`/manager/worker_manage/addStaff`, formData, {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
@@ -63,7 +63,7 @@ export default {
       page = 1,
       loadMore = false
     }) {
-      let { data: { code, result, isMore } } = await axios.get('/manager/worker_manage/getStaff', {
+      let { data: { code, result, isMore } } = await this.$axios.get('/manager/worker_manage/getStaff', {
         params: {
           word: word,
           pageSize: pageSize,

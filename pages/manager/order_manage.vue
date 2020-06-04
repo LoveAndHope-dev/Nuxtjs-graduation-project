@@ -45,7 +45,7 @@ export default {
       page = 1,
       loadMore = false
     }) {
-      let { data: { omcode, omresult, isMore } } = await axios.get('/manager/order_manage/getOrder', {
+      let { data: { omcode, omresult, isMore } } = await this.$axios.get('/manager/order_manage/getOrder', {
         params: {
           word: word,
           pageSize: pageSize,

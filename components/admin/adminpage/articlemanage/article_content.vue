@@ -118,7 +118,7 @@ export default {
     async remove (index) {
       let formData = new FormData()
       formData.append('submitID', this.articles[index].id)
-      let { status, data: { code, msg, removeID } } = await axios.post(`/manager/article_manage/removearticle`, formData, {
+      let { status, data: { code, msg, removeID } } = await this.$axios.post(`/manager/article_manage/removearticle`, formData, {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {

@@ -89,7 +89,7 @@ export default {
       let formData = new FormData()
       formData.append('cakeId', this.item.id)
       formData.append('cakenum', this.itemvalue)
-      let { status, data: { code, msg } } = await axios.post('/teahouse/shop/addCake', formData, {
+      let { status, data: { code, msg } } = await this.$axios.post('/teahouse/shop/addCake', formData, {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {

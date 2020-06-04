@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     async addAdminSubmit (formData) {
-      let { status, data: { code, msg, result } } = await axios.post(`/manager/manager_manage/addadmin`, formData, {
+      let { status, data: { code, msg, result } } = await this.$axios.post(`/manager/manager_manage/addadmin`, formData, {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
@@ -70,7 +70,7 @@ export default {
       this.$Message.success('添加成功')
     },
     async searchAdminSubmit (formData) {
-      let { status, data: { code, msg, result } } = await axios.post(`/manager/manager_manage/searchadmin`, formData, {
+      let { status, data: { code, msg, result } } = await this.$axios.post(`/manager/manager_manage/searchadmin`, formData, {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {

@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     async addTableSubmit (formData) {
-      let { status, data: { code, msg, result } } = await axios.post(`/manager/table_manage/addTable`, formData, {
+      let { status, data: { code, msg, result } } = await this.$axios.post(`/manager/table_manage/addTable`, formData, {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
@@ -70,21 +70,6 @@ export default {
       this.tables.push(this.table[0])
       this.$Message.success('添加成功')
     },
-    // async searchTableSubmit (formData) {
-    //   let { status, data: { code, msg, result } } = await axios.post(`/manager/table_manage/searchTable`, formData, {
-    //     headers: { 'content-type': 'multipart/form-data' }
-    //   })
-    //   if (status === 200 & code === 0) {
-    //     this.tables = result.filter(item => item._id.length).map(item => {
-    //       return {
-    //         id: item._id,
-    //         name: item.tablename,
-    //         condition: item.tablecondition,
-    //         people: item.tablepeople
-    //       }
-    //     })
-    //   }
-    // },
     async getTableLists ({
       word = '',
       pageSize = 15,

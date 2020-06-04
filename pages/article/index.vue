@@ -112,7 +112,7 @@ export default {
       page = 1,
       loadMore = false
     }) {
-      let { data: { code, result, isMore } } = await axios.get('/article/getArticle', {
+      let { data: { code, result, isMore } } = await this.$axios.get('/article/getArticle', {
         params: {
           word: word,
           pageSize: pageSize,

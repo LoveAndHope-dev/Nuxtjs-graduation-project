@@ -48,7 +48,7 @@ export default {
   methods: {
     async addDrinkSubmit (formData) {
       let self = this
-      let { status, data: { code, msg, result } } = await axios.post(`/manager/tea_manage/addDrink`, formData, {
+      let { status, data: { code, msg, result } } = await this.$axios.post(`/manager/tea_manage/addDrink`, formData, {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
@@ -62,7 +62,7 @@ export default {
       page = 1,
       loadMore = false
     }) {
-      let { data: { dmcode, dmresult, isMore } } = await axios.get('/manager/tea_manage/getDrink', {
+      let { data: { dmcode, dmresult, isMore } } = await this.$axios.get('/manager/tea_manage/getDrink', {
         params: {
           word: word,
           pageSize: pageSize,

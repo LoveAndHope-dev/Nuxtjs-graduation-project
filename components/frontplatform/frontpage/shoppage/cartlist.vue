@@ -98,7 +98,7 @@ export default {
   },
   methods: {
     async deleteProduct (id, index) {
-      let res = await axios.delete('/teahouse/shop/deletePro', {
+      let res = await this.$axios.delete('/teahouse/shop/deletePro', {
         params: {
           id: id
         }
@@ -113,7 +113,7 @@ export default {
       let formData = new FormData()
       formData.append('id', id)
       formData.append('num', val)
-      let data = await axios.post('/teahouse/shop/updatePro', formData, {
+      let data = await this.$axios.post('/teahouse/shop/updatePro', formData, {
         headers: { 'content-type': 'multipart/form-data' }
       });
       if (!data.code == 200) {

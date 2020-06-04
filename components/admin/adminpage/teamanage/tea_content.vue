@@ -269,7 +269,7 @@ export default {
     async remove (index) {
       let formData = new FormData()
       formData.append('submitID', this.drinks[index].id)
-      let { status, data: { code, msg, removeID } } = await axios.post(`/manager/tea_manage/removeDrink`, formData, {
+      let { status, data: { code, msg, removeID } } = await this.$axios.post(`/manager/tea_manage/removeDrink`, formData, {
         headers: { 'content-type': 'multipart/form-data' }
       })
       if (status === 200 & code === 0) {
@@ -329,7 +329,7 @@ export default {
           formData.append('drinkposition', this.changeDrinkForm.position)
           formData.append('drinkdescription', this.changeDrinkForm.description)
           formData.append('drinkphoto', this.changeDrinkForm.photo)
-          let { status, data: { code, msg, drink } } = await axios.post(`/manager/tea_manage/changeDrink`, formData, {
+          let { status, data: { code, msg, drink } } = await this.$axios.post(`/manager/tea_manage/changeDrink`, formData, {
             headers: { 'content-type': 'multipart/form-data' }
           })
           if (status === 200 & code === 0) {
