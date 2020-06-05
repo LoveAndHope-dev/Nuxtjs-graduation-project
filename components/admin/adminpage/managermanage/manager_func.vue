@@ -129,8 +129,7 @@
               </Row>
               </Col>
               <Col
-                span="5"
-                offset="1"
+                span="8"
               >
               <FormItem
                 label="照片"

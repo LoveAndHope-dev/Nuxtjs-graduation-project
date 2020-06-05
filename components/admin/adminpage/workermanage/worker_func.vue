@@ -117,10 +117,7 @@
                 </Col>
               </Row>
               </Col>
-              <Col
-                span="5"
-                offset="1"
-              >
+              <Col span="8">
               <FormItem
                 label="照片"
                 prop="photo"

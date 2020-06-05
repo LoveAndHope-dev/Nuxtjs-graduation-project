@@ -103,8 +103,7 @@
             </Row>
             </Col>
             <Col
-              span="7"
-              offset="1"
+              span="8"
             >
             <FormItem
               prop="photo"
